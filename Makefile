@@ -1,23 +1,28 @@
 CC = gcc
+
 CFLAGS = -Wall -Wextra -Werror -Wpointer-arith -Wcast-align \
          -Wstrict-prototypes -Wwrite-strings -Waggregate-return \
          -Wswitch-default -Wswitch-enum -Wunreachable-code \
 	 -Wunused-parameter -Wuninitialized -Winit-self -Wpedantic \
- 	 -fsanitize=address -O0 -std=c99 -g -lSDL2 -lm
+	 -O0 -std=c99 -g \
+	 # -fsanitize=address \
+
+LINKS = -lSDL2 -lm
+
 
 MAIN_TARGET = main.out
 TEST_TARGET = test.out
 MAIN_SRC = main.c lib/*.c
 TEST_SRC = test/test.c lib/*.c
 
-.PHONY: all build run clean test format bear 
+.PHONY: all build run clean test format bear
 
 all: whodoyouthinkyouareiam
 
 whodoyouthinkyouareiam: build run
 
 build:
-	$(CC) $(CFLAGS) -o $(MAIN_TARGET) $(MAIN_SRC) 
+	$(CC) $(CFLAGS) -o $(MAIN_TARGET) $(MAIN_SRC) $(LINKS)
 
 run:
 	./$(MAIN_TARGET)

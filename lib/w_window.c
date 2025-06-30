@@ -1,21 +1,16 @@
 #include "w_window.h"
 
-SDL_Window *sdl_window = NULL;
-
-void W_init(int width, int height)
+SDL_Window *W_create(int width, int height)
 {
 	SDL_Init(SDL_INIT_VIDEO);
-	sdl_window = SDL_CreateWindow("drdoom", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-				      width, height, SDL_WINDOW_SHOWN);
+	SDL_Window *sdl_window =
+		SDL_CreateWindow("drdoom", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width,
+				 height, SDL_WINDOW_SHOWN);
+	return sdl_window;
 }
 
-void W_destroy(void)
+void W_destroy(SDL_Window *sdl_window)
 {
 	SDL_DestroyWindow(sdl_window);
 	SDL_Quit();
-}
-
-SDL_Window *W_get(void)
-{
-	return sdl_window;
 }

@@ -9,14 +9,14 @@
 
 #define WINDOW_W 800
 #define WINDOW_H 640
-#define TARGET_FPS 30
+#define TARGET_FPS 60
 
 void main_loop(G_GameState *gamestate)
 {
 	SDL_Event event;
 	int quit = 0;
 	while (!quit) {
-		G_frame_start();
+		G_frame_start(gamestate);
 
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_QUIT) {
@@ -33,13 +33,12 @@ void main_loop(G_GameState *gamestate)
 int main(void)
 {
 	G_GameState *gamestate = G_gamestate_create(TARGET_FPS, WINDOW_W, WINDOW_H);
-	W_init(gamestate->window_w, gamestate->window_h);
+	SDL_Window *sdl_window = W_create(gamestate->window_w, gamestate->window_h);
 
-	SDL_Window *sdl_window = W_get();
 	R_init(sdl_window);
 	main_loop(gamestate);
 	R_destroy();
-	W_destroy();
+	W_destroy(sdl_window);
 	G_destroy(gamestate);
 	return 0;
 }

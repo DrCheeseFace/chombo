@@ -5,10 +5,8 @@
 
 #include <SDL2/SDL.h>
 
-void W_init(int width, int height);
+SDL_Window *W_create(int width, int height);
 
-void W_destroy(void);
-
-SDL_Window *W_get(void);
+void W_destroy(SDL_Window *sdl_window);
 
 #endif

@@ -2,7 +2,6 @@
 #include <SDL2/SDL_timer.h>
 #include <stdlib.h>
 
-Uint32 frame_start_ticks;
 Uint32 frame_ticks;
 
 G_GameState *G_gamestate_create(int target_fps, int window_width, int window_height)
@@ -21,14 +20,14 @@ void G_destroy(G_GameState *gamestate)
 	free(gamestate);
 }
 
-void G_frame_start(void)
+void G_frame_start(G_GameState *gamestate)
 {
-	frame_start_ticks = SDL_GetTicks64();
+	gamestate->frame_ticks_start = SDL_GetTicks64();
 }
 
 void G_frame_end(G_GameState *gamestate)
 {
-	frame_ticks = SDL_GetTicks64() - frame_start_ticks;
+	frame_ticks = SDL_GetTicks64() - gamestate->frame_ticks_start;
 	if (frame_ticks < gamestate->target_frametime_ms) {
 		SDL_Delay(gamestate->target_frametime_ms - frame_ticks);
 	}
