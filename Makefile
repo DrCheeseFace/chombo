@@ -3,7 +3,7 @@ CFLAGS = -Wall -Wextra -Werror -Wpointer-arith -Wcast-align \
          -Wstrict-prototypes -Wwrite-strings -Waggregate-return \
          -Wswitch-default -Wswitch-enum -Wunreachable-code \
 	 -Wunused-parameter -Wuninitialized -Winit-self -Wpedantic \
- 	 -fsanitize=address -O2 -std=c11 -g -lSDL2 
+ 	 -fsanitize=address -O2 -std=c99 -g -lSDL2
 
 MAIN_TARGET = main.out
 TEST_TARGET = test.out

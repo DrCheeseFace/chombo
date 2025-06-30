@@ -1,7 +1,8 @@
 #include "lib/w_window.h"
 #include "lib/r_renderer.h"
 
-int main(void) {
+int main(void)
+{
 	W_init(100, 100);
 	SDL_Window *sdl_window = W_get();
 	R_init(sdl_window);
