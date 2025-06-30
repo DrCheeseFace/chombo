@@ -16,15 +16,15 @@ void R_destroy(void)
 	SDL_DestroyRenderer(sdl_renderer);
 }
 
-void R_sanity_check(void)
-{
-	SDL_SetRenderDrawColor(sdl_renderer, 255, 255, 255, 255);
-	SDL_RenderDrawPoint(sdl_renderer, 50, 50);
-	SDL_RenderPresent(sdl_renderer);
-	SDL_Delay(1000);
-}
-
 SDL_Renderer *R_get(void)
 {
 	return sdl_renderer;
+}
+
+void R_sanity_check(void)
+{
+	SDL_SetRenderDrawColor(sdl_renderer, SDL_GetTicks(), SDL_GetTicks() + 10,
+			       SDL_GetTicks() + 20, 255);
+	SDL_RenderClear(sdl_renderer);
+	SDL_RenderPresent(sdl_renderer);
 }

@@ -3,7 +3,7 @@ CFLAGS = -Wall -Wextra -Werror -Wpointer-arith -Wcast-align \
          -Wstrict-prototypes -Wwrite-strings -Waggregate-return \
          -Wswitch-default -Wswitch-enum -Wunreachable-code \
 	 -Wunused-parameter -Wuninitialized -Winit-self -Wpedantic \
- 	 -fsanitize=address -O2 -std=c99 -g -lSDL2
+ 	 -fsanitize=address -O0 -std=c99 -g -lSDL2 -lm
 
 MAIN_TARGET = main.out
 TEST_TARGET = test.out
@@ -31,6 +31,6 @@ clean:
 format: 
 	find ./ -name '*.h' -o -iname '*.c' | xargs clang-format -i --verbose
 
-bear: clean # this is for creating the compile_commands.json file
-	bear -- make build 
+bear: # this is for creating the compile_commands.json file
+	rm -f compile_commands.json && bear -- make build
 
