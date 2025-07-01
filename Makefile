@@ -1,11 +1,15 @@
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -Wpointer-arith -Wcast-align \
+CFLAGS_DEBUG = -Wall -Wextra -Werror -Wpointer-arith -Wcast-align \
          -Wstrict-prototypes -Wwrite-strings -Waggregate-return \
          -Wswitch-default -Wswitch-enum -Wunreachable-code \
 	 -Wunused-parameter -Wuninitialized -Winit-self -Wpedantic \
 	 -O0 -std=c99 -g \
-	 # -fsanitize=address \
+	 -fsanitize=address \
+	 
+CFLAGS = -Wall -Wextra -Werror \
+	 -O2 -std=c99\
+
 
 LINKS = -lSDL2 -lm
 
@@ -15,7 +19,7 @@ TEST_TARGET = test.out
 MAIN_SRC = main.c lib/*.c
 TEST_SRC = test/test.c lib/*.c
 
-.PHONY: all build run clean test format bear
+.PHONY: all build run clean test format bear debug
 
 all: whodoyouthinkyouareiam
 
@@ -38,4 +42,7 @@ format:
 
 bear: # this is for creating the compile_commands.json file
 	rm -f compile_commands.json && bear -- make build
+
+debug: 
+	$(CC) $(CFLAGS_DEBUG) -o $(MAIN_TARGET) $(MAIN_SRC) $(LINKS)
 

@@ -3,12 +3,15 @@
 
 #include <SDL2/SDL.h>
 
-void R_init(SDL_Window *window);
+SDL_Renderer *R_create(SDL_Window *window, int width, int height);
 
-void R_destroy(void);
+void R_destroy(SDL_Renderer *sdl_renderer);
 
-SDL_Renderer *R_get(void);
+// BAD BOY! STOP THAT
+SDL_Renderer *R_get(SDL_Renderer *sdl_renderer);
 
-void R_sanity_check(void);
+void R_draw(SDL_Renderer *sdl_renderer);
+
+void R_sanity_check(SDL_Renderer *sdl_renderer);
 
 #endif // !R_RENDERER_H
