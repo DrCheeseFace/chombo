@@ -4,7 +4,6 @@
 #include <SDL2/SDL_surface.h>
 #include <stdlib.h>
 #include "t_tiles.h"
-#include "util.h"
 
 const char *T_TILE_PATHS[] = {
 	"static/Back.bmp",	"static/Blank.bmp", "static/Front.bmp",	    "static/Chun.bmp",
@@ -19,7 +18,7 @@ const char *T_TILE_PATHS[] = {
 	"static/Ton.bmp",	"static/Nan.bmp",   "static/Pei.bmp",	    "static/Shaa.bmp"
 };
 
-void T_tile_draw(SDL_Renderer *sdl_renderer, T_TILE tile, int width, int height, int x, int y)
+void T_tile_draw(SDL_Renderer *sdl_renderer, T_Tile tile, int width, int height, int x, int y)
 {
 	SDL_Rect *tile_rect = malloc(sizeof(SDL_Rect));
 	tile_rect->w = width;
