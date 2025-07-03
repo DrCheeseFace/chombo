@@ -1,5 +1,7 @@
-# drdoom 
-![](https://i.pinimg.com/originals/f9/55/17/f9551778f81663c339cf51091460435b.gif)
+# Chombo 
+`Chombo 「錯和/チョンボ」is a penalty for severe game rule violations, generally severe enough to restart the current hand. 
+Mistakes that are minor and/or correctable, such as drawing the wrong tile, can be given a dead hand penalty instead.`
 
-Dr whom? dr doom!
+Gui riichi mahjong calculator. In progress
 
+![](https://c.tenor.com/zjDqzQSRxTkAAAAd/tenor.gif)
