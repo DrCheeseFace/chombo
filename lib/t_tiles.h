@@ -6,7 +6,7 @@
 extern const char *T_TILE_PATHS[];
 
 typedef enum {
-	T_BACK,
+	T_BACK = 0,
 	T_BLANK,
 	T_FRONT,
 	T_CHUN,
@@ -51,8 +51,8 @@ typedef enum {
 	T_PEI,
 	T_SHAA,
 	T_COUNT,
-} T_TILE;
+} T_Tile;
 
-void T_tile_draw(SDL_Renderer *sdl_renderer, T_TILE tile, int width, int height, int x, int y);
+void T_tile_draw(SDL_Renderer *sdl_renderer, T_Tile tile, int width, int height, int x, int y);
 
 #endif // !T_TILES_H

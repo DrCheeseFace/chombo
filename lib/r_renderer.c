@@ -1,3 +1,4 @@
+#include "g_gamestate.h"
 #include "t_tiles.h"
 #include <SDL2/SDL_pixels.h>
 #include <SDL2/SDL_rect.h>
@@ -25,12 +26,10 @@ void R_destroy(SDL_Renderer *sdl_renderer)
 	SDL_DestroyRenderer(sdl_renderer);
 }
 
-void R_draw(SDL_Renderer *sdl_renderer)
+void R_draw(SDL_Renderer *sdl_renderer, G_GameState gamestate)
 {
 	SDL_SetRenderDrawColor(sdl_renderer, 0, 0, 0, 255);
 	SDL_RenderClear(sdl_renderer);
-
-	T_tile_draw(sdl_renderer, T_SOU1, 150, 200, screen_width / 2, screen_height / 2);
-
+	T_tile_draw(sdl_renderer, gamestate.tile, 150, 200, screen_width / 2, screen_height / 2);
 	SDL_RenderPresent(sdl_renderer);
 }

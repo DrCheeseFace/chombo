@@ -1,4 +1,5 @@
 #include "g_gamestate.h"
+#include "t_tiles.h"
 #include <SDL2/SDL_timer.h>
 #include <stdlib.h>
 
@@ -11,6 +12,7 @@ G_GameState *G_gamestate_create(int target_fps, int window_width, int window_hei
 	gamestate->target_frametime_ms = (1000.0 / (double)target_fps);
 	gamestate->window_w = window_width;
 	gamestate->window_h = window_height;
+	gamestate->tile = T_SHAA;
 
 	return gamestate;
 }
