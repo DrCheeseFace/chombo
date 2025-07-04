@@ -1,6 +1,5 @@
 #include "g_gamestate.h"
 #include "t_tiles.h"
-#include <SDL2/SDL_events.h>
 
 int E_handle_event(G_GameState *gamestate, SDL_Event event)
 {

@@ -1,7 +1,3 @@
-#include <SDL2/SDL_rect.h>
-#include <SDL2/SDL_render.h>
-#include <SDL2/SDL_stdinc.h>
-#include <SDL2/SDL_surface.h>
 #include <stdlib.h>
 #include "t_tiles.h"
 
@@ -18,25 +14,18 @@ const char *T_TILE_PATHS[] = {
 	"static/Ton.bmp",	"static/Nan.bmp",   "static/Pei.bmp",	    "static/Shaa.bmp"
 };
 
-void T_tile_draw(SDL_Renderer *sdl_renderer, T_Tile tile, int width, int height, int x, int y)
+void T_tile_draw(SDL_Renderer *sdl_renderer, T_Tile tile, SDL_Rect *rect)
 {
-	SDL_Rect *tile_rect = malloc(sizeof(SDL_Rect));
-	tile_rect->w = width;
-	tile_rect->h = height;
-	tile_rect->x = x;
-	tile_rect->y = y;
-
 	// render front of tile no face
 	SDL_Surface *bmp = SDL_LoadBMP(T_TILE_PATHS[T_FRONT]);
 	SDL_Texture *tex = SDL_CreateTextureFromSurface(sdl_renderer, bmp);
-	SDL_RenderCopy(sdl_renderer, tex, NULL, tile_rect);
+	SDL_RenderCopy(sdl_renderer, tex, NULL, rect);
 
 	// render face of tile
 	bmp = SDL_LoadBMP(T_TILE_PATHS[tile]);
 	tex = SDL_CreateTextureFromSurface(sdl_renderer, bmp);
-	SDL_RenderCopy(sdl_renderer, tex, NULL, tile_rect);
+	SDL_RenderCopy(sdl_renderer, tex, NULL, rect);
 
 	SDL_FreeSurface(bmp);
 	SDL_DestroyTexture(tex);
-	free(tile_rect);
 }

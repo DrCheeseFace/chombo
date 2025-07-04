@@ -4,20 +4,20 @@ CFLAGS_DEBUG = -Wall -Wextra -Werror -Wpointer-arith -Wcast-align \
          -Wstrict-prototypes -Wwrite-strings -Waggregate-return \
          -Wswitch-default -Wswitch-enum -Wunreachable-code \
 	 -Wunused-parameter -Wuninitialized -Winit-self -Wpedantic \
-	 -Og -std=c99 -g \
+	 -O0 -std=c99 -g \
 	 -fsanitize=address \
 	 
 CFLAGS = -Wall -Wextra -Werror \
 	 -O2 -std=c99\
 
 
-LINKS = -lSDL2 -lm
+LINKS = -lSDL2 -lSDL2_ttf
 
 
 MAIN_TARGET = main.out
 TEST_TARGET = test.out
-MAIN_SRC = main.c lib/*.c
-TEST_SRC = test/test.c lib/*.c
+MAIN_SRC = src/*.c
+TEST_SRC = test/test.c src/*.c
 
 .PHONY: all build run clean test format bear debug
 

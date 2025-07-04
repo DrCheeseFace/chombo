@@ -1,7 +1,7 @@
 #ifndef T_TILES_H
 #define T_TILES_H
 
-#include <SDL2/SDL_render.h>
+#include <SDL2/SDL.h>
 
 extern const char *T_TILE_PATHS[];
 
@@ -53,6 +53,6 @@ typedef enum {
 	T_COUNT,
 } T_Tile;
 
-void T_tile_draw(SDL_Renderer *sdl_renderer, T_Tile tile, int width, int height, int x, int y);
+void T_tile_draw(SDL_Renderer *sdl_renderer, T_Tile tile, SDL_Rect *rect);
 
 #endif // !T_TILES_H
