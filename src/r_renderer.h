@@ -2,7 +2,6 @@
 #define R_RENDERER_H
 
 #include "g_gamestate.h"
-#include <SDL2/SDL.h>
 
 SDL_Renderer *R_create(SDL_Window *window, int width, int height);
 

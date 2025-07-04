@@ -1,7 +1,6 @@
 #ifndef G_GAMESTATE_H
 #define G_GAMESTATE_H
 #include "t_tiles.h"
-#include <SDL2/SDL_stdinc.h>
 #include <stdint.h>
 
 typedef struct {

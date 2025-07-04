@@ -2,7 +2,7 @@
 #define E_EVENT_H
 
 #include "g_gamestate.h"
-#include <SDL2/SDL_events.h>
+#include <SDL2/SDL.h>
 
 /**
  * returns 1 if redraw needed
