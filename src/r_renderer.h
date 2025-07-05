@@ -10,7 +10,8 @@ void R_destroy(SDL_Renderer *sdl_renderer);
 // BAD BOY! STOP THAT
 SDL_Renderer *R_get(SDL_Renderer *sdl_renderer);
 
-void R_draw(SDL_Renderer *sdl_renderer, G_GameState gamestate);
+// return 0 if successful
+int R_draw(SDL_Renderer *sdl_renderer, G_GameState gamestate);
 
 void R_sanity_check(SDL_Renderer *sdl_renderer);
 

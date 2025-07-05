@@ -1,5 +1,5 @@
-#ifndef W_WINDOW_H
-#define W_WINDOW_H
+#ifndef W_WINDOW_HEIGHT
+#define W_WINDOW_HEIGHT
 
 #define SDL_MAIN_HANDLED
 
