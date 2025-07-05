@@ -53,6 +53,7 @@ typedef enum {
 	T_COUNT,
 } T_Tile;
 
-void T_tile_draw(SDL_Renderer *sdl_renderer, T_Tile tile, SDL_Rect *rect);
+// returns 0 if successful
+int T_tile_draw(SDL_Renderer *sdl_renderer, T_Tile tile, SDL_Rect *rect);
 
 #endif // !T_TILES_H

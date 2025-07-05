@@ -4,9 +4,6 @@
 #include "g_gamestate.h"
 #include <SDL2/SDL.h>
 
-/**
- * returns 1 if redraw needed
-**/
 int E_handle_event(G_GameState *gamestate, SDL_Event event);
 
 #endif // !E_EVENT_H

@@ -14,18 +14,40 @@ const char *T_TILE_PATHS[] = {
 	"static/Ton.bmp",	"static/Nan.bmp",   "static/Pei.bmp",	    "static/Shaa.bmp"
 };
 
-void T_tile_draw(SDL_Renderer *sdl_renderer, T_Tile tile, SDL_Rect *rect)
+int T_tile_draw(SDL_Renderer *sdl_renderer, T_Tile tile, SDL_Rect *rect)
 {
 	// render front of tile no face
-	SDL_Surface *bmp = SDL_LoadBMP(T_TILE_PATHS[T_FRONT]);
-	SDL_Texture *tex = SDL_CreateTextureFromSurface(sdl_renderer, bmp);
-	SDL_RenderCopy(sdl_renderer, tex, NULL, rect);
+	SDL_Surface *bmp_front = SDL_LoadBMP(T_TILE_PATHS[T_FRONT]);
+	if (!bmp_front) {
+		fprintf(stderr, "Failed to load front BMP: %s\n", SDL_GetError());
+		return 1;
+	}
+	SDL_Texture *tex_front = SDL_CreateTextureFromSurface(sdl_renderer, bmp_front);
+	if (!tex_front) {
+		fprintf(stderr, "Failed to create front texture: %s\n", SDL_GetError());
+		SDL_FreeSurface(bmp_front);
+		return 1;
+	}
+	SDL_RenderCopy(sdl_renderer, tex_front, NULL, rect);
+
+	SDL_FreeSurface(bmp_front);
+	SDL_DestroyTexture(tex_front);
 
 	// render face of tile
-	bmp = SDL_LoadBMP(T_TILE_PATHS[tile]);
-	tex = SDL_CreateTextureFromSurface(sdl_renderer, bmp);
-	SDL_RenderCopy(sdl_renderer, tex, NULL, rect);
+	SDL_Surface *bmp_face = SDL_LoadBMP(T_TILE_PATHS[tile]);
+	if (!bmp_face) {
+		fprintf(stderr, "Failed to load face BMP: %s\n", SDL_GetError());
+		return 1;
+	}
+	SDL_Texture *tex_face = SDL_CreateTextureFromSurface(sdl_renderer, bmp_face);
+	if (!tex_face) {
+		fprintf(stderr, "Failed to create face texture: %s\n", SDL_GetError());
+		SDL_FreeSurface(bmp_face);
+		return 1;
+	}
+	SDL_RenderCopy(sdl_renderer, tex_face, NULL, rect);
 
-	SDL_FreeSurface(bmp);
-	SDL_DestroyTexture(tex);
+	SDL_FreeSurface(bmp_face);
+	SDL_DestroyTexture(tex_face);
+	return 0;
 }

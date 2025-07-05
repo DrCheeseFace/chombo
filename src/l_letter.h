@@ -8,8 +8,9 @@ extern SDL_Color L_colors[L_COUNT];
 
 void L_init(void);
 
-void L_draw(SDL_Renderer *sdl_renderer, const char *text, SDL_Color color, SDL_Point rect,
-	    int fontsize);
+// returns 0 if successful
+int L_draw(SDL_Renderer *sdl_renderer, const char *text, SDL_Color color, SDL_Point rect,
+	   int fontsize);
 
 void L_destroy(void);
 

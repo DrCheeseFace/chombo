@@ -4,4 +4,12 @@ Mistakes that are minor and/or correctable, such as drawing the wrong tile, can 
 
 Gui riichi mahjong calculator. In progress
 
+
+#### TODO
+- [ ] shift -+ window resizing
+- [x] figure out why memory leak :(
+.
+.
+.
+
 ![](https://c.tenor.com/zjDqzQSRxTkAAAAd/tenor.gif)
