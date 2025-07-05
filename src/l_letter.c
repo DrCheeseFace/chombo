@@ -12,7 +12,9 @@ SDL_Color L_colors[L_COUNT] = {
 	{ 0, 0, 0, 0 }, //black
 	{ 255, 0, 0, 0 }, //red
 	{ 0, 255, 0, 0 }, //green
-	{ 0, 0, 255, 0 } //blue
+	{ 0, 0, 255, 0 }, //blue
+	{ 0, 10, 0, 255 }, //greenish black
+	{ 10, 20, 10, 255 } //more greenish black
 };
 
 void L_init(void)

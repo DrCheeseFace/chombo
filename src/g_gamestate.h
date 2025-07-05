@@ -11,6 +11,7 @@ typedef struct {
 	double target_frametime_ms;
 	Uint32 frame_ticks_start;
 	T_Tile tile;
+	int show_help;
 } G_GameState;
 
 G_GameState *G_gamestate_create(int target_fps, int window_width, int window_height, float scale);
