@@ -13,6 +13,7 @@ G_GameState *G_gamestate_create(int target_fps, int window_width, int window_hei
 	gamestate->window_h = window_height;
 	gamestate->scale = scale;
 	gamestate->tile = T_SHAA;
+	gamestate->show_help = 0;
 
 	return gamestate;
 }

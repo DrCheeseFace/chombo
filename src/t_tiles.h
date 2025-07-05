@@ -54,6 +54,6 @@ typedef enum {
 } T_Tile;
 
 // returns 0 if successful
-int T_tile_draw(SDL_Renderer *sdl_renderer, T_Tile tile, SDL_Rect *rect);
+int T_tile_draw(SDL_Renderer *sdl_renderer, T_Tile tile, SDL_Point *point, int scale);
 
 #endif // !T_TILES_H

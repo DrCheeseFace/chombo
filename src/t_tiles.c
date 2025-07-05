@@ -14,7 +14,7 @@ const char *T_TILE_PATHS[] = {
 	"static/Ton.bmp",	"static/Nan.bmp",   "static/Pei.bmp",	    "static/Shaa.bmp"
 };
 
-int T_tile_draw(SDL_Renderer *sdl_renderer, T_Tile tile, SDL_Rect *rect)
+int T_tile_draw(SDL_Renderer *sdl_renderer, T_Tile tile, SDL_Point *point, int scale)
 {
 	// render front of tile no face
 	SDL_Surface *bmp_front = SDL_LoadBMP(T_TILE_PATHS[T_FRONT]);
@@ -28,7 +28,8 @@ int T_tile_draw(SDL_Renderer *sdl_renderer, T_Tile tile, SDL_Rect *rect)
 		SDL_FreeSurface(bmp_front);
 		return 1;
 	}
-	SDL_RenderCopy(sdl_renderer, tex_front, NULL, rect);
+	SDL_Rect tile_rect = { point->x, point->y, scale * 4, scale * 5 };
+	SDL_RenderCopy(sdl_renderer, tex_front, NULL, &tile_rect);
 
 	SDL_FreeSurface(bmp_front);
 	SDL_DestroyTexture(tex_front);
@@ -45,7 +46,7 @@ int T_tile_draw(SDL_Renderer *sdl_renderer, T_Tile tile, SDL_Rect *rect)
 		SDL_FreeSurface(bmp_face);
 		return 1;
 	}
-	SDL_RenderCopy(sdl_renderer, tex_face, NULL, rect);
+	SDL_RenderCopy(sdl_renderer, tex_face, NULL, &tile_rect);
 
 	SDL_FreeSurface(bmp_face);
 	SDL_DestroyTexture(tex_face);

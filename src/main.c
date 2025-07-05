@@ -7,13 +7,14 @@
 #include <SDL2/SDL_ttf.h>
 #include <stdint.h>
 
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 500
-#define WINDOW_S 1
+#define WINDOW_WIDTH 1600
+#define WINDOW_HEIGHT 1000 
+#define WINDOW_S 0.5
 #define TARGET_FPS 20
 
 void main_loop(G_GameState *gamestate, SDL_Renderer *sdl_renderer)
 {
+	SDL_StopTextInput();
 	SDL_Event event;
 	int redraw = 1;
 	int quit = 0;
@@ -21,7 +22,7 @@ void main_loop(G_GameState *gamestate, SDL_Renderer *sdl_renderer)
 		G_frame_start(gamestate);
 
 		if (redraw) {
-			if (R_draw(sdl_renderer, *gamestate) == 0) {
+			if (R_gamestate_draw(sdl_renderer, *gamestate) == 0) {
 				redraw = 0;
 			}
 		}

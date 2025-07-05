@@ -3,7 +3,17 @@
 
 #include <SDL2/SDL.h>
 
-typedef enum { L_WHITE = 0, L_BLACK, L_RED, L_GREEN, L_BLUE, L_COUNT } L_Colors;
+typedef enum {
+	L_WHITE = 0,
+	L_BLACK,
+	L_RED,
+	L_GREEN,
+	L_BLUE,
+	L_BACKDROP,
+	L_MENU_BACKDROP,
+	L_COUNT
+} L_Colors;
+
 extern SDL_Color L_colors[L_COUNT];
 
 void L_init(void);
