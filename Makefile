@@ -11,7 +11,7 @@ CFLAGS = -Wall -Wextra -Werror \
 	 -O2 -std=c99\
 
 
-LINKS = -lSDL2 -lSDL2_ttf
+LINKS = -lSDL3 -lSDL3_ttf
 
 
 MAIN_TARGET = main.out

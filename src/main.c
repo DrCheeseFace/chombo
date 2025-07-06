@@ -3,8 +3,7 @@
 #include "r_renderer.h"
 #include "e_event.h"
 #include "l_letter.h"
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
+#include <SDL3_ttf/SDL_ttf.h>
 #include <stdint.h>
 
 #define WINDOW_WIDTH 1600
@@ -14,7 +13,7 @@
 
 void main_loop(G_GameState *gamestate, SDL_Window *sdl_window, SDL_Renderer *sdl_renderer)
 {
-	SDL_StopTextInput();
+	SDL_StopTextInput(sdl_window);
 	SDL_Event event;
 	int redraw = 1;
 	int quit = 0;
@@ -28,7 +27,7 @@ void main_loop(G_GameState *gamestate, SDL_Window *sdl_window, SDL_Renderer *sdl
 		}
 
 		while (SDL_PollEvent(&event)) {
-			if (event.type == SDL_QUIT) {
+			if (event.type == SDL_EVENT_QUIT) {
 				quit = 1;
 				break;
 			} else {

@@ -23,12 +23,12 @@ void G_destroy(G_GameState *gamestate)
 
 void G_frame_start(G_GameState *gamestate)
 {
-	gamestate->frame_ticks_start = SDL_GetTicks64();
+	gamestate->frame_ticks_start = SDL_GetTicks();
 }
 
 void G_frame_end(G_GameState *gamestate)
 {
-	frame_ticks = SDL_GetTicks64() - gamestate->frame_ticks_start;
+	frame_ticks = SDL_GetTicks() - gamestate->frame_ticks_start;
 	if (frame_ticks < gamestate->target_frametime_ms) {
 		SDL_Delay(gamestate->target_frametime_ms - frame_ticks);
 	}
@@ -37,7 +37,7 @@ void G_frame_end(G_GameState *gamestate)
 void G_window_renderer_resize(SDL_Window *sdl_window, SDL_Renderer *sdl_renderer, int width,
 			      int height, float scale)
 {
-	SDL_RenderSetScale(sdl_renderer, scale, scale);
+	SDL_SetRenderScale(sdl_renderer, scale, scale);
 	SDL_SetWindowSize(sdl_window, width * scale, height * scale);
 	SDL_SetWindowPosition(sdl_window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 }

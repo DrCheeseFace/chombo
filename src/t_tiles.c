@@ -1,6 +1,4 @@
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_render.h>
-#include <SDL2/SDL_surface.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include "t_tiles.h"
 
@@ -30,7 +28,7 @@ void T_tiles_init(SDL_Renderer *sdl_renderer)
 		if (!tex_front) {
 			fprintf(stderr, "Failed to create tile texture: %s\n", SDL_GetError());
 		}
-		SDL_FreeSurface(bmp);
+		SDL_DestroySurface(bmp);
 		T_TILE_TEXTURES[i] = tex_front;
 	}
 }
@@ -45,11 +43,11 @@ void T_tiles_destroy(void)
 int T_tile_draw(SDL_Renderer *sdl_renderer, T_Tile tile, SDL_Point *point, int scale)
 {
 	// render front of tile no face
-	SDL_Rect tile_rect = { point->x, point->y, scale * 4, scale * 5 };
-	SDL_RenderCopy(sdl_renderer, T_TILE_TEXTURES[T_FRONT], NULL, &tile_rect);
+	SDL_FRect tile_rect = { point->x, point->y, scale * 4, scale * 5 };
+	SDL_RenderTexture(sdl_renderer, T_TILE_TEXTURES[T_FRONT], NULL, &tile_rect);
 
 	// render face of tile
-	SDL_RenderCopy(sdl_renderer, T_TILE_TEXTURES[tile], NULL, &tile_rect);
+	SDL_RenderTexture(sdl_renderer, T_TILE_TEXTURES[tile], NULL, &tile_rect);
 
 	return 0;
 }

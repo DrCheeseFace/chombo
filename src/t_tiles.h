@@ -1,7 +1,7 @@
 #ifndef T_TILES_H
 #define T_TILES_H
 
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 
 extern const char *T_TILE_PATHS[];
 
