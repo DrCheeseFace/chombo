@@ -1,5 +1,4 @@
 #include "g_gamestate.h"
-#include "t_tiles.h"
 #include <stdlib.h>
 
 Uint32 frame_ticks;
@@ -12,7 +11,6 @@ G_GameState *G_gamestate_create(int target_fps, int window_width, int window_hei
 	gamestate->window_w = window_width;
 	gamestate->window_h = window_height;
 	gamestate->scale = scale;
-	gamestate->tile = T_SHAA;
 	gamestate->show_help = 0;
 
 	return gamestate;
@@ -36,7 +34,7 @@ void G_frame_end(G_GameState *gamestate)
 	}
 }
 
-void W_window_renderer_resize(SDL_Window *sdl_window, SDL_Renderer *sdl_renderer, int width,
+void G_window_renderer_resize(SDL_Window *sdl_window, SDL_Renderer *sdl_renderer, int width,
 			      int height, float scale)
 {
 	SDL_RenderSetScale(sdl_renderer, scale, scale);

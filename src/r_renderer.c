@@ -7,21 +7,26 @@
 
 SDL_Renderer *sdl_renderer;
 int screen_width, screen_height;
+float scale;
 
 SDL_Renderer *R_create(SDL_Window *window, int width, int height)
 {
-	sdl_renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_TARGETTEXTURE);
+	sdl_renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	SDL_SetRenderDrawColor(sdl_renderer, 0, 0, 0, 255);
 	SDL_RenderClear(sdl_renderer);
 
 	screen_width = width;
 	screen_height = height;
+	scale = 0.5;
+
+	T_tiles_init(sdl_renderer);
 
 	return sdl_renderer;
 }
 
 void R_destroy(SDL_Renderer *sdl_renderer)
 {
+	T_tiles_destroy();
 	SDL_DestroyRenderer(sdl_renderer);
 }
 
@@ -124,7 +129,7 @@ int R_draw_help(void)
 	return 0;
 }
 
-int R_gamestate_draw(SDL_Renderer *sdl_renderer, G_GameState gamestate)
+int R_gamestate_draw(SDL_Renderer *sdl_renderer, SDL_Window *sdl_window, G_GameState gamestate)
 {
 	if (SDL_SetRenderDrawColor(sdl_renderer, L_colors[L_BACKDROP].r, L_colors[L_BACKDROP].g,
 				   L_colors[L_BACKDROP].b, L_colors[L_BACKDROP].a) != 0) {
@@ -137,12 +142,18 @@ int R_gamestate_draw(SDL_Renderer *sdl_renderer, G_GameState gamestate)
 		return 1;
 	}
 
-	if (gamestate.show_help) {
+	if (gamestate.scale != scale) {
+		G_window_renderer_resize(sdl_window, sdl_renderer, gamestate.window_w,
+					 gamestate.window_h, gamestate.scale);
+		scale = gamestate.scale;
+	}
+
+	if (gamestate.show_help == 1) {
 		if (R_draw_help() != 0) {
 			return 1;
 		}
 	} else {
-		if (L_draw(sdl_renderer, "hold ? for help", L_colors[L_WHITE],
+		if (L_draw(sdl_renderer, "hold / for help", L_colors[L_WHITE],
 			   (struct SDL_Point){ 4, screen_height - 50 }, 40) != 0)
 			return 1;
 	}
