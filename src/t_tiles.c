@@ -24,12 +24,13 @@ void T_tiles_init(SDL_Renderer *sdl_renderer)
 	for (int i = 0; i < T_COUNT; i++) {
 		SDL_Surface *bmp = SDL_LoadBMP(T_TILE_PATHS[i]);
 		if (!bmp) {
-			fprintf(stderr, "Failed to load front BMP: %s\n", SDL_GetError());
+			fprintf(stderr, "Failed to load tile BMP: %s\n", SDL_GetError());
 		}
 		SDL_Texture *tex_front = SDL_CreateTextureFromSurface(sdl_renderer, bmp);
 		if (!tex_front) {
-			fprintf(stderr, "Failed to create front texture: %s\n", SDL_GetError());
+			fprintf(stderr, "Failed to create tile texture: %s\n", SDL_GetError());
 		}
+		SDL_FreeSurface(bmp);
 		T_TILE_TEXTURES[i] = tex_front;
 	}
 }
