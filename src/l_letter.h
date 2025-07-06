@@ -1,7 +1,7 @@
 #ifndef L_LETTER_H
 #define L_LETTER_H
 
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 
 typedef enum {
 	L_WHITE = 0,

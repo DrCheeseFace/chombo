@@ -3,9 +3,7 @@
 SDL_Window *W_create(int width, int height)
 {
 	SDL_Init(SDL_INIT_VIDEO);
-	SDL_Window *sdl_window =
-		SDL_CreateWindow("chombo", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width,
-				 height, SDL_WINDOW_SHOWN);
+	SDL_Window *sdl_window = SDL_CreateWindow("chombo", width, height, 0);
 	return sdl_window;
 }
 

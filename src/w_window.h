@@ -3,7 +3,7 @@
 
 #define SDL_MAIN_HANDLED
 
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 
 SDL_Window *W_create(int width, int height);
 
