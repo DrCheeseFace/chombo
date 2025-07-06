@@ -13,13 +13,13 @@ typedef enum {
 	L_COLOR_MENU_BACKDROP,
 	L_COLOR_COUNT
 } L_Colors;
-extern SDL_Color L_colors[L_COLOR_COUNT];
+extern SDL_Color L_COLORS[L_COLOR_COUNT];
 
 typedef struct {
 	const char *text;
 	int point_size;
 	L_Colors color;
-} L_Texts_Objs;
+} L_Text_Obj;
 
 typedef enum {
 	L_TEXT_BOTTOM_HELP,
