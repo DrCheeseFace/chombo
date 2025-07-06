@@ -51,7 +51,7 @@ int main(void)
 					 gamestate->window_h, gamestate->scale);
 	}
 
-	L_init();
+	L_init(sdl_renderer);
 
 	main_loop(gamestate, sdl_window, sdl_renderer);
 
