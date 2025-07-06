@@ -4,12 +4,23 @@ Mistakes that are minor and/or correctable, such as drawing the wrong tile, can 
 
 Gui riichi mahjong calculator. In progress
 
+#### Requirements for deving
+- sdl3
+- sdl3ttf
+```
+make debug && ./main.out
+```
 
 #### TODO
-- [ ] shift -+ window resizing
+- [x] shift -+ window resizing
 - [x] figure out why memory leak :(
-.
-.
-.
+- [x] help menu 
+- [ ] fix for resize bug. (not updating immediatly) 
+- [ ] input and deleting tile preview on top
+- [ ] settings round conditions menu
+- [ ] using mahc for calculate
+- [ ] displaying output
+- [ ] figure out how to use cmake
+- [ ] figure out creating platform specific executable
 
 ![](https://c.tenor.com/zjDqzQSRxTkAAAAd/tenor.gif)
