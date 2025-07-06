@@ -56,4 +56,8 @@ typedef enum {
 // returns 0 if successful
 int T_tile_draw(SDL_Renderer *sdl_renderer, T_Tile tile, SDL_Point *point, int scale);
 
+void T_tiles_init(SDL_Renderer *sdl_renderer);
+
+void T_tiles_destroy(void);
+
 #endif // !T_TILES_H

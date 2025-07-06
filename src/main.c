@@ -8,11 +8,11 @@
 #include <stdint.h>
 
 #define WINDOW_WIDTH 1600
-#define WINDOW_HEIGHT 1000 
+#define WINDOW_HEIGHT 1000
 #define WINDOW_S 0.5
 #define TARGET_FPS 20
 
-void main_loop(G_GameState *gamestate, SDL_Renderer *sdl_renderer)
+void main_loop(G_GameState *gamestate, SDL_Window *sdl_window, SDL_Renderer *sdl_renderer)
 {
 	SDL_StopTextInput();
 	SDL_Event event;
@@ -22,7 +22,7 @@ void main_loop(G_GameState *gamestate, SDL_Renderer *sdl_renderer)
 		G_frame_start(gamestate);
 
 		if (redraw) {
-			if (R_gamestate_draw(sdl_renderer, *gamestate) == 0) {
+			if (R_gamestate_draw(sdl_renderer, sdl_window, *gamestate) == 0) {
 				redraw = 0;
 			}
 		}
@@ -48,13 +48,13 @@ int main(void)
 	SDL_Renderer *sdl_renderer = R_create(sdl_window, gamestate->window_w, gamestate->window_h);
 
 	if (WINDOW_S != 1) {
-		W_window_renderer_resize(sdl_window, sdl_renderer, gamestate->window_w,
+		G_window_renderer_resize(sdl_window, sdl_renderer, gamestate->window_w,
 					 gamestate->window_h, gamestate->scale);
 	}
 
 	L_init();
 
-	main_loop(gamestate, sdl_renderer);
+	main_loop(gamestate, sdl_window, sdl_renderer);
 
 	L_destroy();
 	R_destroy(sdl_renderer);

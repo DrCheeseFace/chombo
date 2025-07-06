@@ -5,7 +5,7 @@ CFLAGS_DEBUG = -Wall -Wextra -Werror -Wpointer-arith -Wcast-align \
          -Wswitch-default -Wswitch-enum -Wunreachable-code \
 	 -Wunused-parameter -Wuninitialized -Winit-self -Wpedantic \
 	 -O0 -std=c99 -g \
-	 -fsanitize=address \
+	 # -fsanitize=address \
 	 
 CFLAGS = -Wall -Wextra -Werror \
 	 -O2 -std=c99\
