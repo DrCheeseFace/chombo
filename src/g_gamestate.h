@@ -1,7 +1,8 @@
 #ifndef G_GAMESTATE_H
 #define G_GAMESTATE_H
 #include "t_tiles.h"
-#include <stdint.h>
+
+#define MAX_HAND_TILE_COUNT 18
 
 typedef struct {
 	int window_w;
@@ -10,8 +11,11 @@ typedef struct {
 	double target_fps;
 	double target_frametime_ms;
 	Uint32 frame_ticks_start;
-	T_Tile tile;
+
 	int show_help;
+
+	T_Tile hand_tiles[MAX_HAND_TILE_COUNT];
+	int hand_tiles_len;
 } G_GameState;
 
 G_GameState *G_gamestate_create(int target_fps, int window_width, int window_height, float scale);

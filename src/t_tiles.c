@@ -43,7 +43,7 @@ void T_tiles_destroy(void)
 int T_tile_draw(SDL_Renderer *sdl_renderer, T_Tile tile, SDL_Point point, int scale)
 {
 	// render front of tile no face
-	SDL_FRect tile_rect = { point.x, point.y, scale * 4, scale * 5 };
+	SDL_FRect tile_rect = { point.x, point.y, scale * 4, scale * 5.5 };
 	SDL_RenderTexture(sdl_renderer, T_TILE_TEXTURES[T_FRONT], NULL, &tile_rect);
 
 	// render face of tile

@@ -1,5 +1,4 @@
 #include "g_gamestate.h"
-#include "t_tiles.h"
 #include "l_letter.h"
 #include <stdio.h>
 
@@ -33,17 +32,17 @@ int R_draw_help(void)
 	SDL_FRect help_outline = {
 		.w = screen_width - 50, .h = screen_height - 50, .x = 25, .y = 25
 	};
-	if (!SDL_SetRenderDrawColor(sdl_renderer, L_colors[L_COLOR_WHITE].r,
-				    L_colors[L_COLOR_WHITE].g, L_colors[L_COLOR_WHITE].b,
-				    L_colors[L_COLOR_WHITE].a))
+	if (!SDL_SetRenderDrawColor(sdl_renderer, L_COLORS[L_COLOR_WHITE].r,
+				    L_COLORS[L_COLOR_WHITE].g, L_COLORS[L_COLOR_WHITE].b,
+				    L_COLORS[L_COLOR_WHITE].a))
 		return 1;
 
 	if (!SDL_RenderFillRect(sdl_renderer, &help_outline))
 		return 1;
-	if (!SDL_SetRenderDrawColor(sdl_renderer, L_colors[L_COLOR_MENU_BACKDROP].r,
-				    L_colors[L_COLOR_MENU_BACKDROP].g,
-				    L_colors[L_COLOR_MENU_BACKDROP].b,
-				    L_colors[L_COLOR_MENU_BACKDROP].a)) {
+	if (!SDL_SetRenderDrawColor(sdl_renderer, L_COLORS[L_COLOR_MENU_BACKDROP].r,
+				    L_COLORS[L_COLOR_MENU_BACKDROP].g,
+				    L_COLORS[L_COLOR_MENU_BACKDROP].b,
+				    L_COLORS[L_COLOR_MENU_BACKDROP].a)) {
 		return 1;
 	}
 
@@ -121,6 +120,19 @@ int R_draw_help(void)
 	return 0;
 }
 
+int R_draw_hand(SDL_Renderer *sdl_renderer, G_GameState gamestate)
+{
+	int x = 10;
+	for (int i = 0; i < MAX_HAND_TILE_COUNT; i++) {
+		if (T_tile_draw(sdl_renderer, gamestate.hand_tiles[i], (struct SDL_Point){ x, 17 },
+				21)) {
+			return 1;
+		}
+		x += 88;
+	}
+	return 0;
+}
+
 int R_gamestate_draw(SDL_Renderer *sdl_renderer, SDL_Window *sdl_window, G_GameState gamestate)
 {
 	if (gamestate.scale != scale) {
@@ -129,15 +141,19 @@ int R_gamestate_draw(SDL_Renderer *sdl_renderer, SDL_Window *sdl_window, G_GameS
 		scale = gamestate.scale;
 	}
 
-	if (!SDL_SetRenderDrawColor(sdl_renderer, L_colors[L_COLOR_BACKDROP].r,
-				    L_colors[L_COLOR_BACKDROP].g, L_colors[L_COLOR_BACKDROP].b,
-				    L_colors[L_COLOR_BACKDROP].a)) {
+	if (!SDL_SetRenderDrawColor(sdl_renderer, L_COLORS[L_COLOR_BACKDROP].r,
+				    L_COLORS[L_COLOR_BACKDROP].g, L_COLORS[L_COLOR_BACKDROP].b,
+				    L_COLORS[L_COLOR_BACKDROP].a)) {
 		fprintf(stderr, "Failed to set render draw color: %s\n", SDL_GetError());
 		return 1;
 	}
 
 	if (!SDL_RenderClear(sdl_renderer)) {
 		fprintf(stderr, "Failed to clear renderer: %s\n", SDL_GetError());
+		return 1;
+	}
+
+	if (R_draw_hand(sdl_renderer, gamestate) != 0) {
 		return 1;
 	}
 

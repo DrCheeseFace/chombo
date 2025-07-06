@@ -12,6 +12,8 @@ G_GameState *G_gamestate_create(int target_fps, int window_width, int window_hei
 	gamestate->window_h = window_height;
 	gamestate->scale = scale;
 	gamestate->show_help = 0;
+	gamestate->hand_tiles_len = 0;
+	SDL_memset(gamestate->hand_tiles, T_BACK, sizeof(gamestate->hand_tiles));
 
 	return gamestate;
 }

@@ -16,11 +16,11 @@ make debug && ./main.out
 - [x] figure out why memory leak :(
 - [x] help menu 
 - [ ] fix for resize bug. (not updating immediatly) 
-- [ ] input and deleting tile preview on top
+- [x] input and deleting tile preview on top
 - [ ] settings round conditions menu
 - [ ] using mahc for calculate
 - [ ] displaying output
 - [ ] figure out how to use cmake
 - [ ] figure out creating platform specific executable
 
-![](https://c.tenor.com/zjDqzQSRxTkAAAAd/tenor.gif)
+![](https://c.tenor.com/wjvQf6cClREAAAAd/tenor.gif)

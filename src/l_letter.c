@@ -10,7 +10,7 @@
 
 TTF_Font *font;
 TTF_TextEngine *text_engine;
-SDL_Color L_colors[L_COLOR_COUNT] = {
+SDL_Color L_COLORS[L_COLOR_COUNT] = {
 	{ UINT8_MAX, UINT8_MAX, UINT8_MAX, UINT8_MAX }, //white
 	{ 0, 0, 0, 0 }, //black
 	{ 255, 0, 0, 0 }, //red
@@ -20,7 +20,7 @@ SDL_Color L_colors[L_COLOR_COUNT] = {
 	{ 10, 20, 10, 255 } //more greenish black
 };
 
-L_Texts_Objs L_texts_vars[L_TEXT_COUNT] = {
+L_Text_Obj L_TEXTS_OBJS[L_TEXT_COUNT] = {
 	{ "hold / for help", 40, L_COLOR_WHITE },
 	{ "1-9 ", 80, L_COLOR_WHITE },
 	{ "shift", 80, L_COLOR_WHITE },
@@ -49,13 +49,13 @@ void L_init(SDL_Renderer *sdl_renderer)
 	text_engine = TTF_CreateSurfaceTextEngine();
 
 	for (int i = 0; i < L_TEXT_COUNT; i++) {
-		TTF_SetFontSize(font, L_texts_vars[i].point_size);
-		TTF_Text *ttf_text = TTF_CreateText(text_engine, font, L_texts_vars[i].text, 0);
+		TTF_SetFontSize(font, L_TEXTS_OBJS[i].point_size);
+		TTF_Text *ttf_text = TTF_CreateText(text_engine, font, L_TEXTS_OBJS[i].text, 0);
 		if (!ttf_text) {
 			fprintf(stderr, "Failed to create text obj\n");
 		}
 		SDL_Surface *text_surface = TTF_RenderText_Solid(font, ttf_text->text, 0,
-								 L_colors[L_texts_vars[i].color]);
+								 L_COLORS[L_TEXTS_OBJS[i].color]);
 		if (!text_surface) {
 			fprintf(stderr, "Failed to render text surface\n");
 			TTF_DestroyText(ttf_text);
