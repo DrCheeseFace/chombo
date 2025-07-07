@@ -130,6 +130,35 @@ int R_draw_hand(SDL_Renderer *sdl_renderer, G_GameState gamestate)
 		}
 		x += 88;
 	}
+	if (gamestate.toggle_hand_dora_focus == 0) {
+		if (L_draw(sdl_renderer, L_TEXT_HAND_LABEL_SELECTED,
+			   (struct SDL_Point){ 10, 130 }) != 0)
+			return 1;
+	} else {
+		if (L_draw(sdl_renderer, L_TEXT_HAND_LABEL, (struct SDL_Point){ 10, 130 }) != 0)
+			return 1;
+	}
+	return 0;
+}
+
+int R_draw_dora(SDL_Renderer *sdl_renderer, G_GameState gamestate)
+{
+	int x = 10;
+	for (int i = 0; i < MAX_DORA_TILE_COUNT; i++) {
+		if (T_tile_draw(sdl_renderer, gamestate.dora_tiles[i], (struct SDL_Point){ x, 190 },
+				21)) {
+			return 1;
+		}
+		x += 88;
+	}
+	if (gamestate.toggle_hand_dora_focus == 1) {
+		if (L_draw(sdl_renderer, L_TEXT_DORA_LABEL_SELECTED,
+			   (struct SDL_Point){ 10, 303 }) != 0)
+			return 1;
+	} else {
+		if (L_draw(sdl_renderer, L_TEXT_DORA_LABEL, (struct SDL_Point){ 10, 303 }) != 0)
+			return 1;
+	}
 	return 0;
 }
 
@@ -154,6 +183,9 @@ int R_gamestate_draw(SDL_Renderer *sdl_renderer, SDL_Window *sdl_window, G_GameS
 	}
 
 	if (R_draw_hand(sdl_renderer, gamestate) != 0) {
+		return 1;
+	}
+	if (R_draw_dora(sdl_renderer, gamestate) != 0) {
 		return 1;
 	}
 

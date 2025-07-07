@@ -3,6 +3,7 @@
 #include "t_tiles.h"
 
 #define MAX_HAND_TILE_COUNT 18
+#define MAX_DORA_TILE_COUNT 13
 
 typedef struct {
 	int window_w;
@@ -14,8 +15,18 @@ typedef struct {
 
 	int show_help;
 
+	short int toggle_hand_dora_focus; //0 = focus on hand tiles
+
 	T_Tile hand_tiles[MAX_HAND_TILE_COUNT];
 	int hand_tiles_len;
+
+	T_Tile dora_tiles[MAX_DORA_TILE_COUNT];
+	int dora_tiles_len;
+
+	T_Tile seat_wind;
+
+	T_Tile prevelant_wind;
+
 } G_GameState;
 
 G_GameState *G_gamestate_create(int target_fps, int window_width, int window_height, float scale);
