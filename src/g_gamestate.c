@@ -12,8 +12,16 @@ G_GameState *G_gamestate_create(int target_fps, int window_width, int window_hei
 	gamestate->window_h = window_height;
 	gamestate->scale = scale;
 	gamestate->show_help = 0;
+
+	gamestate->seat_wind = T_TON;
+	gamestate->prevelant_wind = T_TON;
+
 	gamestate->hand_tiles_len = 0;
 	SDL_memset(gamestate->hand_tiles, T_BACK, sizeof(gamestate->hand_tiles));
+	gamestate->dora_tiles_len = 0;
+	SDL_memset(gamestate->dora_tiles, T_BACK, sizeof(gamestate->dora_tiles));
+
+	gamestate->toggle_hand_dora_focus = 0;
 
 	return gamestate;
 }

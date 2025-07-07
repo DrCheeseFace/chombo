@@ -39,6 +39,10 @@ L_Text_Obj L_TEXTS_OBJS[L_TEXT_COUNT] = {
 	{ "p chankan", 80, L_COLOR_WHITE },
 	{ "k rinshan kaihou", 80, L_COLOR_WHITE },
 	{ "space toggle pane", 80, L_COLOR_WHITE },
+	{ "Hand", 50, L_COLOR_GREEN },
+	{ "Hand", 50, L_COLOR_WHITE },
+	{ "Dora", 50, L_COLOR_GREEN },
+	{ "Dora", 50, L_COLOR_WHITE },
 };
 SDL_Texture *text_textures[L_TEXT_COUNT];
 
