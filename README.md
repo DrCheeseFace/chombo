@@ -17,7 +17,7 @@ make debug && ./main.out
 - [x] help menu 
 - [ ] fix for resize bug. (not updating immediatly) 
 - [x] input and deleting tile preview on top
-- [ ] settings round conditions menu
+- [x] settings round conditions menu
 - [ ] using mahc for calculate
 - [ ] displaying output
 - [ ] figure out how to use cmake to add sdl3 and sdl3ttf as vendored 

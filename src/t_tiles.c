@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include "t_tiles.h"
 
 const char *T_TILE_PATHS[T_COUNT] = {
