@@ -1,15 +1,13 @@
-#include "g_gamestate.h"
 #include "w_window.h"
 #include "r_renderer.h"
 #include "e_event.h"
 #include "l_letter.h"
 #include <SDL3_ttf/SDL_ttf.h>
-#include <stdint.h>
 
 #define WINDOW_WIDTH 1600
 #define WINDOW_HEIGHT 1000
 #define WINDOW_S 0.5
-#define TARGET_FPS 20
+#define TARGET_FPS 35
 
 void main_loop(G_GameState *gamestate, SDL_Window *sdl_window, SDL_Renderer *sdl_renderer)
 {

@@ -52,7 +52,7 @@ int R_draw_help(void)
 	if (!SDL_RenderFillRect(sdl_renderer, &help_background))
 		return 1;
 
-	if (L_draw(sdl_renderer, L_TEXT_HELP_1_9, (struct SDL_Point){ 80, 140 }) != 0)
+	if (L_draw(sdl_renderer, L_TEXT_HELP_0_9, (struct SDL_Point){ 80, 140 }) != 0)
 		return 1;
 	if (T_tile_draw(sdl_renderer, T_MAN1, (struct SDL_Point){ 280, 150 }, 16) != 0)
 		return 1;
@@ -130,7 +130,7 @@ int R_draw_hand(SDL_Renderer *sdl_renderer, G_GameState gamestate)
 		}
 		x += 88;
 	}
-	if (gamestate.toggle_hand_dora_focus == 0) {
+	if (gamestate.selected_menu == G_MENU_HAND) {
 		if (L_draw(sdl_renderer, L_TEXT_HAND_LABEL_SELECTED,
 			   (struct SDL_Point){ 10, 130 }) != 0)
 			return 1;
@@ -151,7 +151,7 @@ int R_draw_dora(SDL_Renderer *sdl_renderer, G_GameState gamestate)
 		}
 		x += 88;
 	}
-	if (gamestate.toggle_hand_dora_focus == 1) {
+	if (gamestate.selected_menu == G_MENU_DORA) {
 		if (L_draw(sdl_renderer, L_TEXT_DORA_LABEL_SELECTED,
 			   (struct SDL_Point){ 10, 303 }) != 0)
 			return 1;
@@ -159,6 +159,129 @@ int R_draw_dora(SDL_Renderer *sdl_renderer, G_GameState gamestate)
 		if (L_draw(sdl_renderer, L_TEXT_DORA_LABEL, (struct SDL_Point){ 10, 303 }) != 0)
 			return 1;
 	}
+	return 0;
+}
+
+int R_draw_seat_wind_selector(SDL_Renderer *sdl_renderer, G_GameState gamestate)
+{
+	const T_Tile wind_tiles[4] = { T_TON, T_NAN, T_SHAA, T_PEI };
+
+	int x = 10;
+	for (int i = 0; i < 4; i++) {
+		if (gamestate.seat_wind == wind_tiles[i]) {
+			if (T_tile_draw(sdl_renderer, wind_tiles[i], (struct SDL_Point){ x, 373 },
+					21)) {
+				return 1;
+			}
+		} else if (T_tile_draw(sdl_renderer, wind_tiles[i], (struct SDL_Point){ x, 393 },
+				       21)) {
+			return 1;
+		}
+		x += 100;
+	}
+
+	if (gamestate.selected_menu == G_MENU_SEAT_WIND) {
+		if (L_draw(sdl_renderer, L_TEXT_DORA_SEAT_WIND_SELECTED,
+			   (struct SDL_Point){ 10, 516 }) != 0)
+			return 1;
+	} else if (L_draw(sdl_renderer, L_TEXT_DORA_SEAT_WIND, (struct SDL_Point){ 10, 516 }) != 0)
+		return 1;
+
+	return 0;
+}
+
+int R_draw_prevelant_wind_selector(SDL_Renderer *sdl_renderer, G_GameState gamestate)
+{
+	const T_Tile wind_tiles[4] = { T_TON, T_NAN, T_SHAA, T_PEI };
+
+	int x = 10;
+	for (int i = 0; i < 4; i++) {
+		if (gamestate.prevelant_wind == wind_tiles[i]) {
+			if (T_tile_draw(sdl_renderer, wind_tiles[i], (struct SDL_Point){ x, 586 },
+					21)) {
+				return 1;
+			}
+		} else if (T_tile_draw(sdl_renderer, wind_tiles[i], (struct SDL_Point){ x, 606 },
+				       21)) {
+			return 1;
+		}
+		x += 100;
+	}
+
+	if (gamestate.selected_menu == G_MENU_PREVALENT_WIND) {
+		if (L_draw(sdl_renderer, L_TEXT_DORA_PREVELANT_WIND_SELECTED,
+			   (struct SDL_Point){ 10, 729 }) != 0)
+			return 1;
+	} else if (L_draw(sdl_renderer, L_TEXT_DORA_PREVELANT_WIND,
+			  (struct SDL_Point){ 10, 729 }) != 0)
+		return 1;
+
+	return 0;
+}
+
+int R_draw_conditions(SDL_Renderer *sdl_renderer, G_GameState gamestate)
+{
+	int y = 373;
+	if (gamestate.riichi) {
+		if (L_draw(sdl_renderer, L_TEXT_CONDITION_RIICHI_ON,
+			   (struct SDL_Point){ 500, y }) != 0)
+			return 1;
+	} else {
+		if (L_draw(sdl_renderer, L_TEXT_CONDITION_RIICHI_OFF,
+			   (struct SDL_Point){ 500, y }) != 0)
+			return 1;
+	}
+	y += 80;
+	if (gamestate.double_riichi) {
+		if (L_draw(sdl_renderer, L_TEXT_CONDITION_DOUBLE_RIICHI_ON,
+			   (struct SDL_Point){ 500, y }) != 0)
+			return 1;
+	} else {
+		if (L_draw(sdl_renderer, L_TEXT_CONDITION_DOUBLE_RIICHI_OFF,
+			   (struct SDL_Point){ 500, y }) != 0)
+			return 1;
+	}
+	y += 80;
+	if (gamestate.ippatsu) {
+		if (L_draw(sdl_renderer, L_TEXT_CONDITION_IPPATSU_ON,
+			   (struct SDL_Point){ 500, y }) != 0)
+			return 1;
+	} else {
+		if (L_draw(sdl_renderer, L_TEXT_CONDITION_IPPATSU_OFF,
+			   (struct SDL_Point){ 500, y }) != 0)
+			return 1;
+	}
+	y += 80;
+	if (gamestate.haitei) {
+		if (L_draw(sdl_renderer, L_TEXT_CONDITION_HAITEI_ON,
+			   (struct SDL_Point){ 500, y }) != 0)
+			return 1;
+	} else {
+		if (L_draw(sdl_renderer, L_TEXT_CONDITION_HAITEI_OFF,
+			   (struct SDL_Point){ 500, y }) != 0)
+			return 1;
+	}
+	y += 80;
+	if (gamestate.chankan) {
+		if (L_draw(sdl_renderer, L_TEXT_CONDITION_CHANKAN_ON,
+			   (struct SDL_Point){ 500, y }) != 0)
+			return 1;
+	} else {
+		if (L_draw(sdl_renderer, L_TEXT_CONDITION_CHANKAN_OFF,
+			   (struct SDL_Point){ 500, y }) != 0)
+			return 1;
+	}
+	y += 80;
+	if (gamestate.rinshan) {
+		if (L_draw(sdl_renderer, L_TEXT_CONDITION_RINSHAN_ON,
+			   (struct SDL_Point){ 500, y }) != 0)
+			return 1;
+	} else {
+		if (L_draw(sdl_renderer, L_TEXT_CONDITION_RINSHAN_OFF,
+			   (struct SDL_Point){ 500, y }) != 0)
+			return 1;
+	}
+
 	return 0;
 }
 
@@ -182,12 +305,16 @@ int R_gamestate_draw(SDL_Renderer *sdl_renderer, SDL_Window *sdl_window, G_GameS
 		return 1;
 	}
 
-	if (R_draw_hand(sdl_renderer, gamestate) != 0) {
+	if (R_draw_hand(sdl_renderer, gamestate) != 0)
 		return 1;
-	}
-	if (R_draw_dora(sdl_renderer, gamestate) != 0) {
+	if (R_draw_dora(sdl_renderer, gamestate) != 0)
 		return 1;
-	}
+	if (R_draw_seat_wind_selector(sdl_renderer, gamestate) != 0)
+		return 1;
+	if (R_draw_prevelant_wind_selector(sdl_renderer, gamestate) != 0)
+		return 1;
+	if (R_draw_conditions(sdl_renderer, gamestate) != 0)
+		return 1;
 
 	if (gamestate.show_help == 1) {
 		if (R_draw_help() != 0) {

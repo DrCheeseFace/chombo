@@ -11,17 +11,24 @@ G_GameState *G_gamestate_create(int target_fps, int window_width, int window_hei
 	gamestate->window_w = window_width;
 	gamestate->window_h = window_height;
 	gamestate->scale = scale;
-	gamestate->show_help = 0;
 
-	gamestate->seat_wind = T_TON;
-	gamestate->prevelant_wind = T_TON;
+	gamestate->show_help = 0;
+	gamestate->selected_menu = G_MENU_HAND;
 
 	gamestate->hand_tiles_len = 0;
 	SDL_memset(gamestate->hand_tiles, T_BACK, sizeof(gamestate->hand_tiles));
 	gamestate->dora_tiles_len = 0;
 	SDL_memset(gamestate->dora_tiles, T_BACK, sizeof(gamestate->dora_tiles));
 
-	gamestate->toggle_hand_dora_focus = 0;
+	gamestate->seat_wind = T_TON;
+	gamestate->prevelant_wind = T_TON;
+
+	gamestate->riichi = 0;
+	gamestate->double_riichi = 0;
+	gamestate->ippatsu = 0;
+	gamestate->haitei = 0;
+	gamestate->chankan = 0;
+	gamestate->rinshan = 0;
 
 	return gamestate;
 }
@@ -50,4 +57,132 @@ void G_window_renderer_resize(SDL_Window *sdl_window, SDL_Renderer *sdl_renderer
 	SDL_SetRenderScale(sdl_renderer, scale, scale);
 	SDL_SetWindowSize(sdl_window, width * scale, height * scale);
 	SDL_SetWindowPosition(sdl_window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+}
+
+void G_increment_menu(G_GameState *gamestate)
+{
+	switch (gamestate->selected_menu) {
+	case G_MENU_HAND:
+		gamestate->selected_menu = G_MENU_DORA;
+		return;
+	case G_MENU_DORA:
+		gamestate->selected_menu = G_MENU_SEAT_WIND;
+		return;
+	case G_MENU_SEAT_WIND:
+		gamestate->selected_menu = G_MENU_PREVALENT_WIND;
+		return;
+	case G_MENU_PREVALENT_WIND:
+		gamestate->selected_menu = G_MENU_HAND;
+		return;
+	case G_MENU_COUNT:
+		return;
+	default:
+		return;
+	};
+}
+
+void G_decrement_menu(G_GameState *gamestate)
+{
+	switch (gamestate->selected_menu) {
+	case G_MENU_HAND:
+		gamestate->selected_menu = G_MENU_PREVALENT_WIND;
+		return;
+	case G_MENU_DORA:
+		gamestate->selected_menu = G_MENU_HAND;
+		return;
+	case G_MENU_SEAT_WIND:
+		gamestate->selected_menu = G_MENU_DORA;
+		return;
+	case G_MENU_PREVALENT_WIND:
+		gamestate->selected_menu = G_MENU_SEAT_WIND;
+		return;
+	case G_MENU_COUNT:
+		return;
+	default:
+		return;
+	};
+}
+
+#pragma GCC diagnostic ignored "-Wswitch-enum" //fuck you and yuh mudduh
+void G_increment_seat_wind(G_GameState *gamestate)
+{
+	switch (gamestate->seat_wind) {
+	case T_TON:
+		gamestate->seat_wind = T_PEI;
+		return;
+	case T_NAN:
+		gamestate->seat_wind = T_TON;
+		return;
+	case T_SHAA:
+		gamestate->seat_wind = T_NAN;
+		return;
+	case T_PEI:
+		gamestate->seat_wind = T_SHAA;
+		return;
+	default:
+		return;
+	}
+}
+
+#pragma GCC diagnostic ignored "-Wswitch-enum"
+void G_decrement_seat_wind(G_GameState *gamestate)
+{
+	switch (gamestate->seat_wind) {
+	case T_TON:
+		gamestate->seat_wind = T_NAN;
+		return;
+	case T_NAN:
+		gamestate->seat_wind = T_SHAA;
+		return;
+	case T_SHAA:
+		gamestate->seat_wind = T_PEI;
+		return;
+	case T_PEI:
+		gamestate->seat_wind = T_TON;
+		return;
+	default:
+		return;
+	}
+}
+
+#pragma GCC diagnostic ignored "-Wswitch-enum"
+void G_increment_prevelant_wind(G_GameState *gamestate)
+{
+	switch (gamestate->prevelant_wind) {
+	case T_TON:
+		gamestate->prevelant_wind = T_PEI;
+		return;
+	case T_NAN:
+		gamestate->prevelant_wind = T_TON;
+		return;
+	case T_SHAA:
+		gamestate->prevelant_wind = T_NAN;
+		return;
+	case T_PEI:
+		gamestate->prevelant_wind = T_SHAA;
+		return;
+	default:
+		return;
+	}
+}
+
+#pragma GCC diagnostic ignored "-Wswitch-enum"
+void G_decrement_prevelant_wind(G_GameState *gamestate)
+{
+	switch (gamestate->prevelant_wind) {
+	case T_TON:
+		gamestate->prevelant_wind = T_NAN;
+		return;
+	case T_NAN:
+		gamestate->prevelant_wind = T_SHAA;
+		return;
+	case T_SHAA:
+		gamestate->prevelant_wind = T_PEI;
+		return;
+	case T_PEI:
+		gamestate->prevelant_wind = T_TON;
+		return;
+	default:
+		return;
+	}
 }

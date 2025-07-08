@@ -48,8 +48,8 @@ typedef enum {
 
 	T_TON,
 	T_NAN,
-	T_PEI,
 	T_SHAA,
+	T_PEI,
 	T_COUNT,
 } T_Tile;
 

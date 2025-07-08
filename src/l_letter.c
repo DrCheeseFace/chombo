@@ -1,6 +1,4 @@
 #include "l_letter.h"
-#include <SDL3/SDL_render.h>
-#include <SDL3/SDL_surface.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <stdio.h>
 #include <string.h>
@@ -22,7 +20,7 @@ SDL_Color L_COLORS[L_COLOR_COUNT] = {
 
 L_Text_Obj L_TEXTS_OBJS[L_TEXT_COUNT] = {
 	{ "hold / for help", 40, L_COLOR_WHITE },
-	{ "1-9 ", 80, L_COLOR_WHITE },
+	{ "0-9 ", 80, L_COLOR_WHITE },
 	{ "shift", 80, L_COLOR_WHITE },
 	{ "ctrl", 80, L_COLOR_WHITE },
 	{ "E", 80, L_COLOR_WHITE },
@@ -35,14 +33,30 @@ L_Text_Obj L_TEXTS_OBJS[L_TEXT_COUNT] = {
 	{ "r riichi", 80, L_COLOR_WHITE },
 	{ "d double riichi", 80, L_COLOR_WHITE },
 	{ "i ippatsu", 80, L_COLOR_WHITE },
-	{ "h haitei", 80, L_COLOR_WHITE },
-	{ "p chankan", 80, L_COLOR_WHITE },
+	{ "t haitei", 80, L_COLOR_WHITE },
+	{ "m chankan", 80, L_COLOR_WHITE },
 	{ "k rinshan kaihou", 80, L_COLOR_WHITE },
 	{ "space toggle pane", 80, L_COLOR_WHITE },
 	{ "Hand", 50, L_COLOR_GREEN },
 	{ "Hand", 50, L_COLOR_WHITE },
 	{ "Dora", 50, L_COLOR_GREEN },
 	{ "Dora", 50, L_COLOR_WHITE },
+	{ "Seat wind", 50, L_COLOR_WHITE },
+	{ "Seat wind", 50, L_COLOR_GREEN },
+	{ "Prevelant wind", 50, L_COLOR_WHITE },
+	{ "Prevelant wind", 50, L_COLOR_GREEN },
+	{ "r riichi", 80, L_COLOR_RED },
+	{ "r riichi", 80, L_COLOR_GREEN },
+	{ "d double riichi", 80, L_COLOR_RED },
+	{ "d double riichi", 80, L_COLOR_GREEN },
+	{ "i ippatsu", 80, L_COLOR_RED },
+	{ "i ippatsu", 80, L_COLOR_GREEN },
+	{ "t haitei", 80, L_COLOR_RED },
+	{ "t haitei", 80, L_COLOR_GREEN },
+	{ "m chankan", 80, L_COLOR_RED },
+	{ "m chankan", 80, L_COLOR_GREEN },
+	{ "k rinshan kaihou", 80, L_COLOR_RED },
+	{ "k rinshan kaihou", 80, L_COLOR_GREEN },
 };
 SDL_Texture *text_textures[L_TEXT_COUNT];
 
