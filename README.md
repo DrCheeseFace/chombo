@@ -20,7 +20,7 @@ make debug && ./main.out
 - [ ] settings round conditions menu
 - [ ] using mahc for calculate
 - [ ] displaying output
-- [ ] figure out how to use cmake to add sdl3 and sdl3 as vendored 
+- [ ] figure out how to use cmake to add sdl3 and sdl3ttf as vendored 
 - [ ] figure out creating platform specific executable
 
 ![](https://c.tenor.com/wjvQf6cClREAAAAd/tenor.gif)
