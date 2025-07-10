@@ -67,4 +67,137 @@
 
 #define Z_SUIT_CHAR 'z'
 
+typedef enum DValue {
+  Red,
+  Green,
+  White,
+} DValue;
+
+typedef enum Fu {
+  BasePoints,
+  BasePointsChitoi,
+  ClosedRon,
+  Tsumo,
+  NonSimpleClosedTriplet,
+  SimpleClosedTriplet,
+  NonSimpleOpenTriplet,
+  SimpleOpenTriplet,
+  NonSimpleClosedKan,
+  SimpleClosedKan,
+  NonSimpleOpenKan,
+  SimpleOpenKan,
+  Toitsu,
+  SingleWait,
+} Fu;
+
+typedef enum GroupType {
+  Sequence,
+  Triplet,
+  Kan,
+  Pair,
+  None,
+} GroupType;
+
+typedef enum MpsValue {
+  One = 0,
+  Two,
+  Three,
+  Four,
+  Five,
+  AkaFive,
+  Six,
+  Seven,
+  Eight,
+  Nine,
+} MpsValue;
+
+typedef enum Suit {
+  Manzu,
+  Pinzu,
+  Souzu,
+  Wind,
+  Dragon,
+} Suit;
+
+typedef enum WValue {
+  East,
+  South,
+  West,
+  North,
+} WValue;
+
+typedef enum Yaku {
+  Tanyao,
+  Iipeikou,
+  Yakuhai,
+  MenzenTsumo,
+  Pinfu,
+  Riichi,
+  Ippatsu,
+  Haitei,
+  RinshanKaihou,
+  Chankan,
+  DoubleRiichi,
+  Toitoi,
+  Ittsuu,
+  SanshokuDoujun,
+  Chantaiyao,
+  Sanankou,
+  SanshokuDoukou,
+  Sankantsu,
+  Honroutou,
+  Shousangen,
+  Chiitoitsu,
+  Honitsu,
+  JunchanTaiyao,
+  Ryanpeikou,
+  Chinitsu,
+  KazoeYakuman,
+  KokushiMusou,
+  KokushiMusou13SidedWait,
+  Suuankou,
+  SuuankouTankiWait,
+  Daisangen,
+  Shousuushii,
+  Daisuushii,
+  Tsuuiisou,
+  Daichiishin,
+  Chinroutou,
+  Ryuuiisou,
+  ChuurenPoutou,
+  ChuurenPoutou9SidedWait,
+  Suukantsu,
+  Tenhou,
+  Chiihou,
+} Yaku;
+
+typedef enum Tile_Tag {
+  TMan,
+  TPin,
+  TSou,
+  TWind,
+  TDragon,
+} Tile_Tag;
+
+typedef struct Tile {
+  Tile_Tag tag;
+  union {
+    struct {
+      enum MpsValue t_man;
+    };
+    struct {
+      enum MpsValue t_pin;
+    };
+    struct {
+      enum MpsValue t_sou;
+    };
+    struct {
+      enum WValue t_wind;
+    };
+    struct {
+      enum DValue t_dragon;
+    };
+  };
+} Tile;
+
 void sanity_check(void);
