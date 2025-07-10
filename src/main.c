@@ -1,6 +1,7 @@
 #include "w_window.h"
 #include "r_renderer.h"
 #include "e_event.h"
+#include "mahc.h"
 #include "l_letter.h"
 #include <SDL3_ttf/SDL_ttf.h>
 
@@ -39,6 +40,7 @@ void main_loop(G_GameState *gamestate, SDL_Window *sdl_window, SDL_Renderer *sdl
 
 int main(void)
 {
+        sanity_check();
 	G_GameState *gamestate =
 		G_gamestate_create(TARGET_FPS, WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_S);
 	SDL_Window *sdl_window = W_create(gamestate->window_w, gamestate->window_h);
