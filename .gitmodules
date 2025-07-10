@@ -1,0 +1,3 @@
+[submodule "mahc"]
+	path = mahc
+	url = https://github.com/drcheeseface/mahc

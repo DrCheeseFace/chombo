@@ -7,6 +7,7 @@ Gui riichi mahjong calculator. In progress
 #### Requirements for deving
 - sdl3
 - sdl3ttf
+- cbindgen (for generating header files for mahc)
 ```
 make debug && ./main.out
 ```
