@@ -19,7 +19,7 @@ TEST_TARGET = test.out
 MAIN_SRC = src/*.c
 TEST_SRC = test/test.c src/*.c
 
-.PHONY: all build run clean test format bear debug build-mahc-header build-mahc
+.PHONY: all build run clean test format format-check bear debug build-mahc-header build-mahc
 
 all: whodoyouthinkyouareiam
 
@@ -39,6 +39,9 @@ clean:
 
 format: 
 	find ./ -name '*.h' -o -iname '*.c' | xargs clang-format -i --verbose
+
+format-check:
+	find ./ -name '*.h' -o -iname '*.c' | xargs clang-format --dry-run --Werror
 
 bear: # this is for creating the compile_commands.json file
 	rm -f compile_commands.json && bear -- make build
