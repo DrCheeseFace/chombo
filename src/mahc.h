@@ -222,5 +222,3 @@ typedef struct HandShapes {
 void C_free_hand_shapes(struct HandShapes *ptr);
 
 struct HandShapes *C_get_valid_hand_shapes(const char *tiles_string);
-
-void sanity_check(void);
