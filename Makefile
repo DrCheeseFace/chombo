@@ -4,11 +4,11 @@ CFLAGS_DEBUG = -Wall -Wextra -Werror -Wpointer-arith -Wcast-align \
          -Wstrict-prototypes -Wwrite-strings -Waggregate-return \
          -Wswitch-default -Wswitch-enum -Wunreachable-code \
 	 -Wunused-parameter -Wuninitialized -Winit-self -Wpedantic \
-	 -O0 -std=c99 -g \
+	 -O0 -std=c11 -g \
 	 -fsanitize=address \
 	 
 CFLAGS = -Wall -Wextra -Werror \
-	 -O2 -std=c99\
+	 -O2 -std=c11\
 
 MAHC_LIB_PATH = ./mahc/target/debug/
 
@@ -29,7 +29,7 @@ build:
 	$(CC) $(CFLAGS) -o $(MAIN_TARGET) $(MAIN_SRC) $(LINKS)
 
 run:
-	./$(MAIN_TARGET)
+	LD_LIBRARY_PATH=$(MAHC_LIB_PATH) ./$(MAIN_TARGET)
 
 test:
 	$(CC) $(CFLAGS) -o $(TEST_TARGET) $(TEST_SRC) && ./$(TEST_TARGET)

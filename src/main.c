@@ -12,7 +12,6 @@
 
 void main_loop(G_GameState *gamestate, SDL_Window *sdl_window, SDL_Renderer *sdl_renderer)
 {
-	SDL_StopTextInput(sdl_window);
 	SDL_Event event;
 	int redraw = 1;
 	int quit = 0;
@@ -40,7 +39,9 @@ void main_loop(G_GameState *gamestate, SDL_Window *sdl_window, SDL_Renderer *sdl
 
 int main(void)
 {
-        sanity_check();
+	struct HandShapes *x = C_get_valid_hand_shapes("1m 1m 1m 2m 2m 2m 3m 3m 3m 4m 4m 4m rd rd");
+	C_free_hand_shapes(x);
+
 	G_GameState *gamestate =
 		G_gamestate_create(TARGET_FPS, WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_S);
 	SDL_Window *sdl_window = W_create(gamestate->window_w, gamestate->window_h);
