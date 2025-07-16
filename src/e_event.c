@@ -32,6 +32,7 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 				gamestate->hand_tiles[gamestate->hand_tiles_len] = T_MAN1;
 			}
 			gamestate->hand_tiles_len++;
+			return 1;
 		} else if (gamestate->selected_menu == G_MENU_DORA) {
 			if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 				return 0;
@@ -45,8 +46,9 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 				gamestate->dora_tiles[gamestate->dora_tiles_len] = T_MAN1;
 			}
 			gamestate->dora_tiles_len++;
+			return 1;
 		}
-		return 1;
+		return 0;
 	case SDLK_2:
 		if (gamestate->selected_menu == G_MENU_HAND) {
 			if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
@@ -61,6 +63,7 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 				gamestate->hand_tiles[gamestate->hand_tiles_len] = T_MAN2;
 			}
 			gamestate->hand_tiles_len++;
+			return 1;
 		} else if (gamestate->selected_menu == G_MENU_DORA) {
 			if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 				return 0;
@@ -74,8 +77,9 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 				gamestate->dora_tiles[gamestate->dora_tiles_len] = T_MAN2;
 			}
 			gamestate->dora_tiles_len++;
+			return 1;
 		}
-		return 1;
+		return 0;
 	case SDLK_3:
 		if (gamestate->selected_menu == G_MENU_HAND) {
 			if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
@@ -90,6 +94,7 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 				gamestate->hand_tiles[gamestate->hand_tiles_len] = T_MAN3;
 			}
 			gamestate->hand_tiles_len++;
+			return 1;
 		} else if (gamestate->selected_menu == G_MENU_DORA) {
 			if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 				return 0;
@@ -103,8 +108,9 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 				gamestate->dora_tiles[gamestate->dora_tiles_len] = T_MAN3;
 			}
 			gamestate->dora_tiles_len++;
+			return 1;
 		}
-		return 1;
+		return 0;
 	case SDLK_4:
 		if (gamestate->selected_menu == G_MENU_HAND) {
 			if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
@@ -119,6 +125,7 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 				gamestate->hand_tiles[gamestate->hand_tiles_len] = T_MAN4;
 			}
 			gamestate->hand_tiles_len++;
+			return 1;
 		} else if (gamestate->selected_menu == G_MENU_DORA) {
 			if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 				return 0;
@@ -132,8 +139,9 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 				gamestate->dora_tiles[gamestate->dora_tiles_len] = T_MAN4;
 			}
 			gamestate->dora_tiles_len++;
+			return 1;
 		}
-		return 1;
+		return 0;
 	case SDLK_5:
 		if (gamestate->selected_menu == G_MENU_HAND) {
 			if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
@@ -148,6 +156,7 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 				gamestate->hand_tiles[gamestate->hand_tiles_len] = T_MAN5;
 			}
 			gamestate->hand_tiles_len++;
+			return 1;
 		} else if (gamestate->selected_menu == G_MENU_DORA) {
 			if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 				return 0;
@@ -161,8 +170,9 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 				gamestate->dora_tiles[gamestate->dora_tiles_len] = T_MAN5;
 			}
 			gamestate->dora_tiles_len++;
+			return 1;
 		}
-		return 1;
+		return 0;
 	case SDLK_6:
 		if (gamestate->selected_menu == G_MENU_HAND) {
 			if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
@@ -177,6 +187,7 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 				gamestate->hand_tiles[gamestate->hand_tiles_len] = T_MAN6;
 			}
 			gamestate->hand_tiles_len++;
+			return 1;
 		} else if (gamestate->selected_menu == G_MENU_DORA) {
 			if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 				return 0;
@@ -190,8 +201,9 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 				gamestate->dora_tiles[gamestate->dora_tiles_len] = T_MAN6;
 			}
 			gamestate->dora_tiles_len++;
+			return 1;
 		}
-		return 1;
+		return 0;
 	case SDLK_7:
 		if (gamestate->selected_menu == G_MENU_HAND) {
 			if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
@@ -206,6 +218,7 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 				gamestate->hand_tiles[gamestate->hand_tiles_len] = T_MAN7;
 			}
 			gamestate->hand_tiles_len++;
+			return 1;
 		} else if (gamestate->selected_menu == G_MENU_DORA) {
 			if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 				return 0;
@@ -219,8 +232,9 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 				gamestate->dora_tiles[gamestate->dora_tiles_len] = T_MAN7;
 			}
 			gamestate->dora_tiles_len++;
+			return 1;
 		}
-		return 1;
+		return 0;
 	case SDLK_8:
 		if (gamestate->selected_menu == G_MENU_HAND) {
 			if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
@@ -235,6 +249,7 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 				gamestate->hand_tiles[gamestate->hand_tiles_len] = T_MAN8;
 			}
 			gamestate->hand_tiles_len++;
+			return 1;
 		} else if (gamestate->selected_menu == G_MENU_DORA) {
 			if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 				return 0;
@@ -248,8 +263,9 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 				gamestate->dora_tiles[gamestate->dora_tiles_len] = T_MAN8;
 			}
 			gamestate->dora_tiles_len++;
+			return 1;
 		}
-		return 1;
+		return 0;
 	case SDLK_9:
 		if (gamestate->selected_menu == G_MENU_HAND) {
 			if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
@@ -264,6 +280,7 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 				gamestate->hand_tiles[gamestate->hand_tiles_len] = T_MAN9;
 			}
 			gamestate->hand_tiles_len++;
+			return 1;
 		} else if (gamestate->selected_menu == G_MENU_DORA) {
 			if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 				return 0;
@@ -277,8 +294,9 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 				gamestate->dora_tiles[gamestate->dora_tiles_len] = T_MAN9;
 			}
 			gamestate->dora_tiles_len++;
+			return 1;
 		}
-		return 1;
+		return 0;
 	case SDLK_0:
 		if (gamestate->selected_menu == G_MENU_HAND) {
 			if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
@@ -293,6 +311,7 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 				gamestate->hand_tiles[gamestate->hand_tiles_len] = T_MAN5_D;
 			}
 			gamestate->hand_tiles_len++;
+			return 1;
 		} else if (gamestate->selected_menu == G_MENU_DORA) {
 			if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 				return 0;
@@ -306,8 +325,9 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 				gamestate->dora_tiles[gamestate->dora_tiles_len] = T_MAN5_D;
 			}
 			gamestate->dora_tiles_len++;
+			return 1;
 		}
-		return 1;
+		return 0;
 	case SDLK_E:
 		if (gamestate->selected_menu == G_MENU_HAND) {
 			if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
@@ -315,14 +335,16 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 			}
 			gamestate->hand_tiles[gamestate->hand_tiles_len] = T_TON;
 			gamestate->hand_tiles_len++;
+			return 1;
 		} else if (gamestate->selected_menu == G_MENU_DORA) {
 			if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 				return 0;
 			}
 			gamestate->dora_tiles[gamestate->dora_tiles_len] = T_TON;
 			gamestate->dora_tiles_len++;
+			return 1;
 		}
-		return 1;
+		return 0;
 	case SDLK_S:
 		if (gamestate->selected_menu == G_MENU_HAND) {
 			if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
@@ -330,14 +352,16 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 			}
 			gamestate->hand_tiles[gamestate->hand_tiles_len] = T_NAN;
 			gamestate->hand_tiles_len++;
+			return 1;
 		} else if (gamestate->selected_menu == G_MENU_DORA) {
 			if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 				return 0;
 			}
 			gamestate->dora_tiles[gamestate->dora_tiles_len] = T_NAN;
 			gamestate->dora_tiles_len++;
+			return 1;
 		}
-		return 1;
+		return 0;
 	case SDLK_W:
 		if (gamestate->selected_menu == G_MENU_HAND) {
 			if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
@@ -345,14 +369,16 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 			}
 			gamestate->hand_tiles[gamestate->hand_tiles_len] = T_SHAA;
 			gamestate->hand_tiles_len++;
+			return 1;
 		} else if (gamestate->selected_menu == G_MENU_DORA) {
 			if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 				return 0;
 			}
 			gamestate->dora_tiles[gamestate->dora_tiles_len] = T_SHAA;
 			gamestate->dora_tiles_len++;
+			return 1;
 		}
-		return 1;
+		return 0;
 	case SDLK_N:
 		if (gamestate->selected_menu == G_MENU_HAND) {
 			if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
@@ -360,14 +386,16 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 			}
 			gamestate->hand_tiles[gamestate->hand_tiles_len] = T_PEI;
 			gamestate->hand_tiles_len++;
+			return 1;
 		} else if (gamestate->selected_menu == G_MENU_DORA) {
 			if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 				return 0;
 			}
 			gamestate->dora_tiles[gamestate->dora_tiles_len] = T_PEI;
 			gamestate->dora_tiles_len++;
+			return 1;
 		}
-		return 1;
+		return 0;
 	case SDLK_C:
 		if (gamestate->selected_menu == G_MENU_HAND) {
 			if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
@@ -375,14 +403,16 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 			}
 			gamestate->hand_tiles[gamestate->hand_tiles_len] = T_CHUN;
 			gamestate->hand_tiles_len++;
+			return 1;
 		} else if (gamestate->selected_menu == G_MENU_DORA) {
 			if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 				return 0;
 			}
 			gamestate->dora_tiles[gamestate->dora_tiles_len] = T_CHUN;
 			gamestate->dora_tiles_len++;
+			return 1;
 		}
-		return 1;
+		return 0;
 	case SDLK_H:
 		if (gamestate->selected_menu == G_MENU_HAND) {
 			if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
@@ -390,14 +420,16 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 			}
 			gamestate->hand_tiles[gamestate->hand_tiles_len] = T_HAKU;
 			gamestate->hand_tiles_len++;
+			return 1;
 		} else if (gamestate->selected_menu == G_MENU_DORA) {
 			if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 				return 0;
 			}
 			gamestate->dora_tiles[gamestate->dora_tiles_len] = T_HAKU;
 			gamestate->dora_tiles_len++;
+			return 1;
 		}
-		return 1;
+		return 0;
 	case SDLK_G:
 		if (gamestate->selected_menu == G_MENU_HAND) {
 			if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
@@ -405,14 +437,16 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 			}
 			gamestate->hand_tiles[gamestate->hand_tiles_len] = T_HATSU;
 			gamestate->hand_tiles_len++;
+			return 1;
 		} else if (gamestate->selected_menu == G_MENU_DORA) {
 			if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 				return 0;
 			}
 			gamestate->dora_tiles[gamestate->dora_tiles_len] = T_HATSU;
 			gamestate->dora_tiles_len++;
+			return 1;
 		}
-		return 1;
+		return 0;
 	case SDLK_BACKSPACE:
 		if (gamestate->selected_menu == G_MENU_HAND) {
 			if (gamestate->hand_tiles_len > 0) {
@@ -429,10 +463,14 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 		}
 		return 0;
 	case SDLK_UP:
-		G_decrement_menu(gamestate);
+		if (gamestate->show_confirm_handshape_menu != 1) {
+			G_decrement_menu(gamestate);
+		}
 		return 1;
 	case SDLK_DOWN:
-		G_increment_menu(gamestate);
+		if (gamestate->show_confirm_handshape_menu != 1) {
+			G_increment_menu(gamestate);
+		}
 		return 1;
 	case SDLK_RIGHT:
 		if (gamestate->selected_menu == G_MENU_SEAT_WIND) {
@@ -471,6 +509,18 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 	case SDLK_K:
 		gamestate->rinshan = !gamestate->rinshan;
 		return 1;
+	case SDLK_RETURN:
+		if (gamestate->show_confirm_handshape_menu == 0) { // TODO allat menu malarky
+			gamestate->show_confirm_handshape_menu = G_calculate_handshapes(gamestate);
+			return 1;
+		}
+		return 0;
+	case SDLK_ESCAPE:
+		if (gamestate->show_confirm_handshape_menu == 1) { // TODO allat menu malarky
+			gamestate->show_confirm_handshape_menu = 0;
+			return 1;
+		}
+		return 0;
 	default:
 		return 0;
 	}
@@ -478,12 +528,18 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 
 int E_handle_event(G_GameState *gamestate, SDL_Event event)
 {
+	int redraw;
 	switch (event.type) {
 	case SDL_EVENT_KEY_UP:
 		gamestate->show_help = 0;
 		return 1;
 	case SDL_EVENT_KEY_DOWN:
-		return E_handle_key_down(gamestate, event.key);
+		redraw = E_handle_key_down(gamestate, event.key);
+		if (redraw) {
+			G_calculate_handshapes(gamestate);
+			return 1;
+		}
+		return redraw;
 	default:
 		return 0;
 	}

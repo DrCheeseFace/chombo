@@ -1,5 +1,4 @@
 #include "g_gamestate.h"
-#include <stdlib.h>
 
 Uint32 frame_ticks;
 
@@ -29,6 +28,10 @@ G_GameState *G_gamestate_create(int target_fps, int window_width, int window_hei
 	gamestate->haitei = 0;
 	gamestate->chankan = 0;
 	gamestate->rinshan = 0;
+
+	SDL_memset(gamestate->handshapes.hands, 0, sizeof(gamestate->handshapes.hands));
+	gamestate->handshapes.hands_len = 0;
+	gamestate->show_confirm_handshape_menu = 0;
 
 	return gamestate;
 }
@@ -185,4 +188,25 @@ void G_decrement_prevelant_wind(G_GameState *gamestate)
 	default:
 		return;
 	}
+}
+
+int G_calculate_handshapes(G_GameState *gamestate)
+{
+	char tiles[(MAX_HAND_TILE_COUNT * 3) + 1] = "";
+
+	for (int i = 0; i < gamestate->hand_tiles_len; i++) {
+		const char *tile_notation = T_TILE_NOTATION[gamestate->hand_tiles[i]];
+		strcat(tiles, tile_notation);
+		strcat(tiles, " ");
+	}
+
+	struct HandShapes *x = C_get_valid_hand_shapes(tiles);
+	if (x != NULL) {
+		gamestate->handshapes = *x;
+		C_free_hand_shapes(x);
+		return 1;
+	} else {
+		gamestate->handshapes.hands_len = 0;
+	}
+	return 0;
 }

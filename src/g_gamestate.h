@@ -1,6 +1,7 @@
 #ifndef G_GAMESTATE_H
 #define G_GAMESTATE_H
 #include "t_tiles.h"
+#include "mahc.h"
 
 #define MAX_HAND_TILE_COUNT 18
 #define MAX_DORA_TILE_COUNT 13
@@ -41,6 +42,9 @@ typedef struct {
 	int haitei;
 	int chankan;
 	int rinshan;
+
+	int show_confirm_handshape_menu;
+	HandShapes handshapes;
 } G_GameState;
 
 G_GameState *G_gamestate_create(int target_fps, int window_width, int window_height, float scale);
@@ -54,6 +58,7 @@ void G_increment_seat_wind(G_GameState *gamestate);
 void G_decrement_seat_wind(G_GameState *gamestate);
 void G_increment_prevelant_wind(G_GameState *gamestate);
 void G_decrement_prevelant_wind(G_GameState *gamestate);
+int G_calculate_handshapes(G_GameState *gamestate);
 
 void G_window_renderer_resize(SDL_Window *sdl_window, SDL_Renderer *sdl_renderer, int width,
 			      int height, float scale);

@@ -138,6 +138,13 @@ int R_draw_hand(SDL_Renderer *sdl_renderer, G_GameState gamestate)
 		if (L_draw(sdl_renderer, L_TEXT_HAND_LABEL, (struct SDL_Point){ 10, 130 }) != 0)
 			return 1;
 	}
+	if (gamestate.handshapes.hands_len != 0) {
+		if (L_draw(sdl_renderer, L_TEXT_HAND_VALID, (struct SDL_Point){ 200, 130 }) != 0)
+			return 1;
+	} else {
+		if (L_draw(sdl_renderer, L_TEXT_HAND_INVALID, (struct SDL_Point){ 200, 130 }) != 0)
+			return 1;
+	}
 	return 0;
 }
 

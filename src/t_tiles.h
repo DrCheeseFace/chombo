@@ -53,6 +53,8 @@ typedef enum {
 	T_COUNT,
 } T_Tile;
 
+extern const char *T_TILE_NOTATION[T_COUNT];
+
 // returns 0 if successful
 int T_tile_draw(SDL_Renderer *sdl_renderer, T_Tile tile, SDL_Point point, int scale);
 
