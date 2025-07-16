@@ -1,7 +1,6 @@
 #include "w_window.h"
 #include "r_renderer.h"
 #include "e_event.h"
-#include "mahc.h"
 #include "l_letter.h"
 #include <SDL3_ttf/SDL_ttf.h>
 
@@ -19,9 +18,7 @@ void main_loop(G_GameState *gamestate, SDL_Window *sdl_window, SDL_Renderer *sdl
 		G_frame_start(gamestate);
 
 		if (redraw) {
-			if (R_gamestate_draw(sdl_renderer, sdl_window, *gamestate) == 0) {
-				redraw = 0;
-			}
+			redraw = R_gamestate_draw(sdl_renderer, sdl_window, *gamestate);
 		}
 
 		while (SDL_PollEvent(&event)) {
@@ -39,9 +36,6 @@ void main_loop(G_GameState *gamestate, SDL_Window *sdl_window, SDL_Renderer *sdl
 
 int main(void)
 {
-	struct HandShapes *x = C_get_valid_hand_shapes("1m 1m 1m 2m 2m 2m 3m 3m 3m 4m 4m 4m rd rd");
-	C_free_hand_shapes(x);
-
 	G_GameState *gamestate =
 		G_gamestate_create(TARGET_FPS, WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_S);
 	SDL_Window *sdl_window = W_create(gamestate->window_w, gamestate->window_h);

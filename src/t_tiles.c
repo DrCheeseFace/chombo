@@ -1,6 +1,18 @@
 #include <stdio.h>
 #include "t_tiles.h"
 
+const char *T_TILE_NOTATION[T_COUNT] = { "-1", "-1", "-1",
+
+					 "rd", "wd", "gd",
+
+					 "1m", "2m", "3m", "4m", "0m", "5m", "6m", "7m", "8m", "9m",
+
+					 "1p", "2p", "3p", "4p", "0p", "5p", "6p", "7p", "8p", "9p",
+
+					 "1s", "2s", "3s", "4s", "0s", "5s", "6s", "7s", "8s", "9s",
+
+					 "Ew", "Sw", "Nw", "Ww" };
+
 const char *T_TILE_PATHS[T_COUNT] = {
 	"static/Back.bmp",	"static/Blank.bmp", "static/Front.bmp",	    "static/Chun.bmp",
 	"static/Haku.bmp",	"static/Hatsu.bmp", "static/Man1.bmp",	    "static/Man2.bmp",

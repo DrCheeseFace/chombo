@@ -1,7 +1,6 @@
 #include "l_letter.h"
 #include <SDL3_ttf/SDL_ttf.h>
 #include <stdio.h>
-#include <string.h>
 
 #define FONT_EDOSZ_TTF "static/edosz.ttf"
 #define FONT_ULTRA_REGULAR_TTF "static/Ultra-Regular.ttf"
@@ -14,8 +13,9 @@ SDL_Color L_COLORS[L_COLOR_COUNT] = {
 	{ 255, 0, 0, 0 }, //red
 	{ 0, 255, 0, 0 }, //green
 	{ 0, 0, 255, 0 }, //blue
+	{ 255, 255, 0, 255 }, // yellow
 	{ 0, 10, 0, 255 }, //greenish black
-	{ 10, 20, 10, 255 } //more greenish black
+	{ 10, 20, 10, 255 }, //more greenish black
 };
 
 L_Text_Obj L_TEXTS_OBJS[L_TEXT_COUNT] = {
@@ -39,6 +39,8 @@ L_Text_Obj L_TEXTS_OBJS[L_TEXT_COUNT] = {
 	{ "space toggle pane", 80, L_COLOR_WHITE },
 	{ "Hand", 50, L_COLOR_GREEN },
 	{ "Hand", 50, L_COLOR_WHITE },
+	{ "Valid", 50, L_COLOR_GREEN },
+	{ "Invalid", 50, L_COLOR_YELLOW },
 	{ "Dora", 50, L_COLOR_GREEN },
 	{ "Dora", 50, L_COLOR_WHITE },
 	{ "Seat wind", 50, L_COLOR_WHITE },
