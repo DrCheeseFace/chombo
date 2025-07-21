@@ -217,8 +217,13 @@ typedef struct CTileGroup {
 	enum GroupType group_type;
 } CTileGroup;
 
+typedef struct HandShape {
+	struct CTileGroup groups[MAX_GROUPS_PER_HAND];
+	size_t group_count;
+} HandShape;
+
 typedef struct HandShapes {
-	struct CTileGroup hands[MAX_HAND_SHAPES][MAX_GROUPS_PER_HAND];
+	struct HandShape hands[MAX_HAND_SHAPES];
 	size_t hands_len;
 } HandShapes;
 

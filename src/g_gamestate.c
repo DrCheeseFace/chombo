@@ -13,6 +13,7 @@ G_GameState *G_gamestate_create(int target_fps, int window_width, int window_hei
 
 	gamestate->show_help = 0;
 	gamestate->selected_menu = G_MENU_HAND;
+	gamestate->is_selected_menu_backgrounded = 0;
 
 	gamestate->hand_tiles_len = 0;
 	SDL_memset(gamestate->hand_tiles, T_BACK, sizeof(gamestate->hand_tiles));

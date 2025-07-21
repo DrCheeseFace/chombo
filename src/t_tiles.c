@@ -3,27 +3,27 @@
 
 const char *T_TILE_NOTATION[T_COUNT] = { "-1", "-1", "-1",
 
-					 "rd", "wd", "gd",
+					 "rd", "gd", "wd",
 
-					 "1m", "2m", "3m", "4m", "0m", "5m", "6m", "7m", "8m", "9m",
+					 "1m", "2m", "3m", "4m", "5m", "0m", "6m", "7m", "8m", "9m",
 
-					 "1p", "2p", "3p", "4p", "0p", "5p", "6p", "7p", "8p", "9p",
+					 "1p", "2p", "3p", "4p", "5p", "0p", "6p", "7p", "8p", "9p",
 
-					 "1s", "2s", "3s", "4s", "0s", "5s", "6s", "7s", "8s", "9s",
+					 "1s", "2s", "3s", "4s", "5s", "0s", "6s", "7s", "8s", "9s",
 
-					 "Ew", "Sw", "Nw", "Ww" };
+					 "Ew", "Sw", "Ww", "Nw" };
 
 const char *T_TILE_PATHS[T_COUNT] = {
-	"static/Back.bmp",	"static/Blank.bmp", "static/Front.bmp",	    "static/Chun.bmp",
-	"static/Haku.bmp",	"static/Hatsu.bmp", "static/Man1.bmp",	    "static/Man2.bmp",
-	"static/Man3.bmp",	"static/Man4.bmp",  "static/Man5-Dora.bmp", "static/Man5.bmp",
-	"static/Man6.bmp",	"static/Man7.bmp",  "static/Man8.bmp",	    "static/Man9.bmp",
-	"static/Pin1.bmp",	"static/Pin2.bmp",  "static/Pin3.bmp",	    "static/Pin4.bmp",
-	"static/Pin5-Dora.bmp", "static/Pin5.bmp",  "static/Pin6.bmp",	    "static/Pin7.bmp",
-	"static/Pin8.bmp",	"static/Pin9.bmp",  "static/Sou1.bmp",	    "static/Sou2.bmp",
-	"static/Sou3.bmp",	"static/Sou4.bmp",  "static/Sou5-Dora.bmp", "static/Sou5.bmp",
-	"static/Sou6.bmp",	"static/Sou7.bmp",  "static/Sou8.bmp",	    "static/Sou9.bmp",
-	"static/Ton.bmp",	"static/Nan.bmp",   "static/Pei.bmp",	    "static/Shaa.bmp"
+	"static/Back.bmp",  "static/Blank.bmp",	    "static/Front.bmp", "static/Chun.bmp",
+	"static/Hatsu.bmp", "static/Haku.bmp",	    "static/Man1.bmp",	"static/Man2.bmp",
+	"static/Man3.bmp",  "static/Man4.bmp",	    "static/Man5.bmp",	"static/Man5-Dora.bmp",
+	"static/Man6.bmp",  "static/Man7.bmp",	    "static/Man8.bmp",	"static/Man9.bmp",
+	"static/Pin1.bmp",  "static/Pin2.bmp",	    "static/Pin3.bmp",	"static/Pin4.bmp",
+	"static/Pin5.bmp",  "static/Pin5-Dora.bmp", "static/Pin6.bmp",	"static/Pin7.bmp",
+	"static/Pin8.bmp",  "static/Pin9.bmp",	    "static/Sou1.bmp",	"static/Sou2.bmp",
+	"static/Sou3.bmp",  "static/Sou4.bmp",	    "static/Sou5.bmp",	"static/Sou5-Dora.bmp",
+	"static/Sou6.bmp",  "static/Sou7.bmp",	    "static/Sou8.bmp",	"static/Sou9.bmp",
+	"static/Ton.bmp",   "static/Nan.bmp",	    "static/Shaa.bmp",	"static/Pei.bmp",
 };
 
 SDL_Texture *T_TILE_TEXTURES[T_COUNT];
@@ -61,4 +61,23 @@ int T_tile_draw(SDL_Renderer *sdl_renderer, T_Tile tile, SDL_Point point, int sc
 	SDL_RenderTexture(sdl_renderer, T_TILE_TEXTURES[tile], NULL, &tile_rect);
 
 	return 0;
+}
+
+// rickerty mf right here
+T_Tile T_mtile_to_ttile(Tile tile)
+{
+	switch (tile.tag) {
+	case Tile_Man:
+		return T_MAN1 + tile.man;
+	case Tile_Pin:
+		return T_PIN1 + tile.pin;
+	case Tile_Sou:
+		return T_SOU1 + tile.sou;
+	case Tile_Wind:
+		return T_TON + tile.wind;
+	case Tile_Dragon:
+		return T_CHUN + tile.dragon;
+	default:
+		return T_BLANK;
+	}
 }

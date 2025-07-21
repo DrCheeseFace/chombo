@@ -25,6 +25,7 @@ typedef struct {
 	int show_help;
 
 	G_Selected_menu selected_menu;
+	int is_selected_menu_backgrounded;
 
 	T_Tile hand_tiles[MAX_HAND_TILE_COUNT];
 	int hand_tiles_len;
@@ -58,6 +59,8 @@ void G_increment_seat_wind(G_GameState *gamestate);
 void G_decrement_seat_wind(G_GameState *gamestate);
 void G_increment_prevelant_wind(G_GameState *gamestate);
 void G_decrement_prevelant_wind(G_GameState *gamestate);
+
+// returns 1 if successful
 int G_calculate_handshapes(G_GameState *gamestate);
 
 void G_window_renderer_resize(SDL_Window *sdl_window, SDL_Renderer *sdl_renderer, int width,

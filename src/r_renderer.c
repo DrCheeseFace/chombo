@@ -292,6 +292,53 @@ int R_draw_conditions(SDL_Renderer *sdl_renderer, G_GameState gamestate)
 	return 0;
 }
 
+int R_draw_confirm_handshape_menu(SDL_Renderer *sdl_renderer, G_GameState gamestate)
+{
+	SDL_FRect help_outline = {
+		.w = screen_width - 50, .h = screen_height - 50, .x = 25, .y = 25
+	};
+	if (!SDL_SetRenderDrawColor(sdl_renderer, L_COLORS[L_COLOR_RED].r, L_COLORS[L_COLOR_RED].g,
+				    L_COLORS[L_COLOR_RED].b, L_COLORS[L_COLOR_RED].a))
+		return 1;
+
+	if (!SDL_RenderFillRect(sdl_renderer, &help_outline))
+		return 1;
+	if (!SDL_SetRenderDrawColor(sdl_renderer, L_COLORS[L_COLOR_MENU_BACKDROP].r,
+				    L_COLORS[L_COLOR_MENU_BACKDROP].g,
+				    L_COLORS[L_COLOR_MENU_BACKDROP].b,
+				    L_COLORS[L_COLOR_MENU_BACKDROP].a)) {
+		return 1;
+	}
+
+	SDL_FRect help_background = {
+		.w = screen_width - 55, .h = screen_height - 55, .x = 27.5, .y = 27.5
+	};
+	if (!SDL_RenderFillRect(sdl_renderer, &help_background))
+		return 1;
+
+	int y = 100;
+	for (size_t i = 0; i < gamestate.handshapes.hands_len; i++) {
+		int x = 80;
+		for (size_t j = 0; j < gamestate.handshapes.hands[i].group_count; j++) {
+			for (size_t k = 0; k < gamestate.handshapes.hands[i].groups[j].tiles_len;
+			     k++) {
+				if (T_tile_draw(sdl_renderer,
+						T_mtile_to_ttile(gamestate.handshapes.hands[i]
+									 .groups[j]
+									 .tiles[k]),
+						(struct SDL_Point){ x, y }, 19)) {
+					return 1;
+				}
+				x += 80;
+			}
+			x += 10;
+		}
+		y += 200;
+	}
+
+	return 0;
+}
+
 int R_gamestate_draw(SDL_Renderer *sdl_renderer, SDL_Window *sdl_window, G_GameState gamestate)
 {
 	if (gamestate.scale != scale) {
@@ -322,6 +369,11 @@ int R_gamestate_draw(SDL_Renderer *sdl_renderer, SDL_Window *sdl_window, G_GameS
 		return 1;
 	if (R_draw_conditions(sdl_renderer, gamestate) != 0)
 		return 1;
+
+	if (gamestate.show_confirm_handshape_menu) {
+		if (R_draw_confirm_handshape_menu(sdl_renderer, gamestate) != 0)
+			return 1;
+	}
 
 	if (gamestate.show_help == 1) {
 		if (R_draw_help() != 0) {
