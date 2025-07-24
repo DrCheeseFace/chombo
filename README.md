@@ -12,6 +12,7 @@ Gui riichi mahjong calculator. In progress
 make debug && ./main.out
 ```
 
+
 #### TODO
 - [x] shift -+ window resizing
 - [x] figure out why memory leak :(
@@ -25,3 +26,8 @@ make debug && ./main.out
 - [ ] figure out creating platform specific executable
 
 ![](https://c.tenor.com/wjvQf6cClREAAAAd/tenor.gif)
+
+This project uses
+[riichi-mahjong-tiles](https://github.com/FluffyStuff/riichi-mahjong-tiles)
+by [FluffyStuff](https://github.com/FluffyStuff) in
+[public domain/CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/).
