@@ -56,7 +56,8 @@ typedef struct {
 
 } G_GameState;
 
-G_GameState *G_gamestate_create(int target_fps, int window_width, int window_height, float scale);
+G_GameState *G_gamestate_create(int target_fps, int window_width,
+				int window_height, float scale);
 
 void G_frame_start(G_GameState *gamestate);
 
@@ -83,7 +84,8 @@ void G_increment_handshape_selector(G_GameState *gamestate);
 // returns 1 if successful
 int G_calculate_handshapes(G_GameState *gamestate);
 
-void G_window_renderer_resize(SDL_Window *sdl_window, SDL_Renderer *sdl_renderer, int width,
-			      int height, float scale);
+void G_window_renderer_resize(SDL_Window *sdl_window,
+			      SDL_Renderer *sdl_renderer, int width, int height,
+			      float scale);
 
 #endif // !G_GAMESTATE_H

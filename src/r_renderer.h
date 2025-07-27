@@ -11,7 +11,8 @@ void R_destroy(SDL_Renderer *sdl_renderer);
 SDL_Renderer *R_get(SDL_Renderer *sdl_renderer);
 
 // return 0 if successful
-int R_gamestate_draw(SDL_Renderer *sdl_renderer, SDL_Window *sdl_window, G_GameState gamestate);
+int R_gamestate_draw(SDL_Renderer *sdl_renderer, SDL_Window *sdl_window,
+		     G_GameState gamestate);
 
 void R_sanity_check(SDL_Renderer *sdl_renderer);
 

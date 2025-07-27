@@ -70,20 +70,24 @@ void L_init(SDL_Renderer *sdl_renderer)
 
 	for (int i = 0; i < L_TEXT_COUNT; i++) {
 		TTF_SetFontSize(font, L_TEXTS_OBJS[i].point_size);
-		TTF_Text *ttf_text = TTF_CreateText(text_engine, font, L_TEXTS_OBJS[i].text, 0);
+		TTF_Text *ttf_text = TTF_CreateText(text_engine, font,
+						    L_TEXTS_OBJS[i].text, 0);
 		if (!ttf_text) {
 			fprintf(stderr, "Failed to create text obj\n");
 		}
-		SDL_Surface *text_surface = TTF_RenderText_Solid(font, ttf_text->text, 0,
-								 L_COLORS[L_TEXTS_OBJS[i].color]);
+		SDL_Surface *text_surface =
+			TTF_RenderText_Solid(font, ttf_text->text, 0,
+					     L_COLORS[L_TEXTS_OBJS[i].color]);
 		if (!text_surface) {
 			fprintf(stderr, "Failed to render text surface\n");
 			TTF_DestroyText(ttf_text);
 		}
 
-		SDL_Texture *tex = SDL_CreateTextureFromSurface(sdl_renderer, text_surface);
+		SDL_Texture *tex = SDL_CreateTextureFromSurface(sdl_renderer,
+								text_surface);
 		if (!tex) {
-			fprintf(stderr, "Failed to create text texture from surface: %s\n",
+			fprintf(stderr,
+				"Failed to create text texture from surface: %s\n",
 				SDL_GetError());
 			TTF_DestroyText(ttf_text);
 			SDL_DestroySurface(text_surface);
@@ -98,9 +102,12 @@ void L_init(SDL_Renderer *sdl_renderer)
 int L_draw(SDL_Renderer *sdl_renderer, L_Texts text, SDL_Point point)
 {
 	SDL_Texture *tex = text_textures[text];
-	SDL_FRect rect = { .x = point.x, .y = point.y, .w = tex->w, .h = tex->h };
+	SDL_FRect rect = {
+		.x = point.x, .y = point.y, .w = tex->w, .h = tex->h
+	};
 	if (!SDL_RenderTexture(sdl_renderer, tex, NULL, &rect)) {
-		fprintf(stderr, "Failed to render text texture: %s\n", SDL_GetError());
+		fprintf(stderr, "Failed to render text texture: %s\n",
+			SDL_GetError());
 		return 1;
 	}
 	return 0;

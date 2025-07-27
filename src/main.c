@@ -1,7 +1,7 @@
-#include "w_window.h"
-#include "r_renderer.h"
 #include "e_event.h"
 #include "l_letter.h"
+#include "r_renderer.h"
+#include "w_window.h"
 #include <SDL3_ttf/SDL_ttf.h>
 
 #define WINDOW_WIDTH 1600
@@ -9,7 +9,8 @@
 #define WINDOW_SCALE 0.5
 #define TARGET_FPS 35
 
-void main_loop(G_GameState *gamestate, SDL_Window *sdl_window, SDL_Renderer *sdl_renderer)
+void main_loop(G_GameState *gamestate, SDL_Window *sdl_window,
+	       SDL_Renderer *sdl_renderer)
 {
 	SDL_Event event;
 	int redraw = 1;
@@ -18,7 +19,8 @@ void main_loop(G_GameState *gamestate, SDL_Window *sdl_window, SDL_Renderer *sdl
 		G_frame_start(gamestate);
 
 		if (redraw) {
-			redraw = R_gamestate_draw(sdl_renderer, sdl_window, *gamestate);
+			redraw = R_gamestate_draw(sdl_renderer, sdl_window,
+						  *gamestate);
 		}
 
 		while (SDL_PollEvent(&event)) {
@@ -26,7 +28,8 @@ void main_loop(G_GameState *gamestate, SDL_Window *sdl_window, SDL_Renderer *sdl
 				quit = 1;
 				break;
 			} else {
-				redraw = E_handle_event(gamestate, event) || redraw;
+				redraw = E_handle_event(gamestate, event) ||
+					 redraw;
 			}
 		}
 
@@ -36,13 +39,16 @@ void main_loop(G_GameState *gamestate, SDL_Window *sdl_window, SDL_Renderer *sdl
 
 int main(void)
 {
-	G_GameState *gamestate =
-		G_gamestate_create(TARGET_FPS, WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_SCALE);
-	SDL_Window *sdl_window = W_create(gamestate->window_w, gamestate->window_h);
-	SDL_Renderer *sdl_renderer = R_create(sdl_window, gamestate->window_w, gamestate->window_h);
+	G_GameState *gamestate = G_gamestate_create(
+		TARGET_FPS, WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_SCALE);
+	SDL_Window *sdl_window =
+		W_create(gamestate->window_w, gamestate->window_h);
+	SDL_Renderer *sdl_renderer =
+		R_create(sdl_window, gamestate->window_w, gamestate->window_h);
 
 	if (WINDOW_SCALE != 1) {
-		G_window_renderer_resize(sdl_window, sdl_renderer, gamestate->window_w,
+		G_window_renderer_resize(sdl_window, sdl_renderer,
+					 gamestate->window_w,
 					 gamestate->window_h, gamestate->scale);
 	}
 
