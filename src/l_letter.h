@@ -23,7 +23,7 @@ typedef struct {
 } L_Text_Obj;
 
 typedef enum {
-	L_TEXT_BOTTOM_HELP,
+	L_TEXT_BOTTOM_HELP = 0,
 	L_TEXT_HELP_0_9,
 	L_TEXT_HELP_SHIFT,
 	L_TEXT_HELP_CTRL,

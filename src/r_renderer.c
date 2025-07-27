@@ -130,7 +130,7 @@ int R_draw_hand(SDL_Renderer *sdl_renderer, G_GameState gamestate)
 		}
 		x += 88;
 	}
-	if (gamestate.selected_menu == G_MENU_HAND) {
+	if (gamestate.selected_main_menu_option == G_SELECTED_MAIN_MENU_OPTION_HAND) {
 		if (L_draw(sdl_renderer, L_TEXT_HAND_LABEL_SELECTED,
 			   (struct SDL_Point){ 10, 130 }) != 0)
 			return 1;
@@ -158,7 +158,7 @@ int R_draw_dora(SDL_Renderer *sdl_renderer, G_GameState gamestate)
 		}
 		x += 88;
 	}
-	if (gamestate.selected_menu == G_MENU_DORA) {
+	if (gamestate.selected_main_menu_option == G_SELECTED_MAIN_MENU_OPTION_DORA) {
 		if (L_draw(sdl_renderer, L_TEXT_DORA_LABEL_SELECTED,
 			   (struct SDL_Point){ 10, 303 }) != 0)
 			return 1;
@@ -187,7 +187,7 @@ int R_draw_seat_wind_selector(SDL_Renderer *sdl_renderer, G_GameState gamestate)
 		x += 100;
 	}
 
-	if (gamestate.selected_menu == G_MENU_SEAT_WIND) {
+	if (gamestate.selected_main_menu_option == G_SELECTED_MAIN_MENU_OPTION_SEAT_WIND) {
 		if (L_draw(sdl_renderer, L_TEXT_DORA_SEAT_WIND_SELECTED,
 			   (struct SDL_Point){ 10, 516 }) != 0)
 			return 1;
@@ -215,7 +215,7 @@ int R_draw_prevelant_wind_selector(SDL_Renderer *sdl_renderer, G_GameState games
 		x += 100;
 	}
 
-	if (gamestate.selected_menu == G_MENU_PREVALENT_WIND) {
+	if (gamestate.selected_main_menu_option == G_SELECTED_MAIN_MENU_OPTION_PREVALENT_WIND) {
 		if (L_draw(sdl_renderer, L_TEXT_DORA_PREVELANT_WIND_SELECTED,
 			   (struct SDL_Point){ 10, 729 }) != 0)
 			return 1;
@@ -317,7 +317,7 @@ int R_draw_confirm_handshape_menu(SDL_Renderer *sdl_renderer, G_GameState gamest
 		return 1;
 
 	int y = 100;
-	for (size_t i = 0; i < gamestate.handshapes.hands_len; i++) {
+	for (int i = 0; i < (int)gamestate.handshapes.hands_len; i++) {
 		int x = 80;
 		for (size_t j = 0; j < gamestate.handshapes.hands[i].group_count; j++) {
 			for (size_t k = 0; k < gamestate.handshapes.hands[i].groups[j].tiles_len;
@@ -333,7 +333,15 @@ int R_draw_confirm_handshape_menu(SDL_Renderer *sdl_renderer, G_GameState gamest
 			}
 			x += 10;
 		}
-		y += 200;
+		y += 120;
+		if (i == gamestate.handshape_selector_idx) {
+			SDL_SetRenderDrawColor(sdl_renderer, L_COLORS[L_COLOR_GREEN].r,
+					       L_COLORS[L_COLOR_GREEN].g, L_COLORS[L_COLOR_GREEN].b,
+					       L_COLORS[L_COLOR_GREEN].a);
+			SDL_RenderFillRects(sdl_renderer, &(struct SDL_FRect){ 80, y, x - 80, 5 },
+					    1);
+		}
+		y += 80;
 	}
 
 	return 0;
@@ -370,7 +378,7 @@ int R_gamestate_draw(SDL_Renderer *sdl_renderer, SDL_Window *sdl_window, G_GameS
 	if (R_draw_conditions(sdl_renderer, gamestate) != 0)
 		return 1;
 
-	if (gamestate.show_confirm_handshape_menu) {
+	if (gamestate.overlayed_menu == G_OVERLAYED_MENU_HANDSHAPES_SELECTOR) {
 		if (R_draw_confirm_handshape_menu(sdl_renderer, gamestate) != 0)
 			return 1;
 	}
