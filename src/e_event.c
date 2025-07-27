@@ -15,16 +15,14 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 			gamestate->scale -= 0.1;
 			return 1;
 		}
-	} else if (key_event.key == SDLK_ESCAPE) {
-		gamestate->show_confirm_handshape_menu = 0;
-		gamestate->is_selected_menu_backgrounded = 0;
-		return 1;
 	}
 
-	if (!gamestate->is_selected_menu_backgrounded) {
+	switch (gamestate->overlayed_menu) {
+	case G_OVERLAYED_MENU_NONE:
 		switch (key_event.key) {
 		case SDLK_1:
-			if (gamestate->selected_menu == G_MENU_HAND) {
+			if (gamestate->selected_main_menu_option ==
+			    G_SELECTED_MAIN_MENU_OPTION_HAND) {
 				if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
 					return 0;
 				}
@@ -39,7 +37,8 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 				}
 				gamestate->hand_tiles_len++;
 				return 1;
-			} else if (gamestate->selected_menu == G_MENU_DORA) {
+			} else if (gamestate->selected_main_menu_option ==
+				   G_SELECTED_MAIN_MENU_OPTION_DORA) {
 				if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 					return 0;
 				}
@@ -57,7 +56,8 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 			}
 			return 0;
 		case SDLK_2:
-			if (gamestate->selected_menu == G_MENU_HAND) {
+			if (gamestate->selected_main_menu_option ==
+			    G_SELECTED_MAIN_MENU_OPTION_HAND) {
 				if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
 					return 0;
 				}
@@ -72,7 +72,8 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 				}
 				gamestate->hand_tiles_len++;
 				return 1;
-			} else if (gamestate->selected_menu == G_MENU_DORA) {
+			} else if (gamestate->selected_main_menu_option ==
+				   G_SELECTED_MAIN_MENU_OPTION_DORA) {
 				if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 					return 0;
 				}
@@ -90,7 +91,8 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 			}
 			return 0;
 		case SDLK_3:
-			if (gamestate->selected_menu == G_MENU_HAND) {
+			if (gamestate->selected_main_menu_option ==
+			    G_SELECTED_MAIN_MENU_OPTION_HAND) {
 				if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
 					return 0;
 				}
@@ -105,7 +107,8 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 				}
 				gamestate->hand_tiles_len++;
 				return 1;
-			} else if (gamestate->selected_menu == G_MENU_DORA) {
+			} else if (gamestate->selected_main_menu_option ==
+				   G_SELECTED_MAIN_MENU_OPTION_DORA) {
 				if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 					return 0;
 				}
@@ -123,7 +126,8 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 			}
 			return 0;
 		case SDLK_4:
-			if (gamestate->selected_menu == G_MENU_HAND) {
+			if (gamestate->selected_main_menu_option ==
+			    G_SELECTED_MAIN_MENU_OPTION_HAND) {
 				if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
 					return 0;
 				}
@@ -138,7 +142,8 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 				}
 				gamestate->hand_tiles_len++;
 				return 1;
-			} else if (gamestate->selected_menu == G_MENU_DORA) {
+			} else if (gamestate->selected_main_menu_option ==
+				   G_SELECTED_MAIN_MENU_OPTION_DORA) {
 				if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 					return 0;
 				}
@@ -156,7 +161,8 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 			}
 			return 0;
 		case SDLK_5:
-			if (gamestate->selected_menu == G_MENU_HAND) {
+			if (gamestate->selected_main_menu_option ==
+			    G_SELECTED_MAIN_MENU_OPTION_HAND) {
 				if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
 					return 0;
 				}
@@ -171,7 +177,8 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 				}
 				gamestate->hand_tiles_len++;
 				return 1;
-			} else if (gamestate->selected_menu == G_MENU_DORA) {
+			} else if (gamestate->selected_main_menu_option ==
+				   G_SELECTED_MAIN_MENU_OPTION_DORA) {
 				if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 					return 0;
 				}
@@ -189,7 +196,8 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 			}
 			return 0;
 		case SDLK_6:
-			if (gamestate->selected_menu == G_MENU_HAND) {
+			if (gamestate->selected_main_menu_option ==
+			    G_SELECTED_MAIN_MENU_OPTION_HAND) {
 				if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
 					return 0;
 				}
@@ -204,7 +212,8 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 				}
 				gamestate->hand_tiles_len++;
 				return 1;
-			} else if (gamestate->selected_menu == G_MENU_DORA) {
+			} else if (gamestate->selected_main_menu_option ==
+				   G_SELECTED_MAIN_MENU_OPTION_DORA) {
 				if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 					return 0;
 				}
@@ -222,7 +231,8 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 			}
 			return 0;
 		case SDLK_7:
-			if (gamestate->selected_menu == G_MENU_HAND) {
+			if (gamestate->selected_main_menu_option ==
+			    G_SELECTED_MAIN_MENU_OPTION_HAND) {
 				if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
 					return 0;
 				}
@@ -237,7 +247,8 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 				}
 				gamestate->hand_tiles_len++;
 				return 1;
-			} else if (gamestate->selected_menu == G_MENU_DORA) {
+			} else if (gamestate->selected_main_menu_option ==
+				   G_SELECTED_MAIN_MENU_OPTION_DORA) {
 				if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 					return 0;
 				}
@@ -255,7 +266,8 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 			}
 			return 0;
 		case SDLK_8:
-			if (gamestate->selected_menu == G_MENU_HAND) {
+			if (gamestate->selected_main_menu_option ==
+			    G_SELECTED_MAIN_MENU_OPTION_HAND) {
 				if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
 					return 0;
 				}
@@ -270,7 +282,8 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 				}
 				gamestate->hand_tiles_len++;
 				return 1;
-			} else if (gamestate->selected_menu == G_MENU_DORA) {
+			} else if (gamestate->selected_main_menu_option ==
+				   G_SELECTED_MAIN_MENU_OPTION_DORA) {
 				if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 					return 0;
 				}
@@ -288,7 +301,8 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 			}
 			return 0;
 		case SDLK_9:
-			if (gamestate->selected_menu == G_MENU_HAND) {
+			if (gamestate->selected_main_menu_option ==
+			    G_SELECTED_MAIN_MENU_OPTION_HAND) {
 				if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
 					return 0;
 				}
@@ -303,7 +317,8 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 				}
 				gamestate->hand_tiles_len++;
 				return 1;
-			} else if (gamestate->selected_menu == G_MENU_DORA) {
+			} else if (gamestate->selected_main_menu_option ==
+				   G_SELECTED_MAIN_MENU_OPTION_DORA) {
 				if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 					return 0;
 				}
@@ -321,7 +336,8 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 			}
 			return 0;
 		case SDLK_0:
-			if (gamestate->selected_menu == G_MENU_HAND) {
+			if (gamestate->selected_main_menu_option ==
+			    G_SELECTED_MAIN_MENU_OPTION_HAND) {
 				if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
 					return 0;
 				}
@@ -336,7 +352,8 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 				}
 				gamestate->hand_tiles_len++;
 				return 1;
-			} else if (gamestate->selected_menu == G_MENU_DORA) {
+			} else if (gamestate->selected_main_menu_option ==
+				   G_SELECTED_MAIN_MENU_OPTION_DORA) {
 				if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 					return 0;
 				}
@@ -354,14 +371,16 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 			}
 			return 0;
 		case SDLK_E:
-			if (gamestate->selected_menu == G_MENU_HAND) {
+			if (gamestate->selected_main_menu_option ==
+			    G_SELECTED_MAIN_MENU_OPTION_HAND) {
 				if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
 					return 0;
 				}
 				gamestate->hand_tiles[gamestate->hand_tiles_len] = T_TON;
 				gamestate->hand_tiles_len++;
 				return 1;
-			} else if (gamestate->selected_menu == G_MENU_DORA) {
+			} else if (gamestate->selected_main_menu_option ==
+				   G_SELECTED_MAIN_MENU_OPTION_DORA) {
 				if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 					return 0;
 				}
@@ -371,14 +390,16 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 			}
 			return 0;
 		case SDLK_S:
-			if (gamestate->selected_menu == G_MENU_HAND) {
+			if (gamestate->selected_main_menu_option ==
+			    G_SELECTED_MAIN_MENU_OPTION_HAND) {
 				if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
 					return 0;
 				}
 				gamestate->hand_tiles[gamestate->hand_tiles_len] = T_NAN;
 				gamestate->hand_tiles_len++;
 				return 1;
-			} else if (gamestate->selected_menu == G_MENU_DORA) {
+			} else if (gamestate->selected_main_menu_option ==
+				   G_SELECTED_MAIN_MENU_OPTION_DORA) {
 				if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 					return 0;
 				}
@@ -388,14 +409,16 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 			}
 			return 0;
 		case SDLK_W:
-			if (gamestate->selected_menu == G_MENU_HAND) {
+			if (gamestate->selected_main_menu_option ==
+			    G_SELECTED_MAIN_MENU_OPTION_HAND) {
 				if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
 					return 0;
 				}
 				gamestate->hand_tiles[gamestate->hand_tiles_len] = T_SHAA;
 				gamestate->hand_tiles_len++;
 				return 1;
-			} else if (gamestate->selected_menu == G_MENU_DORA) {
+			} else if (gamestate->selected_main_menu_option ==
+				   G_SELECTED_MAIN_MENU_OPTION_DORA) {
 				if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 					return 0;
 				}
@@ -405,14 +428,16 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 			}
 			return 0;
 		case SDLK_N:
-			if (gamestate->selected_menu == G_MENU_HAND) {
+			if (gamestate->selected_main_menu_option ==
+			    G_SELECTED_MAIN_MENU_OPTION_HAND) {
 				if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
 					return 0;
 				}
 				gamestate->hand_tiles[gamestate->hand_tiles_len] = T_PEI;
 				gamestate->hand_tiles_len++;
 				return 1;
-			} else if (gamestate->selected_menu == G_MENU_DORA) {
+			} else if (gamestate->selected_main_menu_option ==
+				   G_SELECTED_MAIN_MENU_OPTION_DORA) {
 				if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 					return 0;
 				}
@@ -422,14 +447,16 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 			}
 			return 0;
 		case SDLK_C:
-			if (gamestate->selected_menu == G_MENU_HAND) {
+			if (gamestate->selected_main_menu_option ==
+			    G_SELECTED_MAIN_MENU_OPTION_HAND) {
 				if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
 					return 0;
 				}
 				gamestate->hand_tiles[gamestate->hand_tiles_len] = T_CHUN;
 				gamestate->hand_tiles_len++;
 				return 1;
-			} else if (gamestate->selected_menu == G_MENU_DORA) {
+			} else if (gamestate->selected_main_menu_option ==
+				   G_SELECTED_MAIN_MENU_OPTION_DORA) {
 				if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 					return 0;
 				}
@@ -439,14 +466,16 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 			}
 			return 0;
 		case SDLK_H:
-			if (gamestate->selected_menu == G_MENU_HAND) {
+			if (gamestate->selected_main_menu_option ==
+			    G_SELECTED_MAIN_MENU_OPTION_HAND) {
 				if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
 					return 0;
 				}
 				gamestate->hand_tiles[gamestate->hand_tiles_len] = T_HAKU;
 				gamestate->hand_tiles_len++;
 				return 1;
-			} else if (gamestate->selected_menu == G_MENU_DORA) {
+			} else if (gamestate->selected_main_menu_option ==
+				   G_SELECTED_MAIN_MENU_OPTION_DORA) {
 				if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 					return 0;
 				}
@@ -456,14 +485,16 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 			}
 			return 0;
 		case SDLK_G:
-			if (gamestate->selected_menu == G_MENU_HAND) {
+			if (gamestate->selected_main_menu_option ==
+			    G_SELECTED_MAIN_MENU_OPTION_HAND) {
 				if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
 					return 0;
 				}
 				gamestate->hand_tiles[gamestate->hand_tiles_len] = T_HATSU;
 				gamestate->hand_tiles_len++;
 				return 1;
-			} else if (gamestate->selected_menu == G_MENU_DORA) {
+			} else if (gamestate->selected_main_menu_option ==
+				   G_SELECTED_MAIN_MENU_OPTION_DORA) {
 				if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
 					return 0;
 				}
@@ -473,14 +504,16 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 			}
 			return 0;
 		case SDLK_BACKSPACE:
-			if (gamestate->selected_menu == G_MENU_HAND) {
+			if (gamestate->selected_main_menu_option ==
+			    G_SELECTED_MAIN_MENU_OPTION_HAND) {
 				if (gamestate->hand_tiles_len > 0) {
 					gamestate->hand_tiles[gamestate->hand_tiles_len - 1] =
 						T_BACK;
 					gamestate->hand_tiles_len--;
 					return 1;
 				}
-			} else if (gamestate->selected_menu == G_MENU_DORA) {
+			} else if (gamestate->selected_main_menu_option ==
+				   G_SELECTED_MAIN_MENU_OPTION_DORA) {
 				if (gamestate->dora_tiles_len > 0) {
 					gamestate->dora_tiles[gamestate->dora_tiles_len - 1] =
 						T_BACK;
@@ -490,29 +523,29 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 			}
 			return 0;
 		case SDLK_UP:
-			if (gamestate->show_confirm_handshape_menu != 1) {
-				G_decrement_menu(gamestate);
-			}
+			G_decrement_main_menu_selector(gamestate);
 			return 1;
 		case SDLK_DOWN:
-			if (gamestate->show_confirm_handshape_menu != 1) {
-				G_increment_menu(gamestate);
-			}
+			G_increment_main_menu_selector(gamestate);
 			return 1;
 		case SDLK_RIGHT:
-			if (gamestate->selected_menu == G_MENU_SEAT_WIND) {
-				G_decrement_seat_wind(gamestate);
+			if (gamestate->selected_main_menu_option ==
+			    G_SELECTED_MAIN_MENU_OPTION_SEAT_WIND) {
+				G_increment_seat_wind(gamestate);
 				return 1;
-			} else if (gamestate->selected_menu == G_MENU_PREVALENT_WIND) {
+			} else if (gamestate->selected_main_menu_option ==
+				   G_SELECTED_MAIN_MENU_OPTION_PREVALENT_WIND) {
 				G_decrement_prevelant_wind(gamestate);
 				return 1;
 			}
 			return 0;
 		case SDLK_LEFT:
-			if (gamestate->selected_menu == G_MENU_SEAT_WIND) {
-				G_increment_seat_wind(gamestate);
+			if (gamestate->selected_main_menu_option ==
+			    G_SELECTED_MAIN_MENU_OPTION_SEAT_WIND) {
+				G_decrement_seat_wind(gamestate);
 				return 1;
-			} else if (gamestate->selected_menu == G_MENU_PREVALENT_WIND) {
+			} else if (gamestate->selected_main_menu_option ==
+				   G_SELECTED_MAIN_MENU_OPTION_PREVALENT_WIND) {
 				G_increment_prevelant_wind(gamestate);
 				return 1;
 			}
@@ -537,23 +570,33 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 			gamestate->rinshan = !gamestate->rinshan;
 			return 1;
 		case SDLK_RETURN:
-			if (gamestate->show_confirm_handshape_menu == 0) {
-				gamestate->show_confirm_handshape_menu =
-					G_calculate_handshapes(gamestate);
+			if (G_calculate_handshapes(gamestate)) {
+				gamestate->overlayed_menu = G_OVERLAYED_MENU_HANDSHAPES_SELECTOR;
 				return 1;
 			}
 			return 0;
 		default:
 			return 0;
 		}
+	case G_OVERLAYED_MENU_HANDSHAPES_SELECTOR:
+		switch (key_event.key) {
+		case SDLK_UP:
+			G_increment_handshape_selector(gamestate);
+			return 1;
+		case SDLK_DOWN:
+			G_decrement_handshape_selector(gamestate);
+			return 1;
+		case SDLK_ESCAPE:
+			gamestate->overlayed_menu = G_OVERLAYED_MENU_NONE;
+			return 1;
+		default:
+			return 0;
+		}
+	case G_OVERLAYED_MENU_COUNT:
+		break;
+	default:
+		break;
 	}
-	/*       else {*/
-	/*	switch (key_event.key) {*/
-	/*		return 0;*/
-	/*	default:*/
-	/*		return 0;*/
-	/*	}*/
-	/*}*/
 
 	return 0;
 }

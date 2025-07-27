@@ -1,18 +1,23 @@
 #ifndef G_GAMESTATE_H
 #define G_GAMESTATE_H
 #include "t_tiles.h"
-#include "mahc.h"
 
 #define MAX_HAND_TILE_COUNT 18
 #define MAX_DORA_TILE_COUNT 13
 
 typedef enum {
-	G_MENU_HAND = 0,
-	G_MENU_DORA,
-	G_MENU_SEAT_WIND,
-	G_MENU_PREVALENT_WIND,
-	G_MENU_COUNT,
-} G_Selected_menu;
+	G_SELECTED_MAIN_MENU_OPTION_HAND = 0,
+	G_SELECTED_MAIN_MENU_OPTION_DORA,
+	G_SELECTED_MAIN_MENU_OPTION_SEAT_WIND,
+	G_SELECTED_MAIN_MENU_OPTION_PREVALENT_WIND,
+	G_SELECTED_MAIN_MENU_OPTION_COUNT,
+} G_Selected_Main_Menu_Option;
+
+typedef enum {
+	G_OVERLAYED_MENU_NONE = 0,
+	G_OVERLAYED_MENU_HANDSHAPES_SELECTOR,
+	G_OVERLAYED_MENU_COUNT,
+} G_Overlayed_Menu;
 
 typedef struct {
 	int window_w;
@@ -24,8 +29,8 @@ typedef struct {
 
 	int show_help;
 
-	G_Selected_menu selected_menu;
-	int is_selected_menu_backgrounded;
+	G_Selected_Main_Menu_Option selected_main_menu_option;
+	G_Overlayed_Menu overlayed_menu;
 
 	T_Tile hand_tiles[MAX_HAND_TILE_COUNT];
 	int hand_tiles_len;
@@ -44,21 +49,36 @@ typedef struct {
 	int chankan;
 	int rinshan;
 
-	int show_confirm_handshape_menu;
 	HandShapes handshapes;
+
+	int handshape_selector_idx;
+	HandShape selected_handshape;
+
 } G_GameState;
 
 G_GameState *G_gamestate_create(int target_fps, int window_width, int window_height, float scale);
 
 void G_frame_start(G_GameState *gamestate);
+
 void G_frame_end(G_GameState *gamestate);
+
 void G_destroy(G_GameState *gamestate);
-void G_increment_menu(G_GameState *gamestate);
-void G_decrement_menu(G_GameState *gamestate);
-void G_increment_seat_wind(G_GameState *gamestate);
+
+void G_increment_main_menu_selector(G_GameState *gamestate);
+
+void G_decrement_main_menu_selector(G_GameState *gamestate);
+
 void G_decrement_seat_wind(G_GameState *gamestate);
+
+void G_increment_seat_wind(G_GameState *gamestate);
+
 void G_increment_prevelant_wind(G_GameState *gamestate);
+
 void G_decrement_prevelant_wind(G_GameState *gamestate);
+
+void G_decrement_handshape_selector(G_GameState *gamestate);
+
+void G_increment_handshape_selector(G_GameState *gamestate);
 
 // returns 1 if successful
 int G_calculate_handshapes(G_GameState *gamestate);
