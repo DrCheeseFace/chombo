@@ -1,8 +1,8 @@
 #ifndef T_TILES_H
 #define T_TILES_H
 
-#include <SDL3/SDL.h>
 #include "mahc.h"
+#include <SDL3/SDL.h>
 
 extern const char *T_TILE_PATHS[];
 
@@ -57,7 +57,8 @@ typedef enum {
 extern const char *T_TILE_NOTATION[T_COUNT];
 
 // returns 0 if successful
-int T_tile_draw(SDL_Renderer *sdl_renderer, T_Tile tile, SDL_Point point, int scale);
+int T_tile_draw(SDL_Renderer *sdl_renderer, T_Tile tile, SDL_Point point,
+		int scale);
 
 T_Tile T_mtile_to_ttile(Tile tile);
 

@@ -3,7 +3,8 @@
 
 Uint32 frame_ticks;
 
-G_GameState *G_gamestate_create(int target_fps, int window_width, int window_height, float scale)
+G_GameState *G_gamestate_create(int target_fps, int window_width,
+				int window_height, float scale)
 {
 	G_GameState *gamestate = (G_GameState *)malloc(sizeof(G_GameState));
 	gamestate->target_fps = target_fps;
@@ -31,7 +32,8 @@ G_GameState *G_gamestate_create(int target_fps, int window_width, int window_hei
 	gamestate->chankan = 0;
 	gamestate->rinshan = 0;
 
-	memset(gamestate->handshapes.hands, 0, sizeof(gamestate->handshapes.hands));
+	memset(gamestate->handshapes.hands, 0,
+	       sizeof(gamestate->handshapes.hands));
 	gamestate->handshapes.hands_len = 0;
 
 	gamestate->handshape_selector_idx = 0;
@@ -60,26 +62,32 @@ void G_frame_end(G_GameState *gamestate)
 	}
 }
 
-void G_window_renderer_resize(SDL_Window *sdl_window, SDL_Renderer *sdl_renderer, int width,
-			      int height, float scale)
+void G_window_renderer_resize(SDL_Window *sdl_window,
+			      SDL_Renderer *sdl_renderer, int width, int height,
+			      float scale)
 {
 	SDL_SetRenderScale(sdl_renderer, scale, scale);
 	SDL_SetWindowSize(sdl_window, width * scale, height * scale);
-	SDL_SetWindowPosition(sdl_window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+	SDL_SetWindowPosition(sdl_window, SDL_WINDOWPOS_CENTERED,
+			      SDL_WINDOWPOS_CENTERED);
 }
 
 void G_increment_main_menu_selector(G_GameState *gamestate)
 {
 	gamestate->selected_main_menu_option++;
-	if (gamestate->selected_main_menu_option == G_SELECTED_MAIN_MENU_OPTION_COUNT) {
-		gamestate->selected_main_menu_option = G_SELECTED_MAIN_MENU_OPTION_HAND;
+	if (gamestate->selected_main_menu_option ==
+	    G_SELECTED_MAIN_MENU_OPTION_COUNT) {
+		gamestate->selected_main_menu_option =
+			G_SELECTED_MAIN_MENU_OPTION_HAND;
 	}
 }
 
 void G_decrement_main_menu_selector(G_GameState *gamestate)
 {
-	if (gamestate->selected_main_menu_option == G_SELECTED_MAIN_MENU_OPTION_HAND) {
-		gamestate->selected_main_menu_option = G_SELECTED_MAIN_MENU_OPTION_PREVALENT_WIND;
+	if (gamestate->selected_main_menu_option ==
+	    G_SELECTED_MAIN_MENU_OPTION_HAND) {
+		gamestate->selected_main_menu_option =
+			G_SELECTED_MAIN_MENU_OPTION_PREVALENT_WIND;
 	} else {
 		gamestate->selected_main_menu_option--;
 	}
@@ -126,7 +134,8 @@ int G_calculate_handshapes(G_GameState *gamestate)
 	char tiles[(MAX_HAND_TILE_COUNT * 3) + 1] = "";
 
 	for (int i = 0; i < gamestate->hand_tiles_len; i++) {
-		const char *tile_notation = T_TILE_NOTATION[gamestate->hand_tiles[i]];
+		const char *tile_notation =
+			T_TILE_NOTATION[gamestate->hand_tiles[i]];
 		strcat(tiles, tile_notation);
 		strcat(tiles, " ");
 	}
@@ -145,7 +154,8 @@ int G_calculate_handshapes(G_GameState *gamestate)
 void G_decrement_handshape_selector(G_GameState *gamestate)
 {
 	gamestate->handshape_selector_idx++;
-	if (gamestate->handshape_selector_idx >= (int)gamestate->handshapes.hands_len) {
+	if (gamestate->handshape_selector_idx >=
+	    (int)gamestate->handshapes.hands_len) {
 		gamestate->handshape_selector_idx = 0;
 	}
 }
@@ -154,6 +164,7 @@ void G_increment_handshape_selector(G_GameState *gamestate)
 {
 	gamestate->handshape_selector_idx--;
 	if (gamestate->handshape_selector_idx < 0) {
-		gamestate->handshape_selector_idx = gamestate->handshapes.hands_len - 1;
+		gamestate->handshape_selector_idx =
+			gamestate->handshapes.hands_len - 1;
 	}
 }
