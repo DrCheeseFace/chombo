@@ -20,6 +20,7 @@ make debug && ./main.out
 - [ ] fix for resize bug. (not updating immediatly) 
 - [x] input and deleting tile preview on top
 - [x] settings round conditions menu
+- [ ] remove the dastardly typedefs on structs (i was told this will make me a good programmer)
 - [ ] using mahc for calculate
 - [ ] displaying output
 - [ ] figure out how to use cmake to add sdl3 and sdl3ttf as vendored 
