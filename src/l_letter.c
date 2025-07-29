@@ -3,7 +3,6 @@
 #include <stdio.h>
 
 #define FONT_EDOSZ_TTF "static/edosz.ttf"
-#define FONT_ULTRA_REGULAR_TTF "static/Ultra-Regular.ttf"
 
 TTF_Font *font;
 TTF_TextEngine *text_engine;
@@ -14,6 +13,7 @@ SDL_Color L_COLORS[L_COLOR_COUNT] = {
 	{ 0, 255, 0, 0 }, //green
 	{ 0, 0, 255, 0 }, //blue
 	{ 255, 255, 0, 255 }, // yellow
+	{ 255, 0, 255, 255 }, // magenta
 	{ 0, 10, 0, 255 }, //greenish black
 	{ 10, 20, 10, 255 }, //more greenish black
 };
@@ -59,7 +59,10 @@ L_Text_Obj L_TEXTS_OBJS[L_TEXT_COUNT] = {
 	{ "m chankan", 80, L_COLOR_GREEN },
 	{ "k rinshan kaihou", 80, L_COLOR_RED },
 	{ "k rinshan kaihou", 80, L_COLOR_GREEN },
+	{ "open", 100, L_COLOR_GREEN },
+	{ "closed", 100, L_COLOR_YELLOW },
 };
+
 SDL_Texture *text_textures[L_TEXT_COUNT];
 
 void L_init(SDL_Renderer *sdl_renderer)

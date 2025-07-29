@@ -9,7 +9,7 @@
 #define WINDOW_SCALE 0.5
 #define TARGET_FPS 35
 
-void main_loop(G_GameState *gamestate, SDL_Window *sdl_window,
+void main_loop(struct G_GameState *gamestate, SDL_Window *sdl_window,
 	       SDL_Renderer *sdl_renderer)
 {
 	SDL_Event event;
@@ -39,7 +39,7 @@ void main_loop(G_GameState *gamestate, SDL_Window *sdl_window,
 
 int main(void)
 {
-	G_GameState *gamestate = G_gamestate_create(
+	struct G_GameState *gamestate = G_gamestate_create(
 		TARGET_FPS, WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_SCALE);
 	SDL_Window *sdl_window =
 		W_create(gamestate->window_w, gamestate->window_h);

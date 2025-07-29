@@ -1,24 +1,35 @@
 #include "g_gamestate.h"
 
-int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
+int E_handle_key_down(struct G_GameState *gamestate,
+		      SDL_KeyboardEvent key_event)
 {
-	if (key_event.key == SDLK_SLASH) {
+	//global event type shit
+	switch (key_event.key) {
+	case SDLK_SLASH:
 		gamestate->show_help = 1;
 		return 1;
-	} else if (key_event.key == SDLK_EQUALS) {
+	case SDLK_EQUALS:
 		if (key_event.mod == SDL_KMOD_LSHIFT ||
 		    key_event.mod == SDL_KMOD_RSHIFT) {
 			gamestate->scale += 0.1;
 			return 1;
 		}
-	} else if (key_event.key == SDLK_MINUS) {
+		break;
+	case SDLK_MINUS:
 		if (key_event.mod == SDL_KMOD_LSHIFT ||
 		    key_event.mod == SDL_KMOD_RSHIFT) {
 			gamestate->scale -= 0.1;
 			return 1;
 		}
+		break;
+	case SDLK_ESCAPE:
+		G_backtrack_menu(gamestate);
+		return 1;
+	default:
+		break;
 	}
 
+	//overlay menu specific event type shit
 	switch (gamestate->overlayed_menu) {
 	case G_OVERLAYED_MENU_NONE:
 		switch (key_event.key) {
@@ -743,8 +754,21 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 			return 1;
 		case SDLK_RETURN:
 			if (G_calculate_handshapes(gamestate)) {
-				gamestate->overlayed_menu =
-					G_OVERLAYED_MENU_HANDSHAPES_SELECTOR;
+				G_selected_handshape_set(gamestate);
+				gamestate->selector_idx = 0;
+				if (gamestate->handshapes.hands_len == 1) {
+					if (gamestate->handshapes.hands[0]
+						    .group_count >= 7) {
+						gamestate->overlayed_menu =
+							G_OVERLAYED_MENU_WINNING_TILE_SELECTOR; //TODO (dont need to specify open or closed so we skip to select winning tile)
+					} else {
+						gamestate->overlayed_menu =
+							G_OVERLAYED_MENU_HANDSHAPE_GROUP_OPEN_CLOSE_SELECTOR;
+					}
+				} else {
+					gamestate->overlayed_menu =
+						G_OVERLAYED_MENU_HANDSHAPES_SELECTOR;
+				}
 				return 1;
 			}
 			return 0;
@@ -759,12 +783,40 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 		case SDLK_DOWN:
 			G_decrement_handshape_selector(gamestate);
 			return 1;
-		case SDLK_ESCAPE:
-			gamestate->overlayed_menu = G_OVERLAYED_MENU_NONE;
+		case SDLK_RETURN:
+			G_selected_handshape_set(gamestate);
+			gamestate->selector_idx = 0;
+			if (gamestate->selected_handshape.group_count >= 7) {
+				gamestate->overlayed_menu =
+					G_OVERLAYED_MENU_WINNING_TILE_SELECTOR; //TODO (dont need to specify open or closed so we skip to select winning tile)
+			} else {
+				gamestate->overlayed_menu =
+					G_OVERLAYED_MENU_HANDSHAPE_GROUP_OPEN_CLOSE_SELECTOR;
+			}
 			return 1;
 		default:
 			return 0;
 		}
+	case G_OVERLAYED_MENU_HANDSHAPE_GROUP_OPEN_CLOSE_SELECTOR:
+		switch (key_event.key) {
+		case SDLK_UP:
+			G_group_selector_increment(gamestate);
+			return 1;
+		case SDLK_DOWN:
+			G_group_selector_decrement(gamestate);
+			return 1;
+		case SDLK_SPACE:
+			G_group_selector_open_close_toggle(gamestate);
+			return 1;
+		case SDLK_RETURN:
+			gamestate->overlayed_menu =
+				G_OVERLAYED_MENU_WINNING_TILE_SELECTOR;
+			return 1;
+		default:
+			break;
+		}
+	case G_OVERLAYED_MENU_WINNING_TILE_SELECTOR:
+		break;
 	case G_OVERLAYED_MENU_COUNT:
 		break;
 	default:
@@ -774,13 +826,16 @@ int E_handle_key_down(G_GameState *gamestate, SDL_KeyboardEvent key_event)
 	return 0;
 }
 
-int E_handle_event(G_GameState *gamestate, SDL_Event event)
+int E_handle_event(struct G_GameState *gamestate, SDL_Event event)
 {
 	int redraw;
 	switch (event.type) {
 	case SDL_EVENT_KEY_UP:
-		gamestate->show_help = 0;
-		return 1;
+		if (event.key.key == SDLK_SLASH) {
+			gamestate->show_help = 0;
+			return 1;
+		}
+		return 0;
 	case SDL_EVENT_KEY_DOWN:
 		redraw = E_handle_key_down(gamestate, event.key);
 		if (redraw) {
