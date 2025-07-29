@@ -1,12 +1,13 @@
 #include "g_gamestate.h"
 #include "t_tiles.h"
+#include <stdlib.h>
 
 Uint32 frame_ticks;
 
-G_GameState *G_gamestate_create(int target_fps, int window_width,
-				int window_height, float scale)
+struct G_GameState *G_gamestate_create(int target_fps, int window_width,
+				       int window_height, float scale)
 {
-	G_GameState *gamestate = (G_GameState *)malloc(sizeof(G_GameState));
+	struct G_GameState *gamestate = malloc(sizeof(struct G_GameState));
 	gamestate->target_fps = target_fps;
 	gamestate->target_frametime_ms = (1000.0 / (double)target_fps);
 	gamestate->window_w = window_width;
@@ -36,7 +37,7 @@ G_GameState *G_gamestate_create(int target_fps, int window_width,
 	       sizeof(gamestate->handshapes.hands));
 	gamestate->handshapes.hands_len = 0;
 
-	gamestate->handshape_selector_idx = 0;
+	gamestate->selector_idx = 0;
 	memset(gamestate->selected_handshape.groups, 0,
 	       sizeof(gamestate->selected_handshape.groups));
 	gamestate->selected_handshape.group_count = 0;
@@ -44,17 +45,17 @@ G_GameState *G_gamestate_create(int target_fps, int window_width,
 	return gamestate;
 }
 
-void G_destroy(G_GameState *gamestate)
+void G_destroy(struct G_GameState *gamestate)
 {
 	free(gamestate);
 }
 
-void G_frame_start(G_GameState *gamestate)
+void G_frame_start(struct G_GameState *gamestate)
 {
 	gamestate->frame_ticks_start = SDL_GetTicks();
 }
 
-void G_frame_end(G_GameState *gamestate)
+void G_frame_end(struct G_GameState *gamestate)
 {
 	frame_ticks = SDL_GetTicks() - gamestate->frame_ticks_start;
 	if (frame_ticks < gamestate->target_frametime_ms) {
@@ -72,7 +73,7 @@ void G_window_renderer_resize(SDL_Window *sdl_window,
 			      SDL_WINDOWPOS_CENTERED);
 }
 
-void G_increment_main_menu_selector(G_GameState *gamestate)
+void G_increment_main_menu_selector(struct G_GameState *gamestate)
 {
 	gamestate->selected_main_menu_option++;
 	if (gamestate->selected_main_menu_option ==
@@ -82,7 +83,7 @@ void G_increment_main_menu_selector(G_GameState *gamestate)
 	}
 }
 
-void G_decrement_main_menu_selector(G_GameState *gamestate)
+void G_decrement_main_menu_selector(struct G_GameState *gamestate)
 {
 	if (gamestate->selected_main_menu_option ==
 	    G_SELECTED_MAIN_MENU_OPTION_HAND) {
@@ -93,7 +94,7 @@ void G_decrement_main_menu_selector(G_GameState *gamestate)
 	}
 }
 
-void G_decrement_seat_wind(G_GameState *gamestate)
+void G_decrement_seat_wind(struct G_GameState *gamestate)
 {
 	if (gamestate->seat_wind == T_TON) {
 		gamestate->seat_wind = T_PEI;
@@ -102,7 +103,7 @@ void G_decrement_seat_wind(G_GameState *gamestate)
 	}
 }
 
-void G_increment_seat_wind(G_GameState *gamestate)
+void G_increment_seat_wind(struct G_GameState *gamestate)
 {
 	if (gamestate->seat_wind == T_PEI) {
 		gamestate->seat_wind = T_TON;
@@ -111,7 +112,7 @@ void G_increment_seat_wind(G_GameState *gamestate)
 	}
 }
 
-void G_increment_prevelant_wind(G_GameState *gamestate)
+void G_increment_prevelant_wind(struct G_GameState *gamestate)
 {
 	if (gamestate->prevelant_wind == T_TON) {
 		gamestate->prevelant_wind = T_PEI;
@@ -120,7 +121,7 @@ void G_increment_prevelant_wind(G_GameState *gamestate)
 	}
 }
 
-void G_decrement_prevelant_wind(G_GameState *gamestate)
+void G_decrement_prevelant_wind(struct G_GameState *gamestate)
 {
 	if (gamestate->prevelant_wind == T_PEI) {
 		gamestate->prevelant_wind = T_TON;
@@ -129,7 +130,7 @@ void G_decrement_prevelant_wind(G_GameState *gamestate)
 	}
 }
 
-int G_calculate_handshapes(G_GameState *gamestate)
+int G_calculate_handshapes(struct G_GameState *gamestate)
 {
 	char tiles[(MAX_HAND_TILE_COUNT * 3) + 1] = "";
 
@@ -151,20 +152,84 @@ int G_calculate_handshapes(G_GameState *gamestate)
 	return 0;
 }
 
-void G_decrement_handshape_selector(G_GameState *gamestate)
+void G_decrement_handshape_selector(struct G_GameState *gamestate)
 {
-	gamestate->handshape_selector_idx++;
-	if (gamestate->handshape_selector_idx >=
-	    (int)gamestate->handshapes.hands_len) {
-		gamestate->handshape_selector_idx = 0;
+	gamestate->selector_idx++;
+	if (gamestate->selector_idx >= (int)gamestate->handshapes.hands_len) {
+		gamestate->selector_idx = 0;
 	}
 }
 
-void G_increment_handshape_selector(G_GameState *gamestate)
+void G_increment_handshape_selector(struct G_GameState *gamestate)
 {
-	gamestate->handshape_selector_idx--;
-	if (gamestate->handshape_selector_idx < 0) {
-		gamestate->handshape_selector_idx =
-			gamestate->handshapes.hands_len - 1;
+	gamestate->selector_idx--;
+	if (gamestate->selector_idx < 0) {
+		gamestate->selector_idx = gamestate->handshapes.hands_len - 1;
+	}
+}
+
+void G_group_selector_decrement(struct G_GameState *gamestate)
+{
+	gamestate->selector_idx++;
+	if (gamestate->selector_idx >=
+	    (int)gamestate->selected_handshape.group_count) {
+		gamestate->selector_idx = 0;
+	}
+}
+
+void G_group_selector_increment(struct G_GameState *gamestate)
+{
+	gamestate->selector_idx--;
+	if (gamestate->selector_idx < 0) {
+		gamestate->selector_idx =
+			gamestate->selected_handshape.group_count - 1;
+	}
+}
+
+void G_selected_handshape_set(struct G_GameState *gamestate)
+{
+	gamestate->selected_handshape =
+		gamestate->handshapes.hands[gamestate->selector_idx];
+}
+
+void G_group_selector_open_close_toggle(struct G_GameState *gamestate)
+{
+	gamestate->selected_handshape.groups[gamestate->selector_idx].isopen =
+		!gamestate->selected_handshape.groups[gamestate->selector_idx]
+			 .isopen;
+}
+
+void G_backtrack_menu(struct G_GameState *gamestate)
+{
+	gamestate->selector_idx = 0;
+	switch (gamestate->overlayed_menu) {
+	case G_OVERLAYED_MENU_NONE:
+		break;
+	case G_OVERLAYED_MENU_HANDSHAPES_SELECTOR:
+		gamestate->selector_idx = 0;
+		gamestate->overlayed_menu = G_OVERLAYED_MENU_NONE;
+		break;
+	case G_OVERLAYED_MENU_HANDSHAPE_GROUP_OPEN_CLOSE_SELECTOR:
+		gamestate->selector_idx = 0;
+		if (gamestate->handshapes.hands_len == 1) {
+			gamestate->overlayed_menu = G_OVERLAYED_MENU_NONE;
+		} else {
+			gamestate->overlayed_menu =
+				G_OVERLAYED_MENU_HANDSHAPES_SELECTOR;
+		}
+		break;
+	case G_OVERLAYED_MENU_WINNING_TILE_SELECTOR:
+		gamestate->selector_idx = 0;
+		if (gamestate->selected_handshape.group_count >= 7) {
+			gamestate->overlayed_menu = G_OVERLAYED_MENU_NONE;
+		} else {
+			gamestate->overlayed_menu =
+				G_OVERLAYED_MENU_HANDSHAPE_GROUP_OPEN_CLOSE_SELECTOR;
+		}
+		break;
+	case G_OVERLAYED_MENU_COUNT:
+		break;
+	default:
+		break;
 	}
 }

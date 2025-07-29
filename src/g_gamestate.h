@@ -16,10 +16,12 @@ typedef enum {
 typedef enum {
 	G_OVERLAYED_MENU_NONE = 0,
 	G_OVERLAYED_MENU_HANDSHAPES_SELECTOR,
+	G_OVERLAYED_MENU_HANDSHAPE_GROUP_OPEN_CLOSE_SELECTOR,
+	G_OVERLAYED_MENU_WINNING_TILE_SELECTOR,
 	G_OVERLAYED_MENU_COUNT,
 } G_Overlayed_Menu;
 
-typedef struct {
+struct G_GameState {
 	int window_w;
 	int window_h;
 	float scale;
@@ -49,43 +51,53 @@ typedef struct {
 	int chankan;
 	int rinshan;
 
+	int selector_idx;
+
 	HandShapes handshapes;
 
-	int handshape_selector_idx;
 	HandShape selected_handshape;
+};
 
-} G_GameState;
+struct G_GameState *G_gamestate_create(int target_fps, int window_width,
+				       int window_height, float scale);
 
-G_GameState *G_gamestate_create(int target_fps, int window_width,
-				int window_height, float scale);
+void G_frame_start(struct G_GameState *gamestate);
 
-void G_frame_start(G_GameState *gamestate);
+void G_frame_end(struct G_GameState *gamestate);
 
-void G_frame_end(G_GameState *gamestate);
+void G_destroy(struct G_GameState *gamestate);
 
-void G_destroy(G_GameState *gamestate);
+void G_increment_main_menu_selector(struct G_GameState *gamestate);
 
-void G_increment_main_menu_selector(G_GameState *gamestate);
+void G_decrement_main_menu_selector(struct G_GameState *gamestate);
 
-void G_decrement_main_menu_selector(G_GameState *gamestate);
+void G_decrement_seat_wind(struct G_GameState *gamestate);
 
-void G_decrement_seat_wind(G_GameState *gamestate);
+void G_increment_seat_wind(struct G_GameState *gamestate);
 
-void G_increment_seat_wind(G_GameState *gamestate);
+void G_increment_prevelant_wind(struct G_GameState *gamestate);
 
-void G_increment_prevelant_wind(G_GameState *gamestate);
+void G_decrement_prevelant_wind(struct G_GameState *gamestate);
 
-void G_decrement_prevelant_wind(G_GameState *gamestate);
+void G_decrement_handshape_selector(struct G_GameState *gamestate);
 
-void G_decrement_handshape_selector(G_GameState *gamestate);
+void G_increment_handshape_selector(struct G_GameState *gamestate);
 
-void G_increment_handshape_selector(G_GameState *gamestate);
+void G_group_selector_decrement(struct G_GameState *gamestate);
+
+void G_group_selector_increment(struct G_GameState *gamestate);
+
+void G_group_selector_open_close_toggle(struct G_GameState *gamestate);
 
 // returns 1 if successful
-int G_calculate_handshapes(G_GameState *gamestate);
+int G_calculate_handshapes(struct G_GameState *gamestate);
 
 void G_window_renderer_resize(SDL_Window *sdl_window,
 			      SDL_Renderer *sdl_renderer, int width, int height,
 			      float scale);
+
+void G_selected_handshape_set(struct G_GameState *gamestate);
+
+void G_backtrack_menu(struct G_GameState *gamestate);
 
 #endif // !G_GAMESTATE_H

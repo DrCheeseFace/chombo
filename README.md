@@ -17,10 +17,11 @@ make debug && ./main.out
 - [x] shift -+ window resizing
 - [x] figure out why memory leak :(
 - [x] help menu 
-- [ ] fix for resize bug. (not updating immediatly) 
+- [x] fix for resize bug. (not updating immediatly) 
 - [x] input and deleting tile preview on top
 - [x] settings round conditions menu
-- [ ] remove the dastardly typedefs on structs (i was told this will make me a good programmer)
+- [x] remove the dastardly typedefs on structs (i was told this will make me a good programmer)
+- [ ] some kinda way to indicate the steps to make backtracking less confusing (maybe layers stacked?)
 - [ ] using mahc for calculate
 - [ ] displaying output
 - [ ] figure out how to use cmake to add sdl3 and sdl3ttf as vendored 
