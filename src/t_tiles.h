@@ -7,58 +7,60 @@
 extern const char *T_TILE_PATHS[];
 
 typedef enum {
-	T_BACK = 0,
-	T_BLANK,
-	T_FRONT,
-	T_CHUN,
-	T_HATSU,
-	T_HAKU,
+	T_TILE_BACK = 0,
+	T_TILE_BLANK,
+	T_TILE_FRONT,
 
-	T_MAN1,
-	T_MAN2,
-	T_MAN3,
-	T_MAN4,
-	T_MAN5,
-	T_MAN5_D,
-	T_MAN6,
-	T_MAN7,
-	T_MAN8,
-	T_MAN9,
+	T_TILE_CHUN,
+	T_TILE_HATSU,
+	T_TILE_HAKU,
 
-	T_PIN1,
-	T_PIN2,
-	T_PIN3,
-	T_PIN4,
-	T_PIN5,
-	T_PIN5_D,
-	T_PIN6,
-	T_PIN7,
-	T_PIN8,
-	T_PIN9,
+	T_TILE_MAN1,
+	T_TILE_MAN2,
+	T_TILE_MAN3,
+	T_TILE_MAN4,
+	T_TILE_MAN5,
+	T_TILE_MAN5_D,
+	T_TILE_MAN6,
+	T_TILE_MAN7,
+	T_TILE_MAN8,
+	T_TILE_MAN9,
 
-	T_SOU1,
-	T_SOU2,
-	T_SOU3,
-	T_SOU4,
-	T_SOU5,
-	T_SOU5_D,
-	T_SOU6,
-	T_SOU7,
-	T_SOU8,
-	T_SOU9,
+	T_TILE_PIN1,
+	T_TILE_PIN2,
+	T_TILE_PIN3,
+	T_TILE_PIN4,
+	T_TILE_PIN5,
+	T_TILE_PIN5_D,
+	T_TILE_PIN6,
+	T_TILE_PIN7,
+	T_TILE_PIN8,
+	T_TILE_PIN9,
 
-	T_TON,
-	T_NAN,
-	T_SHAA,
-	T_PEI,
-	T_COUNT,
+	T_TILE_SOU1,
+	T_TILE_SOU2,
+	T_TILE_SOU3,
+	T_TILE_SOU4,
+	T_TILE_SOU5,
+	T_TILE_SOU5_D,
+	T_TILE_SOU6,
+	T_TILE_SOU7,
+	T_TILE_SOU8,
+	T_TILE_SOU9,
+
+	T_TILE_TON,
+	T_TILE_NAN,
+	T_TILE_SHAA,
+	T_TILE_PEI,
+
+	T_TILE_COUNT,
 } T_Tile;
 
-extern const char *T_TILE_NOTATION[T_COUNT];
+extern const char *T_TILE_NOTATION[T_TILE_COUNT];
 
-// returns 0 if successful
-int T_tile_draw(SDL_Renderer *sdl_renderer, T_Tile tile, SDL_Point point,
-		int scale);
+// returns true if failed and requires a redraw
+bool T_tile_draw(SDL_Renderer *sdl_renderer, T_Tile tile, SDL_Point point,
+		 int scale);
 
 T_Tile T_mtile_to_ttile(Tile tile);
 

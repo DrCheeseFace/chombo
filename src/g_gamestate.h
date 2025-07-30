@@ -11,7 +11,7 @@ typedef enum {
 	G_SELECTED_MAIN_MENU_OPTION_SEAT_WIND,
 	G_SELECTED_MAIN_MENU_OPTION_PREVALENT_WIND,
 	G_SELECTED_MAIN_MENU_OPTION_COUNT,
-} G_Selected_Main_Menu_Option;
+} G_SelectedMainMenuOption;
 
 typedef enum {
 	G_OVERLAYED_MENU_NONE = 0,
@@ -19,7 +19,7 @@ typedef enum {
 	G_OVERLAYED_MENU_HANDSHAPE_GROUP_OPEN_CLOSE_SELECTOR,
 	G_OVERLAYED_MENU_WINNING_TILE_SELECTOR,
 	G_OVERLAYED_MENU_COUNT,
-} G_Overlayed_Menu;
+} G_OverlayedMenu;
 
 struct G_GameState {
 	int window_w;
@@ -29,10 +29,10 @@ struct G_GameState {
 	double target_frametime_ms;
 	Uint32 frame_ticks_start;
 
-	int show_help;
+	bool show_help;
 
-	G_Selected_Main_Menu_Option selected_main_menu_option;
-	G_Overlayed_Menu overlayed_menu;
+	G_SelectedMainMenuOption selected_main_menu_option;
+	G_OverlayedMenu overlayed_menu;
 
 	T_Tile hand_tiles[MAX_HAND_TILE_COUNT];
 	int hand_tiles_len;
@@ -44,12 +44,12 @@ struct G_GameState {
 
 	T_Tile prevelant_wind;
 
-	int riichi;
-	int double_riichi;
-	int ippatsu;
-	int haitei;
-	int chankan;
-	int rinshan;
+	bool riichi;
+	bool double_riichi;
+	bool ippatsu;
+	bool haitei;
+	bool chankan;
+	bool rinshan;
 
 	int selector_idx;
 

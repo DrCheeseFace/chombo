@@ -72,12 +72,12 @@ typedef enum {
 	L_TEXT_GROUP_CLOSED,
 
 	L_TEXT_COUNT,
-} L_Texts;
+} L_Text;
 
 void L_init(SDL_Renderer *sdl_renderer);
 
 // returns 0 if successful
-int L_draw(SDL_Renderer *sdl_renderer, L_Texts text, SDL_Point point);
+bool L_draw(SDL_Renderer *sdl_renderer, L_Text text, SDL_Point point);
 
 void L_destroy(void);
 

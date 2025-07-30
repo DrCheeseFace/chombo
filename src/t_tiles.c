@@ -1,7 +1,7 @@
 #include "t_tiles.h"
 #include <stdio.h>
 
-const char *T_TILE_NOTATION[T_COUNT] = {
+const char *T_TILE_NOTATION[T_TILE_COUNT] = {
 	"-1", "-1", "-1",
 
 	"rd", "gd", "wd",
@@ -15,7 +15,7 @@ const char *T_TILE_NOTATION[T_COUNT] = {
 	"Ew", "Sw", "Ww", "Nw"
 };
 
-const char *T_TILE_PATHS[T_COUNT] = {
+const char *T_TILE_PATHS[T_TILE_COUNT] = {
 	"static/Back.bmp",	"static/Blank.bmp",	"static/Front.bmp",
 	"static/Chun.bmp",	"static/Hatsu.bmp",	"static/Haku.bmp",
 	"static/Man1.bmp",	"static/Man2.bmp",	"static/Man3.bmp",
@@ -32,11 +32,11 @@ const char *T_TILE_PATHS[T_COUNT] = {
 	"static/Pei.bmp",
 };
 
-SDL_Texture *T_TILE_TEXTURES[T_COUNT];
+SDL_Texture *T_TILE_TEXTURES[T_TILE_COUNT];
 
 void T_tiles_init(SDL_Renderer *sdl_renderer)
 {
-	for (int i = 0; i < T_COUNT; i++) {
+	for (int i = 0; i < T_TILE_COUNT; i++) {
 		SDL_Surface *bmp = SDL_LoadBMP(T_TILE_PATHS[i]);
 		if (!bmp) {
 			fprintf(stderr, "Failed to load tile BMP: %s\n",
@@ -55,24 +55,24 @@ void T_tiles_init(SDL_Renderer *sdl_renderer)
 
 void T_tiles_destroy(void)
 {
-	for (int i = 0; i < T_COUNT; i++) {
+	for (int i = 0; i < T_TILE_COUNT; i++) {
 		SDL_DestroyTexture(T_TILE_TEXTURES[i]);
 	}
 }
 
-int T_tile_draw(SDL_Renderer *sdl_renderer, T_Tile tile, SDL_Point point,
-		int scale)
+bool T_tile_draw(SDL_Renderer *sdl_renderer, T_Tile tile, SDL_Point point,
+		 int scale)
 {
 	// render front of tile no face
 	SDL_FRect tile_rect = { point.x, point.y, scale * 4, scale * 5.5 };
-	SDL_RenderTexture(sdl_renderer, T_TILE_TEXTURES[T_FRONT], NULL,
+	SDL_RenderTexture(sdl_renderer, T_TILE_TEXTURES[T_TILE_FRONT], NULL,
 			  &tile_rect);
 
 	// render face of tile
 	SDL_RenderTexture(sdl_renderer, T_TILE_TEXTURES[tile], NULL,
 			  &tile_rect);
 
-	return 0;
+	return false;
 }
 
 // rickerty mf right here
@@ -80,16 +80,16 @@ T_Tile T_mtile_to_ttile(Tile tile)
 {
 	switch (tile.tag) {
 	case Tile_Man:
-		return T_MAN1 + tile.man;
+		return T_TILE_MAN1 + tile.man;
 	case Tile_Pin:
-		return T_PIN1 + tile.pin;
+		return T_TILE_PIN1 + tile.pin;
 	case Tile_Sou:
-		return T_SOU1 + tile.sou;
+		return T_TILE_SOU1 + tile.sou;
 	case Tile_Wind:
-		return T_TON + tile.wind;
+		return T_TILE_TON + tile.wind;
 	case Tile_Dragon:
-		return T_CHUN + tile.dragon;
+		return T_TILE_CHUN + tile.dragon;
 	default:
-		return T_BLANK;
+		return T_TILE_BLANK;
 	}
 }
