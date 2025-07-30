@@ -14,24 +14,26 @@ struct G_GameState *G_gamestate_create(int target_fps, int window_width,
 	gamestate->window_h = window_height;
 	gamestate->scale = scale;
 
-	gamestate->show_help = 0;
+	gamestate->show_help = false;
 	gamestate->selected_main_menu_option = G_SELECTED_MAIN_MENU_OPTION_HAND;
 	gamestate->overlayed_menu = G_OVERLAYED_MENU_NONE;
 
 	gamestate->hand_tiles_len = 0;
-	memset(gamestate->hand_tiles, T_BACK, sizeof(gamestate->hand_tiles));
+	memset(gamestate->hand_tiles, T_TILE_BACK,
+	       sizeof(gamestate->hand_tiles));
 	gamestate->dora_tiles_len = 0;
-	memset(gamestate->dora_tiles, T_BACK, sizeof(gamestate->dora_tiles));
+	memset(gamestate->dora_tiles, T_TILE_BACK,
+	       sizeof(gamestate->dora_tiles));
 
-	gamestate->seat_wind = T_TON;
-	gamestate->prevelant_wind = T_TON;
+	gamestate->seat_wind = T_TILE_TON;
+	gamestate->prevelant_wind = T_TILE_TON;
 
-	gamestate->riichi = 0;
-	gamestate->double_riichi = 0;
-	gamestate->ippatsu = 0;
-	gamestate->haitei = 0;
-	gamestate->chankan = 0;
-	gamestate->rinshan = 0;
+	gamestate->riichi = false;
+	gamestate->double_riichi = false;
+	gamestate->ippatsu = false;
+	gamestate->haitei = false;
+	gamestate->chankan = false;
+	gamestate->rinshan = false;
 
 	memset(gamestate->handshapes.hands, 0,
 	       sizeof(gamestate->handshapes.hands));
@@ -96,8 +98,8 @@ void G_decrement_main_menu_selector(struct G_GameState *gamestate)
 
 void G_decrement_seat_wind(struct G_GameState *gamestate)
 {
-	if (gamestate->seat_wind == T_TON) {
-		gamestate->seat_wind = T_PEI;
+	if (gamestate->seat_wind == T_TILE_TON) {
+		gamestate->seat_wind = T_TILE_PEI;
 	} else {
 		gamestate->seat_wind--;
 	}
@@ -105,8 +107,8 @@ void G_decrement_seat_wind(struct G_GameState *gamestate)
 
 void G_increment_seat_wind(struct G_GameState *gamestate)
 {
-	if (gamestate->seat_wind == T_PEI) {
-		gamestate->seat_wind = T_TON;
+	if (gamestate->seat_wind == T_TILE_PEI) {
+		gamestate->seat_wind = T_TILE_TON;
 	} else {
 		gamestate->seat_wind++;
 	}
@@ -114,8 +116,8 @@ void G_increment_seat_wind(struct G_GameState *gamestate)
 
 void G_increment_prevelant_wind(struct G_GameState *gamestate)
 {
-	if (gamestate->prevelant_wind == T_TON) {
-		gamestate->prevelant_wind = T_PEI;
+	if (gamestate->prevelant_wind == T_TILE_TON) {
+		gamestate->prevelant_wind = T_TILE_PEI;
 	} else {
 		gamestate->prevelant_wind--;
 	}
@@ -123,8 +125,8 @@ void G_increment_prevelant_wind(struct G_GameState *gamestate)
 
 void G_decrement_prevelant_wind(struct G_GameState *gamestate)
 {
-	if (gamestate->prevelant_wind == T_PEI) {
-		gamestate->prevelant_wind = T_TON;
+	if (gamestate->prevelant_wind == T_TILE_PEI) {
+		gamestate->prevelant_wind = T_TILE_TON;
 	} else {
 		gamestate->prevelant_wind++;
 	}

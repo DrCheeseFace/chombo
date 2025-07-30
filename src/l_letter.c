@@ -102,7 +102,7 @@ void L_init(SDL_Renderer *sdl_renderer)
 	}
 }
 
-int L_draw(SDL_Renderer *sdl_renderer, L_Texts text, SDL_Point point)
+bool L_draw(SDL_Renderer *sdl_renderer, L_Text text, SDL_Point point)
 {
 	SDL_Texture *tex = text_textures[text];
 	SDL_FRect rect = {
@@ -111,9 +111,9 @@ int L_draw(SDL_Renderer *sdl_renderer, L_Texts text, SDL_Point point)
 	if (!SDL_RenderTexture(sdl_renderer, tex, NULL, &rect)) {
 		fprintf(stderr, "Failed to render text texture: %s\n",
 			SDL_GetError());
-		return 1;
+		return true;
 	}
-	return 0;
+	return false;
 }
 
 void L_destroy(void)
