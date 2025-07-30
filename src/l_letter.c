@@ -14,8 +14,8 @@ SDL_Color L_COLORS[L_COLOR_COUNT] = {
 	{ 0, 0, 255, 0 }, //blue
 	{ 255, 255, 0, 255 }, // yellow
 	{ 255, 0, 255, 255 }, // magenta
-	{ 0, 10, 0, 255 }, //greenish black
-	{ 10, 20, 10, 255 }, //more greenish black
+	{ 10, 10, 0, 200 }, //transparentish tinge
+	{ 10, 20, 10, 250 }, //more greenish black
 };
 
 L_Text_Obj L_TEXTS_OBJS[L_TEXT_COUNT] = {

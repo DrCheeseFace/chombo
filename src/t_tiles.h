@@ -4,6 +4,9 @@
 #include "mahc.h"
 #include <SDL3/SDL.h>
 
+#define T_TILE_WIDTH_RATIO 4
+#define T_TILE_HEIGHT_RATIO 5.5
+
 extern const char *T_TILE_PATHS[];
 
 typedef enum {

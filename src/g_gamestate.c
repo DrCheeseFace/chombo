@@ -1,6 +1,7 @@
 #include "g_gamestate.h"
 #include "t_tiles.h"
 #include <stdlib.h>
+#include <string.h>
 
 Uint32 frame_ticks;
 
@@ -28,12 +29,7 @@ struct G_GameState *G_gamestate_create(int target_fps, int window_width,
 	gamestate->seat_wind = T_TILE_TON;
 	gamestate->prevelant_wind = T_TILE_TON;
 
-	gamestate->riichi = false;
-	gamestate->double_riichi = false;
-	gamestate->ippatsu = false;
-	gamestate->haitei = false;
-	gamestate->chankan = false;
-	gamestate->rinshan = false;
+	memset(&gamestate->conditions, 0, sizeof(gamestate->conditions));
 
 	memset(gamestate->handshapes.hands, 0,
 	       sizeof(gamestate->handshapes.hands));
@@ -43,6 +39,9 @@ struct G_GameState *G_gamestate_create(int target_fps, int window_width,
 	memset(gamestate->selected_handshape.groups, 0,
 	       sizeof(gamestate->selected_handshape.groups));
 	gamestate->selected_handshape.group_count = 0;
+
+	gamestate->winning_group_idx = 0;
+	memset(&gamestate->winning_tile, 0, sizeof(gamestate->winning_tile));
 
 	return gamestate;
 }
@@ -199,6 +198,55 @@ void G_group_selector_open_close_toggle(struct G_GameState *gamestate)
 	gamestate->selected_handshape.groups[gamestate->selector_idx].isopen =
 		!gamestate->selected_handshape.groups[gamestate->selector_idx]
 			 .isopen;
+}
+
+int G_selected_handshape_tile_count(HandShape handshape)
+{
+	int tile_count = 0;
+	for (size_t i = 0; i < handshape.group_count; i++) {
+		tile_count += (int)handshape.groups[i].tiles_len;
+	}
+	return tile_count;
+}
+
+void G_winning_tile_selector_decrement(struct G_GameState *gamestate)
+{
+	gamestate->selector_idx--;
+	if (gamestate->selector_idx < 0) {
+		gamestate->selector_idx =
+			G_selected_handshape_tile_count(
+				gamestate->selected_handshape) -
+			1;
+	}
+}
+
+void G_winning_tile_selector_increment(struct G_GameState *gamestate)
+{
+	gamestate->selector_idx++;
+	if (gamestate->selector_idx >=
+	    G_selected_handshape_tile_count(gamestate->selected_handshape)) {
+		gamestate->selector_idx = 0;
+	}
+}
+
+void G_winning_tile_set(struct G_GameState *gamestate)
+{
+	int tile_count = 0;
+	for (int i = 0; i < (int)gamestate->selected_handshape.group_count;
+	     i++) {
+		for (int j = 0;
+		     j < (int)gamestate->selected_handshape.groups[i].tiles_len;
+		     j++) {
+			if (tile_count == gamestate->selector_idx) {
+				gamestate->winning_tile =
+					gamestate->selected_handshape.groups[i]
+						.tiles[j];
+				gamestate->winning_group_idx = i;
+				return;
+			}
+			tile_count++;
+		}
+	}
 }
 
 void G_backtrack_menu(struct G_GameState *gamestate)
