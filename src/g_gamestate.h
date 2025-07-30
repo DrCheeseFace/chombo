@@ -44,18 +44,22 @@ struct G_GameState {
 
 	T_Tile prevelant_wind;
 
-	bool riichi;
-	bool double_riichi;
-	bool ippatsu;
-	bool haitei;
-	bool chankan;
-	bool rinshan;
+	struct {
+		bool riichi;
+		bool double_riichi;
+		bool ippatsu;
+		bool haitei;
+		bool chankan;
+		bool rinshan;
+	} conditions;
 
 	int selector_idx;
 
 	HandShapes handshapes;
 
 	HandShape selected_handshape;
+	int winning_group_idx;
+	Tile winning_tile;
 };
 
 struct G_GameState *G_gamestate_create(int target_fps, int window_width,
@@ -89,6 +93,10 @@ void G_group_selector_increment(struct G_GameState *gamestate);
 
 void G_group_selector_open_close_toggle(struct G_GameState *gamestate);
 
+void G_winning_tile_selector_decrement(struct G_GameState *gamestate);
+
+void G_winning_tile_selector_increment(struct G_GameState *gamestate);
+
 // returns 1 if successful
 int G_calculate_handshapes(struct G_GameState *gamestate);
 
@@ -97,6 +105,8 @@ void G_window_renderer_resize(SDL_Window *sdl_window,
 			      float scale);
 
 void G_selected_handshape_set(struct G_GameState *gamestate);
+
+void G_winning_tile_set(struct G_GameState *gamestate);
 
 void G_backtrack_menu(struct G_GameState *gamestate);
 

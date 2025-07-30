@@ -735,22 +735,28 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 			return false;
 
 		case SDLK_R:
-			gamestate->riichi = !gamestate->riichi;
+			gamestate->conditions.riichi =
+				!gamestate->conditions.riichi;
 			return true;
 		case SDLK_D:
-			gamestate->double_riichi = !gamestate->double_riichi;
+			gamestate->conditions.double_riichi =
+				!gamestate->conditions.double_riichi;
 			return true;
 		case SDLK_I:
-			gamestate->ippatsu = !gamestate->ippatsu;
+			gamestate->conditions.ippatsu =
+				!gamestate->conditions.ippatsu;
 			return true;
 		case SDLK_T:
-			gamestate->haitei = !gamestate->haitei;
+			gamestate->conditions.haitei =
+				!gamestate->conditions.haitei;
 			return true;
 		case SDLK_M:
-			gamestate->chankan = !gamestate->chankan;
+			gamestate->conditions.chankan =
+				!gamestate->conditions.chankan;
 			return true;
 		case SDLK_K:
-			gamestate->rinshan = !gamestate->rinshan;
+			gamestate->conditions.rinshan =
+				!gamestate->conditions.rinshan;
 			return true;
 		case SDLK_RETURN:
 			if (G_calculate_handshapes(gamestate)) {
@@ -809,13 +815,29 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 			G_group_selector_open_close_toggle(gamestate);
 			return true;
 		case SDLK_RETURN:
+			gamestate->selector_idx = 0;
 			gamestate->overlayed_menu =
 				G_OVERLAYED_MENU_WINNING_TILE_SELECTOR;
 			return true;
 		default:
 			break;
 		}
+		break;
 	case G_OVERLAYED_MENU_WINNING_TILE_SELECTOR:
+		switch (key_event.key) {
+		case SDLK_LEFT:
+			G_winning_tile_selector_decrement(gamestate);
+			return true;
+		case SDLK_RIGHT:
+			G_winning_tile_selector_increment(gamestate);
+			return true;
+		case SDLK_RETURN:
+			G_winning_tile_set(gamestate);
+			gamestate->selector_idx = 0;
+			return true;
+		default:
+			break;
+		}
 		break;
 	case G_OVERLAYED_MENU_COUNT:
 		break;

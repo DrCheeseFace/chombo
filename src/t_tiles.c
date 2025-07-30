@@ -64,7 +64,8 @@ bool T_tile_draw(SDL_Renderer *sdl_renderer, T_Tile tile, SDL_Point point,
 		 int scale)
 {
 	// render front of tile no face
-	SDL_FRect tile_rect = { point.x, point.y, scale * 4, scale * 5.5 };
+	SDL_FRect tile_rect = { point.x, point.y, scale * T_TILE_WIDTH_RATIO,
+				scale * T_TILE_HEIGHT_RATIO };
 	SDL_RenderTexture(sdl_renderer, T_TILE_TEXTURES[T_TILE_FRONT], NULL,
 			  &tile_rect);
 
