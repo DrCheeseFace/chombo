@@ -1,7 +1,7 @@
 #include "g_gamestate.h"
 
 bool E_handle_key_down(struct G_GameState *gamestate,
-		       SDL_KeyboardEvent key_event)
+		       SDL_Renderer *sdl_renderer, SDL_KeyboardEvent key_event)
 {
 	//global event type shit
 	switch (key_event.key) {
@@ -720,6 +720,11 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 				   G_SELECTED_MAIN_MENU_OPTION_PREVALENT_WIND) {
 				G_decrement_prevelant_wind(gamestate);
 				return true;
+			} else if (gamestate->selected_main_menu_option ==
+				   G_SELECTED_MAIN_MENU_OPTION_HONBA) {
+				G_increment_honba_counter(gamestate,
+							  sdl_renderer);
+				return true;
 			}
 			return false;
 		case SDLK_LEFT:
@@ -730,6 +735,11 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 			} else if (gamestate->selected_main_menu_option ==
 				   G_SELECTED_MAIN_MENU_OPTION_PREVALENT_WIND) {
 				G_increment_prevelant_wind(gamestate);
+				return true;
+			} else if (gamestate->selected_main_menu_option ==
+				   G_SELECTED_MAIN_MENU_OPTION_HONBA) {
+				G_decrement_honba_counter(gamestate,
+							  sdl_renderer);
 				return true;
 			}
 			return false;
@@ -834,10 +844,13 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 		case SDLK_RETURN:
 			G_winning_tile_set(gamestate);
 			gamestate->selector_idx = 0;
+			gamestate->overlayed_menu = G_OVERLAYED_MENU_SCORE_VIEW;
 			return true;
 		default:
 			break;
 		}
+		break;
+	case G_OVERLAYED_MENU_SCORE_VIEW:
 		break;
 	case G_OVERLAYED_MENU_COUNT:
 		break;
@@ -848,7 +861,8 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 	return false;
 }
 
-bool E_handle_event(struct G_GameState *gamestate, SDL_Event event)
+bool E_handle_event(struct G_GameState *gamestate, SDL_Renderer *sdl_renderer,
+		    SDL_Event event)
 {
 	int redraw;
 	switch (event.type) {
@@ -859,7 +873,7 @@ bool E_handle_event(struct G_GameState *gamestate, SDL_Event event)
 		}
 		return false;
 	case SDL_EVENT_KEY_DOWN:
-		redraw = E_handle_key_down(gamestate, event.key);
+		redraw = E_handle_key_down(gamestate, sdl_renderer, event.key);
 		if (redraw) {
 			G_calculate_handshapes(gamestate);
 			return true;
