@@ -28,7 +28,8 @@ void main_loop(struct G_GameState *gamestate, SDL_Window *sdl_window,
 				quit = 1;
 				break;
 			} else {
-				redraw = E_handle_event(gamestate, event) ||
+				redraw = E_handle_event(gamestate, sdl_renderer,
+							event) ||
 					 redraw;
 			}
 		}

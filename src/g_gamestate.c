@@ -1,7 +1,6 @@
 #include "g_gamestate.h"
-#include "t_tiles.h"
+#include "l_letter.h"
 #include <stdlib.h>
-#include <string.h>
 
 Uint32 frame_ticks;
 
@@ -28,6 +27,8 @@ struct G_GameState *G_gamestate_create(int target_fps, int window_width,
 
 	gamestate->seat_wind = T_TILE_TON;
 	gamestate->prevelant_wind = T_TILE_TON;
+
+	gamestate->honba = 0;
 
 	memset(&gamestate->conditions, 0, sizeof(gamestate->conditions));
 
@@ -89,7 +90,7 @@ void G_decrement_main_menu_selector(struct G_GameState *gamestate)
 	if (gamestate->selected_main_menu_option ==
 	    G_SELECTED_MAIN_MENU_OPTION_HAND) {
 		gamestate->selected_main_menu_option =
-			G_SELECTED_MAIN_MENU_OPTION_PREVALENT_WIND;
+			G_SELECTED_MAIN_MENU_OPTION_COUNT - 1;
 	} else {
 		gamestate->selected_main_menu_option--;
 	}
@@ -277,9 +278,35 @@ void G_backtrack_menu(struct G_GameState *gamestate)
 				G_OVERLAYED_MENU_HANDSHAPE_GROUP_OPEN_CLOSE_SELECTOR;
 		}
 		break;
+	case G_OVERLAYED_MENU_SCORE_VIEW:
+		gamestate->selector_idx = 0;
+		gamestate->overlayed_menu = G_OVERLAYED_MENU_NONE;
+		break;
 	case G_OVERLAYED_MENU_COUNT:
 		break;
 	default:
 		break;
+	}
+}
+
+void G_increment_honba_counter(struct G_GameState *gamestate,
+			       SDL_Renderer *sdl_renderer)
+{
+	if (gamestate->honba != UINT8_MAX) {
+		gamestate->honba++;
+		char honba_str[4] = "";
+		SDL_itoa(gamestate->honba, honba_str, 10);
+		L_rewrite_text(sdl_renderer, L_TEXT_HONBA_COUNT, honba_str);
+	}
+}
+
+void G_decrement_honba_counter(struct G_GameState *gamestate,
+			       SDL_Renderer *sdl_renderer)
+{
+	if (gamestate->honba != 0) {
+		gamestate->honba--;
+		char honba_str[4] = "";
+		SDL_itoa(gamestate->honba, honba_str, 10);
+		L_rewrite_text(sdl_renderer, L_TEXT_HONBA_COUNT, honba_str);
 	}
 }

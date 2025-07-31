@@ -10,6 +10,7 @@ typedef enum {
 	G_SELECTED_MAIN_MENU_OPTION_DORA,
 	G_SELECTED_MAIN_MENU_OPTION_SEAT_WIND,
 	G_SELECTED_MAIN_MENU_OPTION_PREVALENT_WIND,
+	G_SELECTED_MAIN_MENU_OPTION_HONBA,
 	G_SELECTED_MAIN_MENU_OPTION_COUNT,
 } G_SelectedMainMenuOption;
 
@@ -18,6 +19,7 @@ typedef enum {
 	G_OVERLAYED_MENU_HANDSHAPES_SELECTOR,
 	G_OVERLAYED_MENU_HANDSHAPE_GROUP_OPEN_CLOSE_SELECTOR,
 	G_OVERLAYED_MENU_WINNING_TILE_SELECTOR,
+	G_OVERLAYED_MENU_SCORE_VIEW,
 	G_OVERLAYED_MENU_COUNT,
 } G_OverlayedMenu;
 
@@ -35,14 +37,16 @@ struct G_GameState {
 	G_OverlayedMenu overlayed_menu;
 
 	T_Tile hand_tiles[MAX_HAND_TILE_COUNT];
-	int hand_tiles_len;
+	uint8_t hand_tiles_len;
 
 	T_Tile dora_tiles[MAX_DORA_TILE_COUNT];
-	int dora_tiles_len;
+	uint8_t dora_tiles_len;
 
 	T_Tile seat_wind;
 
 	T_Tile prevelant_wind;
+
+	uint8_t honba;
 
 	struct {
 		bool riichi;
@@ -58,7 +62,7 @@ struct G_GameState {
 	HandShapes handshapes;
 
 	HandShape selected_handshape;
-	int winning_group_idx;
+	uint8_t winning_group_idx;
 	Tile winning_tile;
 };
 
@@ -107,6 +111,12 @@ void G_window_renderer_resize(SDL_Window *sdl_window,
 void G_selected_handshape_set(struct G_GameState *gamestate);
 
 void G_winning_tile_set(struct G_GameState *gamestate);
+
+void G_increment_honba_counter(struct G_GameState *gamestate,
+			       SDL_Renderer *sdl_renderer);
+
+void G_decrement_honba_counter(struct G_GameState *gamestate,
+			       SDL_Renderer *sdl_renderer);
 
 void G_backtrack_menu(struct G_GameState *gamestate);
 

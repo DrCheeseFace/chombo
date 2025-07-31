@@ -9,8 +9,8 @@ TTF_TextEngine *text_engine;
 SDL_Color L_COLORS[L_COLOR_COUNT] = {
 	{ UINT8_MAX, UINT8_MAX, UINT8_MAX, UINT8_MAX }, //white
 	{ 0, 0, 0, 0 }, //black
-	{ 255, 0, 0, 0 }, //red
-	{ 0, 255, 0, 0 }, //green
+	{ 255, 0, 0, 255 }, //red
+	{ 0, 255, 0, 255 }, //green
 	{ 0, 0, 255, 0 }, //blue
 	{ 255, 255, 0, 255 }, // yellow
 	{ 255, 0, 255, 255 }, // magenta
@@ -37,16 +37,19 @@ L_Text_Obj L_TEXTS_OBJS[L_TEXT_COUNT] = {
 	{ "m chankan", 80, L_COLOR_WHITE },
 	{ "k rinshan kaihou", 80, L_COLOR_WHITE },
 	{ "space toggle pane", 80, L_COLOR_WHITE },
+
 	{ "Hand", 50, L_COLOR_GREEN },
 	{ "Hand", 50, L_COLOR_WHITE },
 	{ "Valid", 50, L_COLOR_GREEN },
 	{ "Invalid", 50, L_COLOR_YELLOW },
 	{ "Dora", 50, L_COLOR_GREEN },
 	{ "Dora", 50, L_COLOR_WHITE },
+
 	{ "Seat wind", 50, L_COLOR_WHITE },
 	{ "Seat wind", 50, L_COLOR_GREEN },
 	{ "Prevelant wind", 50, L_COLOR_WHITE },
 	{ "Prevelant wind", 50, L_COLOR_GREEN },
+
 	{ "r riichi", 80, L_COLOR_RED },
 	{ "r riichi", 80, L_COLOR_GREEN },
 	{ "d double riichi", 80, L_COLOR_RED },
@@ -59,8 +62,13 @@ L_Text_Obj L_TEXTS_OBJS[L_TEXT_COUNT] = {
 	{ "m chankan", 80, L_COLOR_GREEN },
 	{ "k rinshan kaihou", 80, L_COLOR_RED },
 	{ "k rinshan kaihou", 80, L_COLOR_GREEN },
+
 	{ "open", 100, L_COLOR_GREEN },
 	{ "closed", 100, L_COLOR_YELLOW },
+
+	{ "honba", 80, L_COLOR_RED },
+	{ "honba", 80, L_COLOR_GREEN },
+	{ "0", 100, L_COLOR_WHITE },
 };
 
 SDL_Texture *text_textures[L_TEXT_COUNT];
@@ -114,6 +122,41 @@ bool L_draw(SDL_Renderer *sdl_renderer, L_Text text, SDL_Point point)
 		return true;
 	}
 	return false;
+}
+
+void L_rewrite_text(SDL_Renderer *sdl_renderer, L_Text text_to_change,
+		    char *string_to_replace)
+{
+	L_TEXTS_OBJS[text_to_change].text = string_to_replace;
+
+	TTF_SetFontSize(font, L_TEXTS_OBJS[text_to_change].point_size);
+	TTF_Text *ttf_text = TTF_CreateText(
+		text_engine, font, L_TEXTS_OBJS[text_to_change].text, 0);
+	if (!ttf_text) {
+		fprintf(stderr, "Failed to create text obj\n");
+	}
+	SDL_Surface *text_surface = TTF_RenderText_Solid(
+		font, ttf_text->text, 0,
+		L_COLORS[L_TEXTS_OBJS[text_to_change].color]);
+	if (!text_surface) {
+		fprintf(stderr, "Failed to render text surface\n");
+		TTF_DestroyText(ttf_text);
+	}
+
+	SDL_Texture *tex =
+		SDL_CreateTextureFromSurface(sdl_renderer, text_surface);
+	if (!tex) {
+		fprintf(stderr,
+			"Failed to create text texture from surface: %s\n",
+			SDL_GetError());
+		TTF_DestroyText(ttf_text);
+		SDL_DestroySurface(text_surface);
+	}
+
+	text_textures[text_to_change] = tex;
+
+	SDL_DestroySurface(text_surface);
+	TTF_DestroyText(ttf_text);
 }
 
 void L_destroy(void)

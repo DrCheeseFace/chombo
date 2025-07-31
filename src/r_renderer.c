@@ -1,6 +1,5 @@
 #include "g_gamestate.h"
 #include "l_letter.h"
-#include "t_tiles.h"
 #include <stdio.h>
 
 SDL_Renderer *sdl_renderer;
@@ -10,8 +9,6 @@ float scale;
 SDL_Renderer *R_create(SDL_Window *window, int width, int height)
 {
 	sdl_renderer = SDL_CreateRenderer(window, NULL);
-	/*SDL_SetRenderDrawColor(sdl_renderer, 0, 0, 0, 255);*/
-	/*SDL_RenderClear(sdl_renderer);*/
 
 	screen_width = width;
 	screen_height = height;
@@ -49,6 +46,7 @@ bool R_overlay_menu_window_draw(L_Colors outline_colour)
 
 	if (!SDL_RenderFillRect(sdl_renderer, &outline))
 		return true;
+
 	if (!SDL_SetRenderDrawColor(sdl_renderer,
 				    L_COLORS[L_COLOR_MENU_BACKDROP].r,
 				    L_COLORS[L_COLOR_MENU_BACKDROP].g,
@@ -318,6 +316,23 @@ bool R_conditions_draw(struct G_GameState gamestate)
 	return false;
 }
 
+bool R_honba_draw(struct G_GameState gamestate)
+{
+	if (L_draw(sdl_renderer,
+		   gamestate.selected_main_menu_option ==
+				   G_SELECTED_MAIN_MENU_OPTION_HONBA ?
+			   L_TEXT_HONBA_ON :
+			   L_TEXT_HONBA_OFF,
+		   (struct SDL_Point){ 10, 800 }))
+		return true;
+
+	if (L_draw(sdl_renderer, L_TEXT_HONBA_COUNT,
+		   (struct SDL_Point){ 270, 790 }))
+		return true;
+
+	return false;
+}
+
 bool R_main_menu_draw(struct G_GameState gamestate)
 {
 	if (!SDL_SetRenderDrawBlendMode(sdl_renderer, SDL_BLENDMODE_NONE)) {
@@ -351,6 +366,8 @@ bool R_main_menu_draw(struct G_GameState gamestate)
 	if (R_prevelant_wind_selector_draw(gamestate))
 		return true;
 	if (R_conditions_draw(gamestate))
+		return true;
+	if (R_honba_draw(gamestate))
 		return true;
 
 	return false;
@@ -518,6 +535,14 @@ bool R_winning_tile_selector_draw(struct G_GameState gamestate)
 	return false;
 }
 
+bool R_score_view_draw(struct G_GameState gamestate)
+{
+	if (R_overlay_menu_window_draw(L_COLOR_GREEN))
+		return true;
+	(void)gamestate;
+	return false;
+}
+
 bool R_gamestate_draw(SDL_Renderer *sdl_renderer, SDL_Window *sdl_window,
 		      struct G_GameState gamestate)
 {
@@ -543,6 +568,10 @@ bool R_gamestate_draw(SDL_Renderer *sdl_renderer, SDL_Window *sdl_window,
 		break;
 	case G_OVERLAYED_MENU_WINNING_TILE_SELECTOR:
 		if (R_winning_tile_selector_draw(gamestate))
+			return true;
+		break;
+	case G_OVERLAYED_MENU_SCORE_VIEW:
+		if (R_score_view_draw(gamestate))
 			return true;
 		break;
 	case G_OVERLAYED_MENU_COUNT:
