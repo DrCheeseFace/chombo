@@ -1,0 +1,59 @@
+name: Build and Check
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+
+      - name: Install System Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install build-essential git make \
+          pkg-config cmake ninja-build gnome-desktop-testing libasound2-dev libpulse-dev \
+          libaudio-dev libjack-dev libsndio-dev libx11-dev libxext-dev \
+          libxrandr-dev libxcursor-dev libxfixes-dev libxi-dev libxss-dev libxtst-dev \
+          libxkbcommon-dev libdrm-dev libgbm-dev libgl1-mesa-dev libgles2-mesa-dev \
+          libegl1-mesa-dev libdbus-1-dev libibus-1.0-dev libudev-dev libfreetype-dev\
+          
+                    
+      - name: Build and Install SDL3
+        run: |
+          git clone https://github.com/libsdl-org/SDL.git --branch main
+          cd SDL
+          mkdir build
+          cd build
+          cmake .. -G Ninja
+          ninja
+          sudo ninja install
+          sudo ldconfig
+
+      - name: Build and Install SDL3_ttf
+        run: |
+          git clone https://github.com/libsdl-org/SDL_ttf.git --branch main
+          cd SDL_ttf
+          mkdir build
+          cd build
+          cmake .. -G Ninja
+          ninja
+          sudo ninja install
+          sudo ldconfig
+
+      - name: Install cbindgen
+        run: cargo install cbindgen
+
+      - name: Run Check Command
+        run: make check

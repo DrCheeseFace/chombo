@@ -1,0 +1,39 @@
+#!/bin/bash
+set -e
+command_exists() {
+    command -v "$1" >/dev/null 2>&1
+}
+echo "Configuring the build environment..."
+echo "Checking for required tools..."
+for cmd in gcc cargo cbindgen clang-format bear; do
+    if command_exists "$cmd"; then
+        echo "  [✓] Found $cmd"
+    else
+        echo "  [✗] Error: Required command '$cmd' not found in PATH."
+        echo "Please install it and try again."
+        exit 1
+    fi
+done
+echo "Checking for required libraries..."
+for lib in sdl3 SDL3_ttf; do
+    if pkg-config --exists "$lib"; then
+        echo "  [✓] Found $lib"
+    else
+        echo "  [✗] Error: Required library '$lib' not found."
+        echo "Please install the development package for '$lib' (e.g., libsdl3-dev, libsdl3-ttf-dev) and try again."
+        exit 1
+    fi
+done
+echo "Checking for Rust project (mahc)..."
+if [ ! -f ./mahc/Cargo.toml ]; then
+    echo "  [✗] Error: './mahc/Cargo.toml' not found."
+    echo "Please ensure the 'mahc' Rust library is in the correct directory."
+    exit 1
+else
+    echo "  [✓] Found mahc project"
+fi
+echo "\nConfiguration successful!"
+echo "All dependencies are met. You can now run 'make' to build the project."
+
+exit 0
+
