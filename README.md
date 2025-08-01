@@ -21,7 +21,7 @@ make debug && ./main.out
 - [x] input and deleting tile preview on top
 - [x] settings round conditions menu
 - [x] remove the dastardly typedefs on structs (i was told this will make me a good programmer)
-- [ ] refactor out that disgustingly repeated adding tile logic in `event.c`
+- [x] refactor out that disgustingly repeated adding tile logic in `event.c`
 - [ ] some kinda way to indicate the steps to make backtracking less confusing (maybe layers stacked?)
 - [ ] using mahc for calculate
 - [ ] displaying output

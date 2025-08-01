@@ -310,3 +310,49 @@ void G_decrement_honba_counter(struct G_GameState *gamestate,
 		L_rewrite_text(sdl_renderer, L_TEXT_HONBA_COUNT, honba_str);
 	}
 }
+
+bool G_hand_add_tile(struct G_GameState *gamestate, T_Tile tile)
+{
+	if (gamestate->hand_tiles_len == MAX_HAND_TILE_COUNT) {
+		return false;
+	}
+
+	gamestate->hand_tiles[gamestate->hand_tiles_len] = tile;
+	gamestate->hand_tiles_len++;
+
+	return true;
+}
+
+bool G_hand_delete_tile(struct G_GameState *gamestate)
+{
+	if (gamestate->hand_tiles_len > 0) {
+		gamestate->hand_tiles[gamestate->hand_tiles_len - 1] =
+			T_TILE_BACK;
+		gamestate->hand_tiles_len--;
+		return true;
+	}
+	return false;
+}
+
+bool G_dora_add_tile(struct G_GameState *gamestate, T_Tile tile)
+{
+	if (gamestate->dora_tiles_len == MAX_DORA_TILE_COUNT) {
+		return false;
+	}
+
+	gamestate->dora_tiles[gamestate->dora_tiles_len] = tile;
+	gamestate->dora_tiles_len++;
+
+	return true;
+}
+
+bool G_dora_delete_tile(struct G_GameState *gamestate)
+{
+	if (gamestate->dora_tiles_len > 0) {
+		gamestate->dora_tiles[gamestate->dora_tiles_len - 1] =
+			T_TILE_BACK;
+		gamestate->dora_tiles_len--;
+		return true;
+	}
+	return false;
+}

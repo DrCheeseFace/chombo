@@ -120,4 +120,16 @@ void G_decrement_honba_counter(struct G_GameState *gamestate,
 
 void G_backtrack_menu(struct G_GameState *gamestate);
 
+// returns 1 if requires rerender
+bool G_hand_add_tile(struct G_GameState *gamestate, T_Tile tile);
+
+// returns 1 if requires rerender
+bool G_dora_add_tile(struct G_GameState *gamestate, T_Tile tile);
+
+// returns 1 if requires rerender
+bool G_hand_delete_tile(struct G_GameState *gamestate);
+
+// returns 1 if requires rerender
+bool G_dora_delete_tile(struct G_GameState *gamestate);
+
 #endif // !G_GAMESTATE_H
