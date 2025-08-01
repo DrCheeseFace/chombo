@@ -33,10 +33,10 @@ clean:
 	-rm -f $(MAIN_TARGET) && rm -rf $(MAHC_LIB_PATH)
 
 format: 
-	find ./ -name '*.h' -o -iname '*.c' | xargs clang-format -i --verbose
+	find ./src -name '*.h' -o -iname '*.c' | xargs clang-format -i --verbose
 
 format-check:
-	find ./ -name '*.h' -o -iname '*.c' | xargs clang-format --dry-run --Werror
+	find ./src -name '*.h' -o -iname '*.c' | xargs clang-format --dry-run --Werror
 
 bear: # this is for creating the compile_commands.json file
 	rm -f compile_commands.json && bear -- make build
@@ -49,3 +49,6 @@ build-mahc:
 
 build-mahc-header:
 	cbindgen ./mahc --config cbindgen.toml --output ./src/mahc.h
+
+check: format-check debug
+
