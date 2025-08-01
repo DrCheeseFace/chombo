@@ -4,6 +4,7 @@ command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 echo "Configuring the build environment..."
+echo ""
 echo "Checking for required tools..."
 for cmd in gcc cargo cbindgen clang-format bear; do
     if command_exists "$cmd"; then
@@ -14,16 +15,18 @@ for cmd in gcc cargo cbindgen clang-format bear; do
         exit 1
     fi
 done
+echo ""
 echo "Checking for required libraries..."
-for lib in sdl3 SDL3_ttf; do
+for lib in sdl3 sdl3-ttf; do
     if pkg-config --exists "$lib"; then
         echo "  [✓] Found $lib"
     else
         echo "  [✗] Error: Required library '$lib' not found."
-        echo "Please install the development package for '$lib' (e.g., libsdl3-dev, libsdl3-ttf-dev) and try again."
+        echo "Please install the development package for '$lib'"
         exit 1
     fi
 done
+echo ""
 echo "Checking for Rust project (mahc)..."
 if [ ! -f ./mahc/Cargo.toml ]; then
     echo "  [✗] Error: './mahc/Cargo.toml' not found."
@@ -32,7 +35,8 @@ if [ ! -f ./mahc/Cargo.toml ]; then
 else
     echo "  [✓] Found mahc project"
 fi
-echo "\nConfiguration successful!"
+echo ""
+echo "Configuration successful!"
 echo "All dependencies are met. You can now run 'make' to build the project."
 
 exit 0
