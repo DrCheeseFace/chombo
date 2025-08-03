@@ -1,5 +1,6 @@
 #ifndef G_GAMESTATE_H
 #define G_GAMESTATE_H
+#include "mahc.h"
 #include "t_tiles.h"
 
 #define MAX_HAND_TILE_COUNT 18
@@ -65,6 +66,9 @@ struct G_GameState {
 	HandShape selected_handshape;
 	uint8_t winning_group_idx;
 	Tile winning_tile;
+
+	ScoreResult score_result;
+	bool show_score_err;
 };
 
 struct G_GameState *G_gamestate_create(int target_fps, int window_width,
@@ -102,8 +106,8 @@ void G_winning_tile_selector_decrement(struct G_GameState *gamestate);
 
 void G_winning_tile_selector_increment(struct G_GameState *gamestate);
 
-// returns 1 if successful
-int G_calculate_handshapes(struct G_GameState *gamestate);
+// returns true (1) if successful
+bool G_calculate_handshapes(struct G_GameState *gamestate);
 
 void G_window_renderer_resize(SDL_Window *sdl_window,
 			      SDL_Renderer *sdl_renderer, int width, int height,
@@ -121,18 +125,19 @@ void G_decrement_honba_counter(struct G_GameState *gamestate,
 
 void G_backtrack_menu(struct G_GameState *gamestate);
 
-// returns 1 if requires rerender
+// returns true (1) if requires rerender
 bool G_hand_add_tile(struct G_GameState *gamestate, T_Tile tile);
 
-// returns 1 if requires rerender
+// returns true (1) if requires rerender
 bool G_dora_add_tile(struct G_GameState *gamestate, T_Tile tile);
 
-// returns 1 if requires rerender
+// returns true (1) if requires rerender
 bool G_hand_delete_tile(struct G_GameState *gamestate);
 
-// returns 1 if requires rerender
+// returns true (1) if requires rerender
 bool G_dora_delete_tile(struct G_GameState *gamestate);
 
-void G_calculate(struct G_GameState gamestate);
+// returns true (1) if successful
+bool G_calculate_score(struct G_GameState *gamestate);
 
 #endif // !G_GAMESTATE_H

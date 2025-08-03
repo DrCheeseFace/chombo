@@ -582,6 +582,8 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 		case SDLK_RETURN:
 			G_winning_tile_set(gamestate);
 			gamestate->selector_idx = 0;
+			gamestate->show_score_err =
+				!G_calculate_score(gamestate);
 			gamestate->overlayed_menu = G_OVERLAYED_MENU_SCORE_VIEW;
 			return true;
 		default:
@@ -590,9 +592,6 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 		break;
 	case G_OVERLAYED_MENU_SCORE_VIEW:
 		switch (key_event.key) {
-		case SDLK_C:
-			G_calculate(*gamestate);
-			break;
 		default:
 			break;
 		}

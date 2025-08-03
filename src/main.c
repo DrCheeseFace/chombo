@@ -3,10 +3,12 @@
 #include "r_renderer.h"
 #include "w_window.h"
 #include <SDL3_ttf/SDL_ttf.h>
+#include <float.h>
+#include <math.h>
 
 #define WINDOW_WIDTH 1600
 #define WINDOW_HEIGHT 1000
-#define WINDOW_SCALE 0.5
+#define WINDOW_SCALE (float)0.5
 #define TARGET_FPS 35
 
 void main_loop(struct G_GameState *gamestate, SDL_Window *sdl_window,
@@ -19,8 +21,7 @@ void main_loop(struct G_GameState *gamestate, SDL_Window *sdl_window,
 		G_frame_start(gamestate);
 
 		if (redraw) {
-			redraw = R_gamestate_draw(sdl_renderer, sdl_window,
-						  *gamestate);
+			redraw = R_gamestate_draw(sdl_window, *gamestate);
 		}
 
 		while (SDL_PollEvent(&event)) {
@@ -47,7 +48,7 @@ int main(void)
 	SDL_Renderer *sdl_renderer =
 		R_create(sdl_window, gamestate->window_w, gamestate->window_h);
 
-	if (WINDOW_SCALE != 1) {
+	if (fabsf(WINDOW_SCALE - 1) >= FLT_EPSILON) {
 		G_window_renderer_resize(sdl_window, sdl_renderer,
 					 gamestate->window_w,
 					 gamestate->window_h, gamestate->scale);
@@ -58,7 +59,7 @@ int main(void)
 	main_loop(gamestate, sdl_window, sdl_renderer);
 
 	L_destroy();
-	R_destroy(sdl_renderer);
+	R_destroy();
 	W_destroy(sdl_window);
 	G_destroy(gamestate);
 

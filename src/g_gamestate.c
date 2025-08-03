@@ -1,8 +1,6 @@
 #include "g_gamestate.h"
 #include "l_letter.h"
 #include "mahc.h"
-#include "t_tiles.h"
-#include <stdint.h>
 #include <stdlib.h>
 
 Uint32 frame_ticks;
@@ -46,6 +44,9 @@ struct G_GameState *G_gamestate_create(int target_fps, int window_width,
 
 	gamestate->winning_group_idx = 0;
 	memset(&gamestate->winning_tile, 0, sizeof(gamestate->winning_tile));
+
+	memset(&gamestate->score_result, 0, sizeof(gamestate->score_result));
+	gamestate->show_score_err = false;
 
 	return gamestate;
 }
@@ -135,7 +136,7 @@ void G_decrement_prevelant_wind(struct G_GameState *gamestate)
 	}
 }
 
-int G_calculate_handshapes(struct G_GameState *gamestate)
+bool G_calculate_handshapes(struct G_GameState *gamestate)
 {
 	char tiles[(MAX_HAND_TILE_COUNT * 3) + 1] = "";
 
@@ -150,11 +151,11 @@ int G_calculate_handshapes(struct G_GameState *gamestate)
 	if (x != NULL) {
 		gamestate->handshapes = *x;
 		C_free_hand_shapes(x);
-		return 1;
+		return true;
 	} else {
 		gamestate->handshapes.hands_len = 0;
 	}
-	return 0;
+	return false;
 }
 
 void G_decrement_handshape_selector(struct G_GameState *gamestate)
@@ -360,40 +361,51 @@ bool G_dora_delete_tile(struct G_GameState *gamestate)
 	return false;
 }
 
-void G_calculate(struct G_GameState gamestate)
+bool G_calculate_score(struct G_GameState *gamestate)
 {
 	Tile seat_wind;
-	T_ttile_to_mtile(gamestate.seat_wind, &seat_wind);
+	T_ttile_to_mtile(gamestate->seat_wind, &seat_wind);
 
 	Tile prevelant_wind;
-	T_ttile_to_mtile(gamestate.prevelant_wind, &prevelant_wind);
+	T_ttile_to_mtile(gamestate->prevelant_wind, &prevelant_wind);
 
 	Tile dora_tiles[MAX_DORA_TILE_COUNT];
-	for (int i = 0; i < gamestate.dora_tiles_len; i++) {
-		T_ttile_to_mtile(gamestate.dora_tiles[i], &dora_tiles[i]);
+	for (int i = 0; i < gamestate->dora_tiles_len; i++) {
+		T_ttile_to_mtile(gamestate->dora_tiles[i], &dora_tiles[i]);
 	}
 
 	struct Conditions conditions = {
-		.handshape = gamestate.selected_handshape,
-		.win_tile = gamestate.winning_tile,
-		.winning_group_idx = gamestate.winning_group_idx,
-		.tsumo = gamestate.conditions.tsumo,
-		.riichi = gamestate.conditions.riichi,
-		.double_riichi = gamestate.conditions.double_riichi,
-		.ippatsu = gamestate.conditions.ippatsu,
-		.haitei = gamestate.conditions.haitei,
-		.chankan = gamestate.conditions.chankan,
-		.rinshan = gamestate.conditions.rinshan,
-		.tenhou = gamestate.conditions.tenhou,
-		.honba = gamestate.honba,
+		.handshape = gamestate->selected_handshape,
+		.win_tile = gamestate->winning_tile,
+		.winning_group_idx = gamestate->winning_group_idx,
+		.tsumo = gamestate->conditions.tsumo,
+		.riichi = gamestate->conditions.riichi,
+		.double_riichi = gamestate->conditions.double_riichi,
+		.ippatsu = gamestate->conditions.ippatsu,
+		.haitei = gamestate->conditions.haitei,
+		.chankan = gamestate->conditions.chankan,
+		.rinshan = gamestate->conditions.rinshan,
+		.tenhou = gamestate->conditions.tenhou,
+		.honba = gamestate->honba,
 		.seat_wind = seat_wind,
 		.prev_wind = prevelant_wind,
 		.dora_tiles = dora_tiles,
-		.dora_tiles_len = gamestate.dora_tiles_len,
+		.dora_tiles_len = gamestate->dora_tiles_len,
 	};
 
 	struct ScoreResult *score = C_get_hand_score(conditions);
+	gamestate->score_result = *score;
 	C_free_score_result(score);
 
-	(void)score;
+	switch (gamestate->score_result.error.tag) {
+	case FfiResult_Ok:
+		return true;
+		break;
+	case FfiResult_Err:
+		return false;
+		break;
+	default:
+		return false;
+		break;
+	}
 }

@@ -1,5 +1,7 @@
 #include "g_gamestate.h"
 #include "l_letter.h"
+#include <float.h>
+#include <math.h>
 #include <stdio.h>
 
 SDL_Renderer *sdl_renderer;
@@ -19,7 +21,7 @@ SDL_Renderer *R_create(SDL_Window *window, int width, int height)
 	return sdl_renderer;
 }
 
-void R_destroy(SDL_Renderer *sdl_renderer)
+void R_destroy(void)
 {
 	T_tiles_destroy();
 	SDL_DestroyRenderer(sdl_renderer);
@@ -556,10 +558,9 @@ bool R_score_view_draw(struct G_GameState gamestate)
 	return false;
 }
 
-bool R_gamestate_draw(SDL_Renderer *sdl_renderer, SDL_Window *sdl_window,
-		      struct G_GameState gamestate)
+bool R_gamestate_draw(SDL_Window *sdl_window, struct G_GameState gamestate)
 {
-	if (gamestate.scale != scale) {
+	if (fabsf(gamestate.scale - scale) >= FLT_EPSILON) {
 		G_window_renderer_resize(sdl_window, sdl_renderer,
 					 gamestate.window_w, gamestate.window_h,
 					 gamestate.scale);

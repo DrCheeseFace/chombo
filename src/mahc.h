@@ -286,6 +286,11 @@ typedef uint32_t HanValue;
  */
 typedef uint64_t FuValue;
 
+/*
+ Number of points players pay to the winner.
+ */
+typedef uint64_t Points;
+
 typedef struct ScoreInfo {
 	const enum Yaku *yaku;
 	size_t yaku_len;
@@ -293,6 +298,11 @@ typedef struct ScoreInfo {
 	size_t fu_len;
 	HanValue han_score;
 	FuValue fu_score;
+	Points dealer_ron;
+	Points dealer_tsumo;
+	Points non_dealer_ron;
+	Points non_dealer_tsumo_dealer;
+	Points non_dealer_tsumo_non_dealer;
 } ScoreInfo;
 
 typedef struct ScoreResult {
