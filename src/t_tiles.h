@@ -61,11 +61,14 @@ typedef enum {
 
 extern const char *T_TILE_NOTATION[T_TILE_COUNT];
 
-// returns true if failed and requires a redraw
+// returns true (1) if failed and requires a redraw
 bool T_tile_draw(SDL_Renderer *sdl_renderer, T_Tile tile, SDL_Point point,
 		 int scale);
 
 T_Tile T_mtile_to_ttile(Tile tile);
+
+// return false (0) if successfull
+bool T_ttile_to_mtile(T_Tile tile, Tile *mtile);
 
 void T_tiles_init(SDL_Renderer *sdl_renderer);
 

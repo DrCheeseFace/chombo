@@ -80,7 +80,7 @@ typedef enum {
 
 void L_init(SDL_Renderer *sdl_renderer);
 
-// returns 0 if successful
+// returns false (0) if successful
 bool L_draw(SDL_Renderer *sdl_renderer, L_Text text, SDL_Point point);
 
 void L_rewrite_text(SDL_Renderer *sdl_renderer, L_Text text_to_change,

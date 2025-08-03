@@ -94,3 +94,27 @@ T_Tile T_mtile_to_ttile(Tile tile)
 		return T_TILE_BLANK;
 	}
 }
+
+// rickerty mf right here
+bool T_ttile_to_mtile(T_Tile tile, Tile *mtile)
+{
+	if (tile >= T_TILE_MAN1 && tile <= T_TILE_MAN9) {
+		mtile->tag = Tile_Man;
+		mtile->man = tile - T_TILE_MAN1;
+	} else if (tile >= T_TILE_PIN1 && tile <= T_TILE_PIN9) {
+		mtile->tag = Tile_Pin;
+		mtile->pin = tile - T_TILE_PIN1;
+	} else if (tile >= T_TILE_SOU1 && tile <= T_TILE_SOU9) {
+		mtile->tag = Tile_Sou;
+		mtile->sou = tile - T_TILE_SOU1;
+	} else if (tile >= T_TILE_TON && tile <= T_TILE_PEI) {
+		mtile->tag = Tile_Wind;
+		mtile->wind = tile - T_TILE_TON;
+	} else if (tile >= T_TILE_CHUN && tile <= T_TILE_HAKU) {
+		mtile->tag = Tile_Dragon;
+		mtile->dragon = tile - T_TILE_CHUN;
+	} else {
+		return true;
+	}
+	return false;
+}

@@ -153,6 +153,10 @@ void L_rewrite_text(SDL_Renderer *sdl_renderer, L_Text text_to_change,
 		SDL_DestroySurface(text_surface);
 	}
 
+	if (text_textures[text_to_change] != NULL) {
+		SDL_DestroyTexture(text_textures[text_to_change]);
+	}
+
 	text_textures[text_to_change] = tex;
 
 	SDL_DestroySurface(text_surface);
