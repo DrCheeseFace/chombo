@@ -3,7 +3,6 @@
 #include "t_tiles.h"
 
 #define MAX_HAND_TILE_COUNT 18
-#define MAX_DORA_TILE_COUNT 13
 
 typedef enum {
 	G_SELECTED_MAIN_MENU_OPTION_HAND = 0,
@@ -49,12 +48,14 @@ struct G_GameState {
 	uint8_t honba;
 
 	struct {
+		bool tsumo;
 		bool riichi;
 		bool double_riichi;
 		bool ippatsu;
 		bool haitei;
 		bool chankan;
 		bool rinshan;
+		bool tenhou;
 	} conditions;
 
 	int selector_idx;
@@ -131,5 +132,7 @@ bool G_hand_delete_tile(struct G_GameState *gamestate);
 
 // returns 1 if requires rerender
 bool G_dora_delete_tile(struct G_GameState *gamestate);
+
+void G_calculate(struct G_GameState gamestate);
 
 #endif // !G_GAMESTATE_H

@@ -275,7 +275,13 @@ bool R_prevelant_wind_selector_draw(struct G_GameState gamestate)
 
 bool R_conditions_draw(struct G_GameState gamestate)
 {
-	int y = 373;
+	int y = 330;
+	if (L_draw(sdl_renderer,
+		   gamestate.conditions.tsumo ? L_TEXT_CONDITION_TSUMO_ON :
+						L_TEXT_CONDITION_TSUMO_OFF,
+		   (struct SDL_Point){ 500, y }))
+		return true;
+	y += 80;
 	if (L_draw(sdl_renderer,
 		   gamestate.conditions.riichi ? L_TEXT_CONDITION_RIICHI_ON :
 						 L_TEXT_CONDITION_RIICHI_OFF,
@@ -310,6 +316,13 @@ bool R_conditions_draw(struct G_GameState gamestate)
 	if (L_draw(sdl_renderer,
 		   gamestate.conditions.rinshan ? L_TEXT_CONDITION_RINSHAN_ON :
 						  L_TEXT_CONDITION_RINSHAN_OFF,
+		   (struct SDL_Point){ 500, y }))
+		return true;
+	y += 80;
+
+	if (L_draw(sdl_renderer,
+		   gamestate.conditions.tenhou ? L_TEXT_CONDITION_TENHOU_ON :
+						 L_TEXT_CONDITION_TENHOU_OFF,
 		   (struct SDL_Point){ 500, y }))
 		return true;
 

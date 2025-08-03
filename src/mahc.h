@@ -5,6 +5,7 @@
 
 #include <stdbool.h>
 #include <stddef.h>
+#include <stdint.h>
 
 #define AKAFIVE_VALUE '0'
 
@@ -25,6 +26,8 @@
 #define GREEN_VALUE_Z '6'
 
 #define MAN_SUIT_CHAR 'm'
+
+#define MAX_DORA_TILE_COUNT 13
 
 #define MAX_GROUPS_PER_HAND 14
 
@@ -102,6 +105,14 @@ typedef enum GroupType {
 	GroupType_Pair,
 	GroupType_None,
 } GroupType;
+
+typedef enum HandErr {
+	HandErr_InvalidGroup,
+	HandErr_InvalidSuit,
+	HandErr_InvalidShape,
+	HandErr_InvalidTile,
+	HandErr_ParseErr,
+} HandErr;
 
 typedef enum MpsValue {
 	MpsValue_One = 0,
@@ -224,7 +235,95 @@ typedef struct HandShapes {
 	size_t hands_len;
 } HandShapes;
 
+typedef enum CalcErr_Tag {
+	CalcErr_HandErr,
+	CalcErr_NoHandTiles,
+	CalcErr_NoWinTile,
+	CalcErr_DuplicateRiichi,
+	CalcErr_IppatsuWithoutRiichi,
+	CalcErr_DoubleRiichiHaiteiIppatsu,
+	CalcErr_DoubleRiichiHaiteiChankan,
+	CalcErr_ChankanTsumo,
+	CalcErr_RinshanKanWithoutKan,
+	CalcErr_RinshanWithoutTsumo,
+	CalcErr_RinshanIppatsu,
+	CalcErr_NoHan,
+	CalcErr_NoFu,
+	CalcErr_NoYaku,
+	CalcErr_NoHandshapesFound,
+} CalcErr_Tag;
+
+typedef struct CalcErr {
+	CalcErr_Tag tag;
+	union {
+		struct {
+			enum HandErr hand_err;
+		};
+	};
+} CalcErr;
+
+typedef enum FfiResult_Tag {
+	FfiResult_Ok,
+	FfiResult_Err,
+} FfiResult_Tag;
+
+typedef struct FfiResult {
+	FfiResult_Tag tag;
+	union {
+		struct {
+			struct CalcErr err;
+		};
+	};
+} FfiResult;
+
+/*
+ Han value.
+ */
+typedef uint32_t HanValue;
+
+/*
+ Fu (minipoints) value.
+ */
+typedef uint64_t FuValue;
+
+typedef struct ScoreInfo {
+	const enum Yaku *yaku;
+	size_t yaku_len;
+	const enum Fu *fu;
+	size_t fu_len;
+	HanValue han_score;
+	FuValue fu_score;
+} ScoreInfo;
+
+typedef struct ScoreResult {
+	struct FfiResult error;
+	struct ScoreInfo score_info;
+} ScoreResult;
+
+typedef struct Conditions {
+	struct HandShape handshape;
+	struct Tile win_tile;
+	struct Tile seat_wind;
+	struct Tile prev_wind;
+	const struct Tile *dora_tiles;
+	size_t dora_tiles_len;
+	size_t winning_group_idx;
+	bool tsumo;
+	bool riichi;
+	bool double_riichi;
+	bool ippatsu;
+	bool haitei;
+	bool chankan;
+	bool rinshan;
+	bool tenhou;
+	uint8_t honba;
+} Conditions;
+
 void C_free_hand_shapes(struct HandShapes *ptr);
+
+void C_free_score_result(struct ScoreResult *result);
+
+struct ScoreResult *C_get_hand_score(struct Conditions conditions);
 
 struct HandShapes *C_get_valid_hand_shapes(const char *tiles_string);
 

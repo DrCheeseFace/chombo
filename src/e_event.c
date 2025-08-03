@@ -10,13 +10,13 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 		gamestate->show_help = true;
 		return true;
 	case SDLK_EQUALS:
-		if (key_event.mod == SDL_KMOD_SHIFT) {
+		if (key_event.mod | SDL_KMOD_SHIFT) {
 			gamestate->scale += 0.1;
 			return true;
 		}
 		break;
 	case SDLK_MINUS:
-		if (key_event.mod == SDL_KMOD_SHIFT) {
+		if (key_event.mod | SDL_KMOD_SHIFT) {
 			gamestate->scale -= 0.1;
 			return true;
 		}
@@ -474,6 +474,10 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 			}
 			return false;
 
+		case SDLK_T:
+			gamestate->conditions.tsumo =
+				!gamestate->conditions.tsumo;
+			return true;
 		case SDLK_R:
 			gamestate->conditions.riichi =
 				!gamestate->conditions.riichi;
@@ -486,7 +490,7 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 			gamestate->conditions.ippatsu =
 				!gamestate->conditions.ippatsu;
 			return true;
-		case SDLK_T:
+		case SDLK_Z:
 			gamestate->conditions.haitei =
 				!gamestate->conditions.haitei;
 			return true;
@@ -497,6 +501,10 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 		case SDLK_K:
 			gamestate->conditions.rinshan =
 				!gamestate->conditions.rinshan;
+			return true;
+		case SDLK_U:
+			gamestate->conditions.tenhou =
+				!gamestate->conditions.tenhou;
 			return true;
 		case SDLK_RETURN:
 			if (G_calculate_handshapes(gamestate)) {
@@ -581,6 +589,13 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 		}
 		break;
 	case G_OVERLAYED_MENU_SCORE_VIEW:
+		switch (key_event.key) {
+		case SDLK_C:
+			G_calculate(*gamestate);
+			break;
+		default:
+			break;
+		}
 		break;
 	case G_OVERLAYED_MENU_COUNT:
 		break;

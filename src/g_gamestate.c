@@ -1,5 +1,8 @@
 #include "g_gamestate.h"
 #include "l_letter.h"
+#include "mahc.h"
+#include "t_tiles.h"
+#include <stdint.h>
 #include <stdlib.h>
 
 Uint32 frame_ticks;
@@ -355,4 +358,42 @@ bool G_dora_delete_tile(struct G_GameState *gamestate)
 		return true;
 	}
 	return false;
+}
+
+void G_calculate(struct G_GameState gamestate)
+{
+	Tile seat_wind;
+	T_ttile_to_mtile(gamestate.seat_wind, &seat_wind);
+
+	Tile prevelant_wind;
+	T_ttile_to_mtile(gamestate.prevelant_wind, &prevelant_wind);
+
+	Tile dora_tiles[MAX_DORA_TILE_COUNT];
+	for (int i = 0; i < gamestate.dora_tiles_len; i++) {
+		T_ttile_to_mtile(gamestate.dora_tiles[i], &dora_tiles[i]);
+	}
+
+	struct Conditions conditions = {
+		.handshape = gamestate.selected_handshape,
+		.win_tile = gamestate.winning_tile,
+		.winning_group_idx = gamestate.winning_group_idx,
+		.tsumo = gamestate.conditions.tsumo,
+		.riichi = gamestate.conditions.riichi,
+		.double_riichi = gamestate.conditions.double_riichi,
+		.ippatsu = gamestate.conditions.ippatsu,
+		.haitei = gamestate.conditions.haitei,
+		.chankan = gamestate.conditions.chankan,
+		.rinshan = gamestate.conditions.rinshan,
+		.tenhou = gamestate.conditions.tenhou,
+		.honba = gamestate.honba,
+		.seat_wind = seat_wind,
+		.prev_wind = prevelant_wind,
+		.dora_tiles = dora_tiles,
+		.dora_tiles_len = gamestate.dora_tiles_len,
+	};
+
+	struct ScoreResult *score = C_get_hand_score(conditions);
+	C_free_score_result(score);
+
+	(void)score;
 }

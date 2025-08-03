@@ -50,5 +50,5 @@ build-mahc:
 build-mahc-header:
 	cbindgen ./mahc --config cbindgen.toml --output ./src/mahc.h
 
-check: format-check debug
+check: format-check debug format
 
