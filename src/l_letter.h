@@ -21,6 +21,7 @@ typedef struct {
 	const char *text;
 	int point_size;
 	L_Colors color;
+	int wraplength;
 } L_Text_Obj;
 
 typedef enum {
@@ -79,6 +80,9 @@ typedef enum {
 	L_TEXT_HONBA_ON,
 	L_TEXT_HONBA_COUNT,
 
+	L_TEXT_ERR_HEADER,
+	L_TEXT_ERR_MESSAGE,
+
 	L_TEXT_COUNT,
 } L_Text;
 
@@ -89,6 +93,10 @@ bool L_draw(SDL_Renderer *sdl_renderer, L_Text text, SDL_Point point);
 
 void L_rewrite_text(SDL_Renderer *sdl_renderer, L_Text text_to_change,
 		    char *string_to_replace);
+
+int L_text_width(L_Text text);
+
+int L_text_height(L_Text text);
 
 void L_destroy(void);
 

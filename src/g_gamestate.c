@@ -1,6 +1,5 @@
 #include "g_gamestate.h"
 #include "l_letter.h"
-#include "mahc.h"
 #include <stdlib.h>
 
 Uint32 frame_ticks;

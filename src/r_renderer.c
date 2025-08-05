@@ -1,5 +1,7 @@
 #include "g_gamestate.h"
 #include "l_letter.h"
+#include "mahc.h"
+#include "util.h"
 #include <float.h>
 #include <math.h>
 #include <stdio.h>
@@ -554,7 +556,38 @@ bool R_score_view_draw(struct G_GameState gamestate)
 {
 	if (R_overlay_menu_window_draw(L_COLOR_GREEN))
 		return true;
-	(void)gamestate;
+
+	if (gamestate.score_result.error.tag == FfiResult_Err) {
+		char *err_message = C_get_err_message_from_result(
+			gamestate.score_result.error);
+		L_rewrite_text(sdl_renderer, L_TEXT_ERR_MESSAGE, err_message);
+		C_free_c_string(err_message);
+
+		if (L_draw(sdl_renderer, L_TEXT_ERR_HEADER,
+			   (struct SDL_Point){
+				   (WINDOW_WIDTH -
+				    L_text_width(L_TEXT_ERR_HEADER)) /
+					   2,
+				   (WINDOW_HEIGHT -
+				    L_text_height(L_TEXT_ERR_HEADER)) /
+					   5,
+			   }))
+			return true;
+
+		if (L_draw(sdl_renderer, L_TEXT_ERR_MESSAGE,
+			   (struct SDL_Point){
+				   (WINDOW_WIDTH -
+				    L_text_width(L_TEXT_ERR_MESSAGE)) /
+					   2,
+				   (WINDOW_HEIGHT -
+				    L_text_height(L_TEXT_ERR_MESSAGE)) /
+					   2,
+			   }))
+			return true;
+
+		return false;
+	}
+
 	return false;
 }
 

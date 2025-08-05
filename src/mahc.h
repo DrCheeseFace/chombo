@@ -329,9 +329,13 @@ typedef struct Conditions {
 	uint8_t honba;
 } Conditions;
 
+void C_free_c_string(char *result);
+
 void C_free_hand_shapes(struct HandShapes *ptr);
 
 void C_free_score_result(struct ScoreResult *result);
+
+char *C_get_err_message_from_result(struct FfiResult ffi_result);
 
 struct ScoreResult *C_get_hand_score(struct Conditions conditions);
 

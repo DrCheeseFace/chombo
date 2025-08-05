@@ -1,15 +1,11 @@
 #include "e_event.h"
 #include "l_letter.h"
 #include "r_renderer.h"
+#include "util.h"
 #include "w_window.h"
 #include <SDL3_ttf/SDL_ttf.h>
 #include <float.h>
 #include <math.h>
-
-#define WINDOW_WIDTH 1600
-#define WINDOW_HEIGHT 1000
-#define WINDOW_SCALE (float)0.5
-#define TARGET_FPS 35
 
 void main_loop(struct G_GameState *gamestate, SDL_Window *sdl_window,
 	       SDL_Renderer *sdl_renderer)
