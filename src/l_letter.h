@@ -2,6 +2,7 @@
 #define L_LETTER_H
 
 #include <SDL3/SDL.h>
+#include <SDL3_ttf/SDL_ttf.h>
 
 typedef enum {
 	L_COLOR_WHITE = 0,
@@ -22,6 +23,7 @@ typedef struct {
 	int point_size;
 	L_Colors color;
 	int wraplength;
+	enum TTF_HorizontalAlignment align;
 } L_Text_Obj;
 
 typedef enum {
@@ -83,16 +85,30 @@ typedef enum {
 	L_TEXT_ERR_HEADER,
 	L_TEXT_ERR_MESSAGE,
 
+	L_TEXT_YAKU,
+	L_TEXT_FU,
+
 	L_TEXT_COUNT,
 } L_Text;
 
 void L_init(SDL_Renderer *sdl_renderer);
 
 // returns false (0) if successful
-bool L_draw(SDL_Renderer *sdl_renderer, L_Text text, SDL_Point point);
+bool L_draw_text(L_Text text, SDL_Point point);
 
 void L_rewrite_text(SDL_Renderer *sdl_renderer, L_Text text_to_change,
 		    char *string_to_replace);
+
+/**
+ * dont forget to destory me using SDL_DestroyTexture! 
+ * 
+ * used for naughty dynamically allocated text
+ *
+ * \return NULL if failed
+ *
+ */
+SDL_Texture *L_texture_from_text_obj(SDL_Renderer *sdl_renderer,
+				     L_Text_Obj text_obj);
 
 int L_text_width(L_Text text);
 

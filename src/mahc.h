@@ -29,9 +29,13 @@
 
 #define MAX_DORA_TILE_COUNT 13
 
+#define MAX_FU_COUNT 20
+
 #define MAX_GROUPS_PER_HAND 14
 
 #define MAX_HAND_SHAPES 4
+
+#define MAX_YAKU_COUNT 20
 
 #define NINE_VALUE '9'
 
@@ -189,6 +193,47 @@ typedef enum Yaku {
 
 typedef struct TileGroup TileGroup;
 
+typedef enum CalcErr_Tag {
+	CalcErr_HandErr,
+	CalcErr_NoHandTiles,
+	CalcErr_NoWinTile,
+	CalcErr_DuplicateRiichi,
+	CalcErr_IppatsuWithoutRiichi,
+	CalcErr_DoubleRiichiHaiteiIppatsu,
+	CalcErr_DoubleRiichiHaiteiChankan,
+	CalcErr_ChankanTsumo,
+	CalcErr_RinshanKanWithoutKan,
+	CalcErr_RinshanWithoutTsumo,
+	CalcErr_RinshanIppatsu,
+	CalcErr_NoHan,
+	CalcErr_NoFu,
+	CalcErr_NoYaku,
+	CalcErr_NoHandshapesFound,
+} CalcErr_Tag;
+
+typedef struct CalcErr {
+	CalcErr_Tag tag;
+	union {
+		struct {
+			enum HandErr hand_err;
+		};
+	};
+} CalcErr;
+
+typedef enum FfiResult_Tag {
+	FfiResult_Ok,
+	FfiResult_Err,
+} FfiResult_Tag;
+
+typedef struct FfiResult {
+	FfiResult_Tag tag;
+	union {
+		struct {
+			struct CalcErr err;
+		};
+	};
+} FfiResult;
+
 typedef enum Tile_Tag {
 	Tile_Man,
 	Tile_Pin,
@@ -235,47 +280,6 @@ typedef struct HandShapes {
 	size_t hands_len;
 } HandShapes;
 
-typedef enum CalcErr_Tag {
-	CalcErr_HandErr,
-	CalcErr_NoHandTiles,
-	CalcErr_NoWinTile,
-	CalcErr_DuplicateRiichi,
-	CalcErr_IppatsuWithoutRiichi,
-	CalcErr_DoubleRiichiHaiteiIppatsu,
-	CalcErr_DoubleRiichiHaiteiChankan,
-	CalcErr_ChankanTsumo,
-	CalcErr_RinshanKanWithoutKan,
-	CalcErr_RinshanWithoutTsumo,
-	CalcErr_RinshanIppatsu,
-	CalcErr_NoHan,
-	CalcErr_NoFu,
-	CalcErr_NoYaku,
-	CalcErr_NoHandshapesFound,
-} CalcErr_Tag;
-
-typedef struct CalcErr {
-	CalcErr_Tag tag;
-	union {
-		struct {
-			enum HandErr hand_err;
-		};
-	};
-} CalcErr;
-
-typedef enum FfiResult_Tag {
-	FfiResult_Ok,
-	FfiResult_Err,
-} FfiResult_Tag;
-
-typedef struct FfiResult {
-	FfiResult_Tag tag;
-	union {
-		struct {
-			struct CalcErr err;
-		};
-	};
-} FfiResult;
-
 /*
  Han value.
  */
@@ -292,9 +296,10 @@ typedef uint64_t FuValue;
 typedef uint64_t Points;
 
 typedef struct ScoreInfo {
-	const enum Yaku *yaku;
+	bool is_open;
+	enum Yaku yaku[MAX_YAKU_COUNT];
 	size_t yaku_len;
-	const enum Fu *fu;
+	enum Fu fu[MAX_FU_COUNT];
 	size_t fu_len;
 	HanValue han_score;
 	FuValue fu_score;
@@ -329,16 +334,20 @@ typedef struct Conditions {
 	uint8_t honba;
 } Conditions;
 
+char *C_calc_err_string(struct FfiResult ffi_result);
+
 void C_free_c_string(char *result);
 
 void C_free_hand_shapes(struct HandShapes *ptr);
 
 void C_free_score_result(struct ScoreResult *result);
 
-char *C_get_err_message_from_result(struct FfiResult ffi_result);
+char *C_fu_string(enum Fu fu);
 
 struct ScoreResult *C_get_hand_score(struct Conditions conditions);
 
 struct HandShapes *C_get_valid_hand_shapes(const char *tiles_string);
+
+char *C_yaku_string(enum Yaku yaku, bool is_open);
 
 #endif /* M_MAHC_H */

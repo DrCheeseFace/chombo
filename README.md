@@ -23,6 +23,7 @@ make debug && ./main.out
 - [x] remove the dastardly typedefs on structs (i was told this will make me a good programmer)
 - [x] refactor out that disgustingly repeated adding tile logic in `event.c`
 - [ ] move points of text to `L_letter.c`? since none of em move
+- [ ] some way to do normalized pointsize for text 
 - [ ] some kinda way to indicate the steps to make backtracking less confusing (maybe layers stacked?)
 - [ ] using mahc for calculate
 - [ ] displaying output

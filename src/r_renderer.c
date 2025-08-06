@@ -4,7 +4,9 @@
 #include "util.h"
 #include <float.h>
 #include <math.h>
+#include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 SDL_Renderer *sdl_renderer;
 int screen_width, screen_height;
@@ -27,6 +29,20 @@ void R_destroy(void)
 {
 	T_tiles_destroy();
 	SDL_DestroyRenderer(sdl_renderer);
+}
+
+bool R_draw(SDL_Texture *tex, SDL_Point point)
+{
+	SDL_FRect rect = {
+		.x = point.x, .y = point.y, .w = tex->w, .h = tex->h
+	};
+
+	if (!SDL_RenderTexture(sdl_renderer, tex, NULL, &rect)) {
+		fprintf(stderr, "Failed to render text texture: %s\n",
+			SDL_GetError());
+		return true;
+	}
+	return false;
 }
 
 bool R_overlay_menu_window_draw(L_Colors outline_colour)
@@ -71,8 +87,8 @@ bool R_overlay_menu_window_draw(L_Colors outline_colour)
 bool R_help_draw(struct G_GameState gamestate)
 {
 	if (!gamestate.show_help) {
-		if (L_draw(sdl_renderer, L_TEXT_BOTTOM_HELP,
-			   (struct SDL_Point){ 4, screen_height - 50 }))
+		if (L_draw_text(L_TEXT_BOTTOM_HELP,
+				(struct SDL_Point){ 4, screen_height - 50 }))
 			return true;
 		return false;
 	}
@@ -80,89 +96,81 @@ bool R_help_draw(struct G_GameState gamestate)
 	if (R_overlay_menu_window_draw(L_COLOR_WHITE))
 		return true;
 
-	if (L_draw(sdl_renderer, L_TEXT_HELP_0_9,
-		   (struct SDL_Point){ 80, 140 }))
+	if (L_draw_text(L_TEXT_HELP_0_9, (struct SDL_Point){ 80, 140 }))
 		return true;
 	if (T_tile_draw(sdl_renderer, T_TILE_MAN1,
 			(struct SDL_Point){ 280, 150 }, 16) != 0)
 		return true;
 
-	if (L_draw(sdl_renderer, L_TEXT_HELP_SHIFT,
-		   (struct SDL_Point){ 80, 240 }))
+	if (L_draw_text(L_TEXT_HELP_SHIFT, (struct SDL_Point){ 80, 240 }))
 		return true;
 	if (T_tile_draw(sdl_renderer, T_TILE_PIN1,
 			(struct SDL_Point){ 280, 250 }, 16) != 0)
 		return true;
 
-	if (L_draw(sdl_renderer, L_TEXT_HELP_CTRL,
-		   (struct SDL_Point){ 80, 340 }))
+	if (L_draw_text(L_TEXT_HELP_CTRL, (struct SDL_Point){ 80, 340 }))
 		return true;
 	if (T_tile_draw(sdl_renderer, T_TILE_SOU1,
 			(struct SDL_Point){ 280, 350 }, 16) != 0)
 		return true;
 
-	if (L_draw(sdl_renderer, L_TEXT_HELP_E, (struct SDL_Point){ 80, 440 }))
+	if (L_draw_text(L_TEXT_HELP_E, (struct SDL_Point){ 80, 440 }))
 		return true;
 	if (T_tile_draw(sdl_renderer, T_TILE_TON,
 			(struct SDL_Point){ 280, 450 }, 16) != 0)
 		return true;
 
-	if (L_draw(sdl_renderer, L_TEXT_HELP_S, (struct SDL_Point){ 80, 540 }))
+	if (L_draw_text(L_TEXT_HELP_S, (struct SDL_Point){ 80, 540 }))
 		return true;
 	if (T_tile_draw(sdl_renderer, T_TILE_NAN,
 			(struct SDL_Point){ 280, 550 }, 16) != 0)
 		return true;
 
-	if (L_draw(sdl_renderer, L_TEXT_HELP_W, (struct SDL_Point){ 80, 640 }))
+	if (L_draw_text(L_TEXT_HELP_W, (struct SDL_Point){ 80, 640 }))
 		return true;
 	if (T_tile_draw(sdl_renderer, T_TILE_SHAA,
 			(struct SDL_Point){ 280, 650 }, 16) != 0)
 		return true;
 
-	if (L_draw(sdl_renderer, L_TEXT_HELP_S, (struct SDL_Point){ 80, 740 }))
+	if (L_draw_text(L_TEXT_HELP_S, (struct SDL_Point){ 80, 740 }))
 		return true;
 	if (T_tile_draw(sdl_renderer, T_TILE_PEI,
 			(struct SDL_Point){ 280, 750 }, 16) != 0)
 		return true;
 
-	if (L_draw(sdl_renderer, L_TEXT_HELP_C, (struct SDL_Point){ 420, 140 }))
+	if (L_draw_text(L_TEXT_HELP_C, (struct SDL_Point){ 420, 140 }))
 		return true;
 	if (T_tile_draw(sdl_renderer, T_TILE_CHUN,
 			(struct SDL_Point){ 500, 150 }, 16) != 0)
 		return true;
 
-	if (L_draw(sdl_renderer, L_TEXT_HELP_H, (struct SDL_Point){ 420, 240 }))
+	if (L_draw_text(L_TEXT_HELP_H, (struct SDL_Point){ 420, 240 }))
 		return true;
 	if (T_tile_draw(sdl_renderer, T_TILE_HAKU,
 			(struct SDL_Point){ 500, 250 }, 16) != 0)
 		return true;
 
-	if (L_draw(sdl_renderer, L_TEXT_HELP_G, (struct SDL_Point){ 420, 340 }))
+	if (L_draw_text(L_TEXT_HELP_G, (struct SDL_Point){ 420, 340 }))
 		return true;
 	if (T_tile_draw(sdl_renderer, T_TILE_HATSU,
 			(struct SDL_Point){ 500, 350 }, 16) != 0)
 		return true;
 
-	if (L_draw(sdl_renderer, L_TEXT_HELP_RIICHI,
-		   (struct SDL_Point){ 760, 140 }))
+	if (L_draw_text(L_TEXT_HELP_RIICHI, (struct SDL_Point){ 760, 140 }))
 		return true;
-	if (L_draw(sdl_renderer, L_TEXT_HELP_DOUBLE_RIICHI,
-		   (struct SDL_Point){ 760, 240 }))
+	if (L_draw_text(L_TEXT_HELP_DOUBLE_RIICHI,
+			(struct SDL_Point){ 760, 240 }))
 		return true;
-	if (L_draw(sdl_renderer, L_TEXT_HELP_IPPATSU,
-		   (struct SDL_Point){ 760, 340 }))
+	if (L_draw_text(L_TEXT_HELP_IPPATSU, (struct SDL_Point){ 760, 340 }))
 		return true;
-	if (L_draw(sdl_renderer, L_TEXT_HELP_HAITEI,
-		   (struct SDL_Point){ 760, 440 }))
+	if (L_draw_text(L_TEXT_HELP_HAITEI, (struct SDL_Point){ 760, 440 }))
 		return true;
-	if (L_draw(sdl_renderer, L_TEXT_HELP_CHANKAN,
-		   (struct SDL_Point){ 760, 540 }))
+	if (L_draw_text(L_TEXT_HELP_CHANKAN, (struct SDL_Point){ 760, 540 }))
 		return true;
-	if (L_draw(sdl_renderer, L_TEXT_HELP_RINSHAN,
-		   (struct SDL_Point){ 760, 640 }))
+	if (L_draw_text(L_TEXT_HELP_RINSHAN, (struct SDL_Point){ 760, 640 }))
 		return true;
-	if (L_draw(sdl_renderer, L_TEXT_HELP_SPACE_TOGGLE,
-		   (struct SDL_Point){ 760, 740 }))
+	if (L_draw_text(L_TEXT_HELP_SPACE_TOGGLE,
+			(struct SDL_Point){ 760, 740 }))
 		return true;
 
 	return false;
@@ -179,17 +187,16 @@ bool R_hand_draw(struct G_GameState gamestate)
 		}
 		x += ((tile_size * T_TILE_WIDTH_RATIO) + 4);
 	}
-	if (L_draw(sdl_renderer,
-		   gamestate.selected_main_menu_option ==
-				   G_SELECTED_MAIN_MENU_OPTION_HAND ?
-			   L_TEXT_HAND_LABEL_SELECTED :
-			   L_TEXT_HAND_LABEL,
-		   (struct SDL_Point){ 10, 130 }))
+	if (L_draw_text(gamestate.selected_main_menu_option ==
+					G_SELECTED_MAIN_MENU_OPTION_HAND ?
+				L_TEXT_HAND_LABEL_SELECTED :
+				L_TEXT_HAND_LABEL,
+			(struct SDL_Point){ 10, 130 }))
 		return true;
-	if (L_draw(sdl_renderer,
-		   gamestate.handshapes.hands_len != 0 ? L_TEXT_HAND_VALID :
-							 L_TEXT_HAND_INVALID,
-		   (struct SDL_Point){ 200, 130 }))
+	if (L_draw_text(gamestate.handshapes.hands_len != 0 ?
+				L_TEXT_HAND_VALID :
+				L_TEXT_HAND_INVALID,
+			(struct SDL_Point){ 200, 130 }))
 		return true;
 	return false;
 }
@@ -206,12 +213,11 @@ bool R_dora_draw(struct G_GameState gamestate)
 		}
 		x += ((tile_size * T_TILE_WIDTH_RATIO) + 4);
 	}
-	if (L_draw(sdl_renderer,
-		   gamestate.selected_main_menu_option ==
-				   G_SELECTED_MAIN_MENU_OPTION_DORA ?
-			   L_TEXT_DORA_LABEL_SELECTED :
-			   L_TEXT_DORA_LABEL,
-		   (struct SDL_Point){ 10, 303 }))
+	if (L_draw_text(gamestate.selected_main_menu_option ==
+					G_SELECTED_MAIN_MENU_OPTION_DORA ?
+				L_TEXT_DORA_LABEL_SELECTED :
+				L_TEXT_DORA_LABEL,
+			(struct SDL_Point){ 10, 303 }))
 		return true;
 	return false;
 }
@@ -236,12 +242,11 @@ bool R_seat_wind_selector_draw(struct G_GameState gamestate)
 		x += ((tile_size * T_TILE_WIDTH_RATIO) + 16);
 	}
 
-	if (L_draw(sdl_renderer,
-		   gamestate.selected_main_menu_option ==
-				   G_SELECTED_MAIN_MENU_OPTION_SEAT_WIND ?
-			   L_TEXT_DORA_SEAT_WIND_SELECTED :
-			   L_TEXT_DORA_SEAT_WIND,
-		   (struct SDL_Point){ 10, 516 }))
+	if (L_draw_text(gamestate.selected_main_menu_option ==
+					G_SELECTED_MAIN_MENU_OPTION_SEAT_WIND ?
+				L_TEXT_DORA_SEAT_WIND_SELECTED :
+				L_TEXT_DORA_SEAT_WIND,
+			(struct SDL_Point){ 10, 516 }))
 		return true;
 
 	return false;
@@ -267,12 +272,12 @@ bool R_prevelant_wind_selector_draw(struct G_GameState gamestate)
 		x += ((tile_size * T_TILE_WIDTH_RATIO) + 16);
 	}
 
-	if (L_draw(sdl_renderer,
-		   gamestate.selected_main_menu_option ==
-				   G_SELECTED_MAIN_MENU_OPTION_PREVALENT_WIND ?
-			   L_TEXT_DORA_PREVELANT_WIND_SELECTED :
-			   L_TEXT_DORA_PREVELANT_WIND,
-		   (struct SDL_Point){ 10, 729 }))
+	if (L_draw_text(
+		    gamestate.selected_main_menu_option ==
+				    G_SELECTED_MAIN_MENU_OPTION_PREVALENT_WIND ?
+			    L_TEXT_DORA_PREVELANT_WIND_SELECTED :
+			    L_TEXT_DORA_PREVELANT_WIND,
+		    (struct SDL_Point){ 10, 729 }))
 		return true;
 	return false;
 }
@@ -280,54 +285,52 @@ bool R_prevelant_wind_selector_draw(struct G_GameState gamestate)
 bool R_conditions_draw(struct G_GameState gamestate)
 {
 	int y = 330;
-	if (L_draw(sdl_renderer,
-		   gamestate.conditions.tsumo ? L_TEXT_CONDITION_TSUMO_ON :
-						L_TEXT_CONDITION_TSUMO_OFF,
-		   (struct SDL_Point){ 500, y }))
+	if (L_draw_text(gamestate.conditions.tsumo ? L_TEXT_CONDITION_TSUMO_ON :
+						     L_TEXT_CONDITION_TSUMO_OFF,
+			(struct SDL_Point){ 500, y }))
 		return true;
 	y += 80;
-	if (L_draw(sdl_renderer,
-		   gamestate.conditions.riichi ? L_TEXT_CONDITION_RIICHI_ON :
-						 L_TEXT_CONDITION_RIICHI_OFF,
-		   (struct SDL_Point){ 500, y }))
+	if (L_draw_text(gamestate.conditions.riichi ?
+				L_TEXT_CONDITION_RIICHI_ON :
+				L_TEXT_CONDITION_RIICHI_OFF,
+			(struct SDL_Point){ 500, y }))
 		return true;
 	y += 80;
-	if (L_draw(sdl_renderer,
-		   gamestate.conditions.double_riichi ?
-			   L_TEXT_CONDITION_DOUBLE_RIICHI_ON :
-			   L_TEXT_CONDITION_DOUBLE_RIICHI_OFF,
-		   (struct SDL_Point){ 500, y }))
+	if (L_draw_text(gamestate.conditions.double_riichi ?
+				L_TEXT_CONDITION_DOUBLE_RIICHI_ON :
+				L_TEXT_CONDITION_DOUBLE_RIICHI_OFF,
+			(struct SDL_Point){ 500, y }))
 		return true;
 	y += 80;
-	if (L_draw(sdl_renderer,
-		   gamestate.conditions.ippatsu ? L_TEXT_CONDITION_IPPATSU_ON :
-						  L_TEXT_CONDITION_IPPATSU_OFF,
-		   (struct SDL_Point){ 500, y }))
+	if (L_draw_text(gamestate.conditions.ippatsu ?
+				L_TEXT_CONDITION_IPPATSU_ON :
+				L_TEXT_CONDITION_IPPATSU_OFF,
+			(struct SDL_Point){ 500, y }))
 		return true;
 	y += 80;
-	if (L_draw(sdl_renderer,
-		   gamestate.conditions.haitei ? L_TEXT_CONDITION_HAITEI_ON :
-						 L_TEXT_CONDITION_HAITEI_OFF,
-		   (struct SDL_Point){ 500, y }))
+	if (L_draw_text(gamestate.conditions.haitei ?
+				L_TEXT_CONDITION_HAITEI_ON :
+				L_TEXT_CONDITION_HAITEI_OFF,
+			(struct SDL_Point){ 500, y }))
 		return true;
 	y += 80;
-	if (L_draw(sdl_renderer,
-		   gamestate.conditions.chankan ? L_TEXT_CONDITION_CHANKAN_ON :
-						  L_TEXT_CONDITION_CHANKAN_OFF,
-		   (struct SDL_Point){ 500, y }))
+	if (L_draw_text(gamestate.conditions.chankan ?
+				L_TEXT_CONDITION_CHANKAN_ON :
+				L_TEXT_CONDITION_CHANKAN_OFF,
+			(struct SDL_Point){ 500, y }))
 		return true;
 	y += 80;
-	if (L_draw(sdl_renderer,
-		   gamestate.conditions.rinshan ? L_TEXT_CONDITION_RINSHAN_ON :
-						  L_TEXT_CONDITION_RINSHAN_OFF,
-		   (struct SDL_Point){ 500, y }))
+	if (L_draw_text(gamestate.conditions.rinshan ?
+				L_TEXT_CONDITION_RINSHAN_ON :
+				L_TEXT_CONDITION_RINSHAN_OFF,
+			(struct SDL_Point){ 500, y }))
 		return true;
 	y += 80;
 
-	if (L_draw(sdl_renderer,
-		   gamestate.conditions.tenhou ? L_TEXT_CONDITION_TENHOU_ON :
-						 L_TEXT_CONDITION_TENHOU_OFF,
-		   (struct SDL_Point){ 500, y }))
+	if (L_draw_text(gamestate.conditions.tenhou ?
+				L_TEXT_CONDITION_TENHOU_ON :
+				L_TEXT_CONDITION_TENHOU_OFF,
+			(struct SDL_Point){ 500, y }))
 		return true;
 
 	return false;
@@ -335,16 +338,14 @@ bool R_conditions_draw(struct G_GameState gamestate)
 
 bool R_honba_draw(struct G_GameState gamestate)
 {
-	if (L_draw(sdl_renderer,
-		   gamestate.selected_main_menu_option ==
-				   G_SELECTED_MAIN_MENU_OPTION_HONBA ?
-			   L_TEXT_HONBA_ON :
-			   L_TEXT_HONBA_OFF,
-		   (struct SDL_Point){ 10, 800 }))
+	if (L_draw_text(gamestate.selected_main_menu_option ==
+					G_SELECTED_MAIN_MENU_OPTION_HONBA ?
+				L_TEXT_HONBA_ON :
+				L_TEXT_HONBA_OFF,
+			(struct SDL_Point){ 10, 800 }))
 		return true;
 
-	if (L_draw(sdl_renderer, L_TEXT_HONBA_COUNT,
-		   (struct SDL_Point){ 270, 790 }))
+	if (L_draw_text(L_TEXT_HONBA_COUNT, (struct SDL_Point){ 270, 790 }))
 		return true;
 
 	return false;
@@ -473,11 +474,11 @@ bool R_handshape_group_open_close_selector_draw(struct G_GameState gamestate)
 		}
 		x += 100;
 
-		if (L_draw(sdl_renderer,
-			   gamestate.selected_handshape.groups[i].isopen ?
-				   L_TEXT_GROUP_OPEN :
-				   L_TEXT_GROUP_CLOSED,
-			   (struct SDL_Point){ gamestate.window_w / 2, y }))
+		if (L_draw_text(gamestate.selected_handshape.groups[i].isopen ?
+					L_TEXT_GROUP_OPEN :
+					L_TEXT_GROUP_CLOSED,
+				(struct SDL_Point){ gamestate.window_w / 2,
+						    y }))
 			return true;
 
 		y += 140;
@@ -542,11 +543,167 @@ bool R_winning_tile_selector_draw(struct G_GameState gamestate)
 
 		x += tile_size * T_TILE_WIDTH_RATIO + 10;
 
-		if (x + (tile_size * T_TILE_WIDTH_RATIO) + 40 >
+		if (x +
+			    ((tile_size * T_TILE_WIDTH_RATIO) *
+			     (int)gamestate.selected_handshape.groups[i]
+				     .tiles_len) +
+			    40 >
 		    gamestate.window_w) {
 			y += ((tile_size * T_TILE_HEIGHT_RATIO) + 40);
 			x = 80;
 		}
+	}
+
+	return false;
+}
+
+bool R_score_view_draw_err(struct FfiResult err)
+{
+	char *err_message = C_calc_err_string(err);
+	L_rewrite_text(sdl_renderer, L_TEXT_ERR_MESSAGE, err_message);
+	C_free_c_string(err_message);
+
+	if (L_draw_text(
+		    L_TEXT_ERR_HEADER,
+		    (struct SDL_Point){
+			    (WINDOW_WIDTH - L_text_width(L_TEXT_ERR_HEADER)) / 2,
+			    (WINDOW_HEIGHT - L_text_height(L_TEXT_ERR_HEADER)) /
+				    5,
+		    }))
+		return true;
+
+	if (L_draw_text(
+		    L_TEXT_ERR_MESSAGE,
+		    (struct SDL_Point){
+			    (WINDOW_WIDTH - L_text_width(L_TEXT_ERR_MESSAGE)) /
+				    2,
+			    (WINDOW_HEIGHT - L_text_height(L_TEXT_ERR_MESSAGE)) /
+				    2,
+		    }))
+		return true;
+
+	return false;
+}
+
+bool R_score_view_draw_score_info(struct ScoreInfo score_info)
+{
+	// drawing yaku list section
+	SDL_Texture *yaku_textures[MAX_ALLOCATED_TEXTURES];
+	int yaku_textures_len = 0;
+
+	int yaku_pointsize = 60;
+	int max_yaku_column_width = 0;
+	for (int i = 0; i < (int)score_info.yaku_len; i++) {
+		if (i > MAX_ALLOCATED_TEXTURES) {
+			for (int j = 0; j < yaku_textures_len; j++) {
+				SDL_DestroyTexture(yaku_textures[j]);
+			}
+			return false; // AYO WATCH OUT!
+		}
+
+		char *yaku_string =
+			C_yaku_string(score_info.yaku[i], score_info.is_open);
+
+		L_Text_Obj yaku_text_obj = {
+			.text = yaku_string,
+			.point_size = yaku_pointsize,
+			.color = L_COLOR_WHITE,
+			.wraplength = 0,
+			.align = TTF_HORIZONTAL_ALIGN_LEFT
+		};
+
+		yaku_textures[i] =
+			L_texture_from_text_obj(sdl_renderer, yaku_text_obj);
+
+		C_free_c_string(yaku_string);
+
+		if (yaku_textures[i] == NULL) {
+			for (int k = 0; k < yaku_textures_len; k++) {
+				SDL_DestroyTexture(yaku_textures[k]);
+			}
+			return true;
+		}
+
+		if (yaku_textures[i]->w > max_yaku_column_width) {
+			max_yaku_column_width = yaku_textures[i]->w;
+		}
+
+		yaku_textures_len++;
+	}
+
+	int x = WINDOW_WIDTH / 18 * 2;
+	int y = WINDOW_HEIGHT / 10;
+
+	if (L_draw_text(L_TEXT_YAKU, (SDL_Point){ .x = x, .y = y }))
+		return true;
+
+	y += 150;
+
+	for (int i = 0; i < yaku_textures_len; i++) {
+		if (R_draw(yaku_textures[i],
+			   (SDL_Point){ .x = WINDOW_WIDTH / 10, .y = y }))
+			return true;
+
+		y += 60;
+	}
+
+	for (int i = 0; i < yaku_textures_len; i++) {
+		SDL_DestroyTexture(yaku_textures[i]);
+	}
+
+	// drawing fu list section
+	SDL_Texture *fu_textures[MAX_ALLOCATED_TEXTURES];
+	int fu_textures_len = 0;
+
+	int fu_pointsize = 50;
+	for (int i = 0; i < (int)score_info.fu_len; i++) {
+		if (i > MAX_ALLOCATED_TEXTURES) {
+			for (int j = 0; j < fu_textures_len; j++) {
+				SDL_DestroyTexture(fu_textures[j]);
+			}
+			return false; // AYO CHECK IT!
+		}
+
+		char *fu_string = C_fu_string(score_info.fu[i]);
+
+		L_Text_Obj fu_text_obj = { .text = fu_string,
+					   .point_size = fu_pointsize,
+					   .color = L_COLOR_WHITE,
+					   .wraplength = 0,
+					   .align = TTF_HORIZONTAL_ALIGN_LEFT };
+
+		fu_textures[i] =
+			L_texture_from_text_obj(sdl_renderer, fu_text_obj);
+
+		C_free_c_string(fu_string);
+
+		if (fu_textures[i] == NULL) {
+			for (int k = 0; k < fu_textures_len; k++) {
+				SDL_DestroyTexture(fu_textures[k]);
+			}
+			return true;
+		}
+
+		fu_textures_len++;
+	}
+
+	x = WINDOW_WIDTH / 36 * 5 + max_yaku_column_width;
+	y = WINDOW_HEIGHT / 10;
+
+	if (L_draw_text(L_TEXT_FU, (SDL_Point){ .x = x, .y = y }))
+		return true;
+
+	y += 150;
+
+	for (int i = 0; i < fu_textures_len; i++) {
+		if (R_draw(fu_textures[i], (SDL_Point){ .x = x, .y = y }))
+			return true;
+
+		y += fu_textures[i]->h;
+	}
+
+	for (int i = 0; i < fu_textures_len; i++) {
+		SDL_DestroyTexture(fu_textures[i]);
 	}
 
 	return false;
@@ -557,37 +714,19 @@ bool R_score_view_draw(struct G_GameState gamestate)
 	if (R_overlay_menu_window_draw(L_COLOR_GREEN))
 		return true;
 
-	if (gamestate.score_result.error.tag == FfiResult_Err) {
-		char *err_message = C_get_err_message_from_result(
-			gamestate.score_result.error);
-		L_rewrite_text(sdl_renderer, L_TEXT_ERR_MESSAGE, err_message);
-		C_free_c_string(err_message);
-
-		if (L_draw(sdl_renderer, L_TEXT_ERR_HEADER,
-			   (struct SDL_Point){
-				   (WINDOW_WIDTH -
-				    L_text_width(L_TEXT_ERR_HEADER)) /
-					   2,
-				   (WINDOW_HEIGHT -
-				    L_text_height(L_TEXT_ERR_HEADER)) /
-					   5,
-			   }))
+	switch (gamestate.score_result.error.tag) {
+	case FfiResult_Err:
+		if (R_score_view_draw_err(gamestate.score_result.error))
 			return true;
-
-		if (L_draw(sdl_renderer, L_TEXT_ERR_MESSAGE,
-			   (struct SDL_Point){
-				   (WINDOW_WIDTH -
-				    L_text_width(L_TEXT_ERR_MESSAGE)) /
-					   2,
-				   (WINDOW_HEIGHT -
-				    L_text_height(L_TEXT_ERR_MESSAGE)) /
-					   2,
-			   }))
+		break;
+	case FfiResult_Ok:
+		if (R_score_view_draw_score_info(
+			    gamestate.score_result.score_info))
 			return true;
-
-		return false;
+		break;
+	default:
+		break;
 	}
-
 	return false;
 }
 
