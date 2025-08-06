@@ -17,7 +17,7 @@ make debug && ./main.out
 - [x] shift -+ window resizing
 - [x] figure out why memory leak :(
 - [x] help menu 
-- [x] fix for resize bug. (not updating immediatly) 
+- [ ] fix for resize bug. (not updating immediatly) 
 - [x] input and deleting tile preview on top
 - [x] settings round conditions menu
 - [x] remove the dastardly typedefs on structs (i was told this will make me a good programmer)
