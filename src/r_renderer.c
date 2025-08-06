@@ -156,21 +156,17 @@ bool R_help_draw(struct G_GameState gamestate)
 			(struct SDL_Point){ 500, 350 }, 16) != 0)
 		return true;
 
-	if (L_draw_text(L_TEXT_HELP_RIICHI, (struct SDL_Point){ 760, 140 }))
-		return true;
-	if (L_draw_text(L_TEXT_HELP_DOUBLE_RIICHI,
-			(struct SDL_Point){ 760, 240 }))
-		return true;
-	if (L_draw_text(L_TEXT_HELP_IPPATSU, (struct SDL_Point){ 760, 340 }))
-		return true;
-	if (L_draw_text(L_TEXT_HELP_HAITEI, (struct SDL_Point){ 760, 440 }))
-		return true;
-	if (L_draw_text(L_TEXT_HELP_CHANKAN, (struct SDL_Point){ 760, 540 }))
-		return true;
-	if (L_draw_text(L_TEXT_HELP_RINSHAN, (struct SDL_Point){ 760, 640 }))
-		return true;
 	if (L_draw_text(L_TEXT_HELP_SPACE_TOGGLE,
-			(struct SDL_Point){ 760, 740 }))
+			(struct SDL_Point){ 760, 140 }))
+		return true;
+	if (L_draw_text(L_TEXT_HELP_ESCAPE_BACKTRACK,
+			(struct SDL_Point){ 760, 260 }))
+		return true;
+	if (L_draw_text(L_TEXT_HELP_RETURN_CONTINUE,
+			(struct SDL_Point){ 760, 380 }))
+		return true;
+	if (L_draw_text(L_TEXT_HELP_ARROW_NAVIGATE,
+			(struct SDL_Point){ 760, 500 }))
 		return true;
 
 	return false;

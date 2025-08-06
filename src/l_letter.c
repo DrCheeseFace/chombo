@@ -33,16 +33,13 @@ L_Text_Obj L_TEXTS_OBJS[L_TEXT_COUNT] = {
 	{ "C", 80, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
 	{ "H", 80, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
 	{ "G", 80, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "r riichi", 80, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "d double riichi", 80, L_COLOR_WHITE, 0,
-	  TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "i ippatsu", 80, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "t haitei", 80, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "m chankan", 80, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "k rinshan kaihou", 80, L_COLOR_WHITE, 0,
-	  TTF_HORIZONTAL_ALIGN_CENTER },
+	{ "arrow keys\nnavigate menu", 80, L_COLOR_WHITE, 0,
+	  TTF_HORIZONTAL_ALIGN_LEFT },
 	{ "space toggle pane", 80, L_COLOR_WHITE, 0,
 	  TTF_HORIZONTAL_ALIGN_CENTER },
+	{ "escape backtrack", 80, L_COLOR_WHITE, 0,
+	  TTF_HORIZONTAL_ALIGN_CENTER },
+	{ "enter continue", 80, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
 
 	{ "Hand", 50, L_COLOR_GREEN, 0, TTF_HORIZONTAL_ALIGN_CENTER },
 	{ "Hand", 50, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
@@ -97,10 +94,10 @@ void L_init(SDL_Renderer *sdl_renderer)
 	TTF_Init();
 	font = TTF_OpenFont(FONT_EDOSZ_TTF, 100);
 	text_engine = TTF_CreateSurfaceTextEngine();
-	TTF_SetFontWrapAlignment(font, TTF_HORIZONTAL_ALIGN_CENTER);
 
 	for (int i = 0; i < L_TEXT_COUNT; i++) {
 		TTF_SetFontSize(font, L_TEXTS_OBJS[i].point_size);
+		TTF_SetFontWrapAlignment(font, L_TEXTS_OBJS[i].align);
 		TTF_Text *ttf_text = TTF_CreateText(text_engine, font,
 						    L_TEXTS_OBJS[i].text, 0);
 		if (!ttf_text) {
