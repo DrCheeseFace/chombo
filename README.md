@@ -4,6 +4,11 @@ Mistakes that are minor and/or correctable, such as drawing the wrong tile, can 
 
 Gui riichi mahjong calculator. In progress
 
+<details><summary>example 1</summary> <img src='eg.JPG' width='600px'/> </details>
+<details><summary>example 2</summary> <img src='eg1.JPG' width='600px'/> </details>
+<details><summary>example 3</summary> <img src='eg2.JPG' width='600px'/> </details>
+<details><summary>example 4</summary> <img src='eg3.JPG' width='600px'/> </details>
+
 #### Requirements for deving
 - sdl3
 - sdl3ttf
