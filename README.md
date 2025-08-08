@@ -15,7 +15,7 @@ Gui riichi mahjong calculator. In progress
 - sdl3ttf
 - cbindgen (for generating header files for mahc)
 ```
-make debug && ./main.out
+make debug && make run 
 ```
 
 
@@ -35,6 +35,14 @@ make debug && ./main.out
 - [x] displaying output
 - [ ] figure out how to use cmake to add sdl3 and sdl3ttf as vendored 
 - [ ] figure out creating platform specific executable
+
+
+## Contributing
+
+- If you spot a bug, put in an issue with how to reproduce it
+- If you think this could do with some changes, make a suggestion in an issue
+- If you'd like to contribute, DO IT (send a PR)
+
 
 ![](https://c.tenor.com/wjvQf6cClREAAAAd/tenor.gif)
 
