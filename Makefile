@@ -15,7 +15,7 @@ CFLAGS_DEBUG = -Wall -Wextra -Werror -Wpointer-arith -Wcast-align \
 CFLAGS = -Wall -Wextra -Werror \
 	 -O2 -std=c11\
 
-MAHC_LIB_PATH = ./mahc/target/debug/
+MAHC_LIB_PATH = ./src/mahc/target/debug/
 
 LINKS = -L$(MAHC_LIB_PATH) -Wl,-rpath,$(MAHC_LIB_PATH) -lmahc -lSDL3 -lSDL3_ttf
 
@@ -50,10 +50,10 @@ debug: build-mahc-header build-mahc
 	$(CC) $(CFLAGS_DEBUG) -o $(MAIN_TARGET) $(MAIN_SRC) $(LINKS)
 
 build-mahc:
-	cargo build --manifest-path ./mahc/Cargo.toml
+	cargo build --manifest-path ./src/mahc/Cargo.toml
 
 build-mahc-header:
-	cbindgen ./mahc --config cbindgen.toml --output ./src/mahc.h
+	cbindgen ./src/mahc --config cbindgen.toml --output ./src/mahc.h
 
 check: format-check debug format
 

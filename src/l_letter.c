@@ -4,7 +4,7 @@
 #include <SDL3_ttf/SDL_ttf.h>
 #include <stdio.h>
 
-#define FONT_EDOSZ_TTF "assets/edosz.ttf"
+#define FONT_EDOSZ_TTF "src/assets/edosz.ttf"
 
 TTF_Font *font;
 TTF_TextEngine *text_engine;
