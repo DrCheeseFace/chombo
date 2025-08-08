@@ -4,10 +4,11 @@ Mistakes that are minor and/or correctable, such as drawing the wrong tile, can 
 
 Gui riichi mahjong calculator. In progress
 
-<details><summary>example 1</summary> <img src='eg.JPG' width='600px'/> </details>
-<details><summary>example 2</summary> <img src='eg1.JPG' width='600px'/> </details>
-<details><summary>example 3</summary> <img src='eg2.JPG' width='600px'/> </details>
-<details><summary>example 4</summary> <img src='eg3.JPG' width='600px'/> </details>
+<details><summary>example 1</summary> <img src='readmeassets/eg.JPG' width='600px'/> </details>
+<details><summary>example 2</summary> <img src='readmeassets/eg1.JPG' width='600px'/> </details>
+<details><summary>example 3</summary> <img src='readmeassets/eg2.JPG' width='600px'/> </details>
+<details><summary>example 4</summary> <img src='readmeassets/eg3.JPG' width='600px'/> </details>
+<details><summary>example 5</summary> <img src='readmeassets/eg4.JPG' width='600px'/> </details>
 
 #### Requirements for deving
 - sdl3
@@ -30,8 +31,8 @@ make debug && ./main.out
 - [ ] move points of text to `L_letter.c`? since none of em move
 - [ ] some way to do normalized pointsize for text 
 - [ ] some kinda way to indicate the steps to make backtracking less confusing (maybe layers stacked?)
-- [ ] using mahc for calculate
-- [ ] displaying output
+- [x] using mahc for calculate
+- [x] displaying output
 - [ ] figure out how to use cmake to add sdl3 and sdl3ttf as vendored 
 - [ ] figure out creating platform specific executable
 

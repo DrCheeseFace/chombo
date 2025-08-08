@@ -16,20 +16,20 @@ const char *T_TILE_NOTATION[T_TILE_COUNT] = {
 };
 
 const char *T_TILE_PATHS[T_TILE_COUNT] = {
-	"static/Back.bmp",	"static/Blank.bmp",	"static/Front.bmp",
-	"static/Chun.bmp",	"static/Hatsu.bmp",	"static/Haku.bmp",
-	"static/Man1.bmp",	"static/Man2.bmp",	"static/Man3.bmp",
-	"static/Man4.bmp",	"static/Man5.bmp",	"static/Man5-Dora.bmp",
-	"static/Man6.bmp",	"static/Man7.bmp",	"static/Man8.bmp",
-	"static/Man9.bmp",	"static/Pin1.bmp",	"static/Pin2.bmp",
-	"static/Pin3.bmp",	"static/Pin4.bmp",	"static/Pin5.bmp",
-	"static/Pin5-Dora.bmp", "static/Pin6.bmp",	"static/Pin7.bmp",
-	"static/Pin8.bmp",	"static/Pin9.bmp",	"static/Sou1.bmp",
-	"static/Sou2.bmp",	"static/Sou3.bmp",	"static/Sou4.bmp",
-	"static/Sou5.bmp",	"static/Sou5-Dora.bmp", "static/Sou6.bmp",
-	"static/Sou7.bmp",	"static/Sou8.bmp",	"static/Sou9.bmp",
-	"static/Ton.bmp",	"static/Nan.bmp",	"static/Shaa.bmp",
-	"static/Pei.bmp",
+	"assets/Back.bmp",	"assets/Blank.bmp",	"assets/Front.bmp",
+	"assets/Chun.bmp",	"assets/Hatsu.bmp",	"assets/Haku.bmp",
+	"assets/Man1.bmp",	"assets/Man2.bmp",	"assets/Man3.bmp",
+	"assets/Man4.bmp",	"assets/Man5.bmp",	"assets/Man5-Dora.bmp",
+	"assets/Man6.bmp",	"assets/Man7.bmp",	"assets/Man8.bmp",
+	"assets/Man9.bmp",	"assets/Pin1.bmp",	"assets/Pin2.bmp",
+	"assets/Pin3.bmp",	"assets/Pin4.bmp",	"assets/Pin5.bmp",
+	"assets/Pin5-Dora.bmp", "assets/Pin6.bmp",	"assets/Pin7.bmp",
+	"assets/Pin8.bmp",	"assets/Pin9.bmp",	"assets/Sou1.bmp",
+	"assets/Sou2.bmp",	"assets/Sou3.bmp",	"assets/Sou4.bmp",
+	"assets/Sou5.bmp",	"assets/Sou5-Dora.bmp", "assets/Sou6.bmp",
+	"assets/Sou7.bmp",	"assets/Sou8.bmp",	"assets/Sou9.bmp",
+	"assets/Ton.bmp",	"assets/Nan.bmp",	"assets/Shaa.bmp",
+	"assets/Pei.bmp",
 };
 
 SDL_Texture *T_TILE_TEXTURES[T_TILE_COUNT];

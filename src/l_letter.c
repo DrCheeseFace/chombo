@@ -4,7 +4,7 @@
 #include <SDL3_ttf/SDL_ttf.h>
 #include <stdio.h>
 
-#define FONT_EDOSZ_TTF "static/edosz.ttf"
+#define FONT_EDOSZ_TTF "assets/edosz.ttf"
 
 TTF_Font *font;
 TTF_TextEngine *text_engine;
@@ -33,13 +33,16 @@ L_Text_Obj L_TEXTS_OBJS[L_TEXT_COUNT] = {
 	{ "C", 80, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
 	{ "H", 80, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
 	{ "G", 80, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "arrow keys\nnavigate menu", 80, L_COLOR_WHITE, 0,
+	{ "- arrow keys\n  navigate menu", 80, L_COLOR_WHITE, 0,
 	  TTF_HORIZONTAL_ALIGN_LEFT },
-	{ "space toggle pane", 80, L_COLOR_WHITE, 0,
+	{ "- space toggle pane", 80, L_COLOR_WHITE, 0,
 	  TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "escape backtrack", 80, L_COLOR_WHITE, 0,
+	{ "- escape backtrack", 80, L_COLOR_WHITE, 0,
 	  TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "enter continue", 80, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
+	{ "- enter continue", 80, L_COLOR_WHITE, 0,
+	  TTF_HORIZONTAL_ALIGN_CENTER },
+	{ "- , clear state", 80, L_COLOR_WHITE, 0,
+	  TTF_HORIZONTAL_ALIGN_CENTER },
 
 	{ "Hand", 50, L_COLOR_GREEN, 0, TTF_HORIZONTAL_ALIGN_CENTER },
 	{ "Hand", 50, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
@@ -85,6 +88,23 @@ L_Text_Obj L_TEXTS_OBJS[L_TEXT_COUNT] = {
 
 	{ "Yaku", 100, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
 	{ "Fu", 100, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
+
+	{ "Han - ", 50, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
+	{ "0", 50, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
+	{ "/Fu - ", 50, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
+	{ "0", 50, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
+	{ "Honba - ", 50, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
+	{ "0", 50, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
+	{ "Dora - ", 50, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
+	{ "0", 50, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
+
+	{ "Dealer ron", 80, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
+	{ "Dealer tsumo", 80, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
+	{ "Non Dealer ron", 80, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
+	{ "Non Dealer tsumo", 80, L_COLOR_WHITE, 0,
+	  TTF_HORIZONTAL_ALIGN_CENTER },
+
+	{ "0", 80, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
 };
 
 SDL_Texture *text_textures[L_TEXT_COUNT];

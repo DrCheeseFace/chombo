@@ -1,6 +1,7 @@
 #include "g_gamestate.h"
 #include "l_letter.h"
 #include "mahc.h"
+#include "t_tiles.h"
 #include "util.h"
 #include <float.h>
 #include <math.h>
@@ -43,6 +44,62 @@ bool R_draw(SDL_Texture *tex, SDL_Point point)
 		return true;
 	}
 	return false;
+}
+
+void R_redraw_score_texts(struct G_GameState gamestate)
+{
+	char han_str[4] = PLACEHOLDER_TEXT;
+	SDL_itoa(gamestate.score_result.score_info.han_score, han_str, 10);
+	L_rewrite_text(sdl_renderer, L_TEXT_SCORE_HAN_SCORE, han_str);
+
+	char fu_str[4] = PLACEHOLDER_TEXT;
+	SDL_itoa(gamestate.score_result.score_info.fu_score, fu_str, 10);
+	L_rewrite_text(sdl_renderer, L_TEXT_SCORE_FU_SCORE, fu_str);
+
+	char honba_str[4] = PLACEHOLDER_TEXT;
+	SDL_itoa(gamestate.honba, honba_str, 10);
+	L_rewrite_text(sdl_renderer, L_TEXT_SCORE_HONBA_COUNT, honba_str);
+
+	char dora_str[4] = PLACEHOLDER_TEXT;
+	SDL_itoa(gamestate.score_result.score_info.dora_count, dora_str, 10);
+	L_rewrite_text(sdl_renderer, L_TEXT_SCORE_DORA_COUNT, dora_str);
+
+	if (gamestate.seat_wind == DEALER_SEAT) {
+		char dealer_to_non_dealer[7] = PLACEHOLDER_TEXT;
+		if (gamestate.conditions.tsumo) {
+			SDL_itoa(gamestate.score_result.score_info.dealer_tsumo,
+				 dealer_to_non_dealer, 10);
+		} else {
+			SDL_itoa(gamestate.score_result.score_info.dealer_ron,
+				 dealer_to_non_dealer, 10);
+		}
+		L_rewrite_text(sdl_renderer, L_TEXT_SCORE_POINTS,
+			       dealer_to_non_dealer);
+	} else { // as non dealer
+		char from_dealer[7] = PLACEHOLDER_TEXT;
+		char from_non_dealer[7] = PLACEHOLDER_TEXT;
+		char combined_points_str[14] = PLACEHOLDER_TEXT;
+
+		if (gamestate.conditions.tsumo) {
+			SDL_itoa(gamestate.score_result.score_info
+					 .non_dealer_tsumo_non_dealer,
+				 from_non_dealer, 10);
+			SDL_itoa(gamestate.score_result.score_info
+					 .non_dealer_tsumo_dealer,
+				 from_dealer, 10);
+			strcpy(combined_points_str, from_non_dealer);
+			strcat(combined_points_str, SCORE_SPACER);
+			strcat(combined_points_str, from_dealer);
+			L_rewrite_text(sdl_renderer, L_TEXT_SCORE_POINTS,
+				       combined_points_str);
+		} else {
+			SDL_itoa(
+				gamestate.score_result.score_info.non_dealer_ron,
+				combined_points_str, 10);
+			L_rewrite_text(sdl_renderer, L_TEXT_SCORE_POINTS,
+				       combined_points_str);
+		}
+	}
 }
 
 bool R_overlay_menu_window_draw(L_Colors outline_colour)
@@ -156,17 +213,28 @@ bool R_help_draw(struct G_GameState gamestate)
 			(struct SDL_Point){ 500, 350 }, 16) != 0)
 		return true;
 
-	if (L_draw_text(L_TEXT_HELP_SPACE_TOGGLE,
-			(struct SDL_Point){ 760, 140 }))
+	int y = WINDOW_HEIGHT / 8;
+
+	if (L_draw_text(L_TEXT_HELP_SPACE_TOGGLE, (struct SDL_Point){ 760, y }))
 		return true;
+	y += L_text_height(L_TEXT_HELP_SPACE_TOGGLE) + 20;
+
 	if (L_draw_text(L_TEXT_HELP_ESCAPE_BACKTRACK,
-			(struct SDL_Point){ 760, 260 }))
+			(struct SDL_Point){ 760, y }))
 		return true;
+	y += L_text_height(L_TEXT_HELP_ESCAPE_BACKTRACK) + 20;
+
 	if (L_draw_text(L_TEXT_HELP_RETURN_CONTINUE,
-			(struct SDL_Point){ 760, 380 }))
+			(struct SDL_Point){ 760, y }))
 		return true;
+	y += L_text_height(L_TEXT_HELP_RETURN_CONTINUE) + 20;
+
 	if (L_draw_text(L_TEXT_HELP_ARROW_NAVIGATE,
-			(struct SDL_Point){ 760, 500 }))
+			(struct SDL_Point){ 760, y }))
+		return true;
+	y += L_text_height(L_TEXT_HELP_ARROW_NAVIGATE) + 20;
+
+	if (L_draw_text(L_TEXT_HELP_CLEAR_STATE, (struct SDL_Point){ 760, y }))
 		return true;
 
 	return false;
@@ -340,6 +408,10 @@ bool R_honba_draw(struct G_GameState gamestate)
 				L_TEXT_HONBA_OFF,
 			(struct SDL_Point){ 10, 800 }))
 		return true;
+
+	char honba_str[4] = PLACEHOLDER_TEXT;
+	SDL_itoa(gamestate.honba, honba_str, 10);
+	L_rewrite_text(sdl_renderer, L_TEXT_HONBA_COUNT, honba_str);
 
 	if (L_draw_text(L_TEXT_HONBA_COUNT, (struct SDL_Point){ 270, 790 }))
 		return true;
@@ -581,7 +653,7 @@ bool R_score_view_draw_err(struct FfiResult err)
 	return false;
 }
 
-bool R_score_view_draw_score_info(struct ScoreInfo score_info)
+bool R_score_view_draw_score_info(struct G_GameState gamestate)
 {
 	// drawing yaku list section
 	SDL_Texture *yaku_textures[MAX_ALLOCATED_TEXTURES];
@@ -589,7 +661,8 @@ bool R_score_view_draw_score_info(struct ScoreInfo score_info)
 
 	int yaku_pointsize = 60;
 	int max_yaku_column_width = 0;
-	for (int i = 0; i < (int)score_info.yaku_len; i++) {
+	for (int i = 0; i < (int)gamestate.score_result.score_info.yaku_len;
+	     i++) {
 		if (i > MAX_ALLOCATED_TEXTURES) {
 			for (int j = 0; j < yaku_textures_len; j++) {
 				SDL_DestroyTexture(yaku_textures[j]);
@@ -597,8 +670,9 @@ bool R_score_view_draw_score_info(struct ScoreInfo score_info)
 			return false; // AYO WATCH OUT!
 		}
 
-		char *yaku_string =
-			C_yaku_string(score_info.yaku[i], score_info.is_open);
+		char *yaku_string = C_yaku_string(
+			gamestate.score_result.score_info.yaku[i],
+			gamestate.score_result.score_info.is_open);
 
 		L_Text_Obj yaku_text_obj = {
 			.text = yaku_string,
@@ -627,17 +701,17 @@ bool R_score_view_draw_score_info(struct ScoreInfo score_info)
 		yaku_textures_len++;
 	}
 
-	int x = WINDOW_WIDTH / 18 * 2;
+	int initial_col_x = WINDOW_WIDTH / 36 * 2;
+	int x = initial_col_x;
 	int y = WINDOW_HEIGHT / 10;
 
-	if (L_draw_text(L_TEXT_YAKU, (SDL_Point){ .x = x, .y = y }))
+	if (L_draw_text(L_TEXT_YAKU_HEADER, (SDL_Point){ .x = x, .y = y }))
 		return true;
 
 	y += 150;
 
 	for (int i = 0; i < yaku_textures_len; i++) {
-		if (R_draw(yaku_textures[i],
-			   (SDL_Point){ .x = WINDOW_WIDTH / 10, .y = y }))
+		if (R_draw(yaku_textures[i], (SDL_Point){ .x = x, .y = y }))
 			return true;
 
 		y += 60;
@@ -647,12 +721,53 @@ bool R_score_view_draw_score_info(struct ScoreInfo score_info)
 		SDL_DestroyTexture(yaku_textures[i]);
 	}
 
+	y += 60;
+
+	// drawing han fu and honba section (if non yakuman)
+	if (!C_yaku_is_yakuman(gamestate.score_result.score_info.yaku[0])) {
+		L_draw_text(L_TEXT_SCORE_HAN, (SDL_Point){ .x = x, .y = y });
+		x += L_text_width(L_TEXT_SCORE_HAN);
+		L_draw_text(L_TEXT_SCORE_HAN_SCORE,
+			    (SDL_Point){ .x = x, .y = y });
+
+		x += L_text_width(L_TEXT_SCORE_HAN_SCORE);
+
+		L_draw_text(L_TEXT_SCORE_FU, (SDL_Point){ .x = x, .y = y });
+		x += L_text_width(L_TEXT_SCORE_FU);
+		L_draw_text(L_TEXT_SCORE_FU_SCORE,
+			    (SDL_Point){ .x = x, .y = y });
+
+		int han_fu_width = L_text_width(L_TEXT_SCORE_HAN_SCORE) +
+				   L_text_width(L_TEXT_SCORE_FU_SCORE) +
+				   L_text_width(L_TEXT_SCORE_HAN) +
+				   L_text_width(L_TEXT_SCORE_FU);
+		if (max_yaku_column_width < han_fu_width) {
+			max_yaku_column_width = han_fu_width;
+		}
+
+		y += L_text_height(L_TEXT_SCORE_FU_SCORE);
+		x = initial_col_x;
+
+		L_draw_text(L_TEXT_SCORE_DORA, (SDL_Point){ .x = x, .y = y });
+		x += L_text_width(L_TEXT_SCORE_DORA);
+		L_draw_text(L_TEXT_SCORE_DORA_COUNT,
+			    (SDL_Point){ .x = x, .y = y });
+
+		y += L_text_height(L_TEXT_SCORE_DORA_COUNT);
+	}
+
+	x = initial_col_x;
+	L_draw_text(L_TEXT_SCORE_HONBA, (SDL_Point){ .x = x, .y = y });
+	x += L_text_width(L_TEXT_SCORE_HONBA);
+	L_draw_text(L_TEXT_SCORE_HONBA_COUNT, (SDL_Point){ .x = x, .y = y });
+
 	// drawing fu list section
 	SDL_Texture *fu_textures[MAX_ALLOCATED_TEXTURES];
 	int fu_textures_len = 0;
 
 	int fu_pointsize = 50;
-	for (int i = 0; i < (int)score_info.fu_len; i++) {
+	for (int i = 0; i < (int)gamestate.score_result.score_info.fu_len;
+	     i++) {
 		if (i > MAX_ALLOCATED_TEXTURES) {
 			for (int j = 0; j < fu_textures_len; j++) {
 				SDL_DestroyTexture(fu_textures[j]);
@@ -660,7 +775,8 @@ bool R_score_view_draw_score_info(struct ScoreInfo score_info)
 			return false; // AYO CHECK IT!
 		}
 
-		char *fu_string = C_fu_string(score_info.fu[i]);
+		char *fu_string =
+			C_fu_string(gamestate.score_result.score_info.fu[i]);
 
 		L_Text_Obj fu_text_obj = { .text = fu_string,
 					   .point_size = fu_pointsize,
@@ -683,10 +799,10 @@ bool R_score_view_draw_score_info(struct ScoreInfo score_info)
 		fu_textures_len++;
 	}
 
-	x = WINDOW_WIDTH / 36 * 5 + max_yaku_column_width;
+	x = WINDOW_WIDTH / 36 * 4 + max_yaku_column_width;
 	y = WINDOW_HEIGHT / 10;
 
-	if (L_draw_text(L_TEXT_FU, (SDL_Point){ .x = x, .y = y }))
+	if (L_draw_text(L_TEXT_FU_HEADER, (SDL_Point){ .x = x, .y = y }))
 		return true;
 
 	y += 150;
@@ -697,6 +813,27 @@ bool R_score_view_draw_score_info(struct ScoreInfo score_info)
 
 		y += fu_textures[i]->h;
 	}
+
+	y += 60;
+	// drawing points section
+	L_Text points_header;
+	if (gamestate.seat_wind == DEALER_SEAT) {
+		if (gamestate.conditions.tsumo) {
+			points_header = L_TEXT_SCORE_DEALER_TSUMO;
+		} else {
+			points_header = L_TEXT_SCORE_DEALER_RON;
+		};
+	} else {
+		if (gamestate.conditions.tsumo) {
+			points_header = L_TEXT_SCORE_NON_DEALER_TSUMO;
+		} else {
+			points_header = L_TEXT_SCORE_NON_DEALER_RON;
+		};
+	}
+
+	L_draw_text(points_header, (SDL_Point){ .x = x, .y = y });
+	y += L_text_height(points_header);
+	L_draw_text(L_TEXT_SCORE_POINTS, (SDL_Point){ .x = x, .y = y });
 
 	for (int i = 0; i < fu_textures_len; i++) {
 		SDL_DestroyTexture(fu_textures[i]);
@@ -716,8 +853,7 @@ bool R_score_view_draw(struct G_GameState gamestate)
 			return true;
 		break;
 	case FfiResult_Ok:
-		if (R_score_view_draw_score_info(
-			    gamestate.score_result.score_info))
+		if (R_score_view_draw_score_info(gamestate))
 			return true;
 		break;
 	default:

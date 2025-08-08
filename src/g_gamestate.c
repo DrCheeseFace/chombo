@@ -1,6 +1,8 @@
 #include "g_gamestate.h"
 #include "l_letter.h"
+#include "r_renderer.h"
 #include <stdlib.h>
+#include <string.h>
 
 Uint32 frame_ticks;
 
@@ -14,38 +16,7 @@ struct G_GameState *G_gamestate_create(int target_fps, int window_width,
 	gamestate->window_h = window_height;
 	gamestate->scale = scale;
 
-	gamestate->show_help = false;
-	gamestate->selected_main_menu_option = G_SELECTED_MAIN_MENU_OPTION_HAND;
-	gamestate->overlayed_menu = G_OVERLAYED_MENU_NONE;
-
-	gamestate->hand_tiles_len = 0;
-	memset(gamestate->hand_tiles, T_TILE_BACK,
-	       sizeof(gamestate->hand_tiles));
-	gamestate->dora_tiles_len = 0;
-	memset(gamestate->dora_tiles, T_TILE_BACK,
-	       sizeof(gamestate->dora_tiles));
-
-	gamestate->seat_wind = T_TILE_TON;
-	gamestate->prevelant_wind = T_TILE_TON;
-
-	gamestate->honba = 0;
-
-	memset(&gamestate->conditions, 0, sizeof(gamestate->conditions));
-
-	memset(gamestate->handshapes.hands, 0,
-	       sizeof(gamestate->handshapes.hands));
-	gamestate->handshapes.hands_len = 0;
-
-	gamestate->selector_idx = 0;
-	memset(gamestate->selected_handshape.groups, 0,
-	       sizeof(gamestate->selected_handshape.groups));
-	gamestate->selected_handshape.group_count = 0;
-
-	gamestate->winning_group_idx = 0;
-	memset(&gamestate->winning_tile, 0, sizeof(gamestate->winning_tile));
-
-	memset(&gamestate->score_result, 0, sizeof(gamestate->score_result));
-	gamestate->show_score_err = false;
+	G_clear_menus_state(gamestate);
 
 	return gamestate;
 }
@@ -395,9 +366,9 @@ bool G_calculate_score(struct G_GameState *gamestate)
 	struct ScoreResult *score = C_get_hand_score(conditions);
 	gamestate->score_result = *score;
 	C_free_score_result(score);
-
 	switch (gamestate->score_result.error.tag) {
 	case FfiResult_Ok:
+		R_redraw_score_texts(*gamestate);
 		return true;
 		break;
 	case FfiResult_Err:
@@ -407,4 +378,40 @@ bool G_calculate_score(struct G_GameState *gamestate)
 		return false;
 		break;
 	}
+}
+
+void G_clear_menus_state(struct G_GameState *gamestate)
+{
+	gamestate->show_help = false;
+	gamestate->selected_main_menu_option = G_SELECTED_MAIN_MENU_OPTION_HAND;
+	gamestate->overlayed_menu = G_OVERLAYED_MENU_NONE;
+
+	gamestate->hand_tiles_len = 0;
+	memset(gamestate->hand_tiles, T_TILE_BACK,
+	       sizeof(gamestate->hand_tiles));
+	gamestate->dora_tiles_len = 0;
+	memset(gamestate->dora_tiles, T_TILE_BACK,
+	       sizeof(gamestate->dora_tiles));
+
+	gamestate->seat_wind = T_TILE_TON;
+	gamestate->prevelant_wind = T_TILE_TON;
+
+	gamestate->honba = 0;
+
+	memset(&gamestate->conditions, 0, sizeof(gamestate->conditions));
+
+	memset(gamestate->handshapes.hands, 0,
+	       sizeof(gamestate->handshapes.hands));
+	gamestate->handshapes.hands_len = 0;
+
+	gamestate->selector_idx = 0;
+	memset(gamestate->selected_handshape.groups, 0,
+	       sizeof(gamestate->selected_handshape.groups));
+	gamestate->selected_handshape.group_count = 0;
+
+	gamestate->winning_group_idx = 0;
+	memset(&gamestate->winning_tile, 0, sizeof(gamestate->winning_tile));
+
+	memset(&gamestate->score_result, 0, sizeof(gamestate->score_result));
+	gamestate->show_score_err = false;
 }

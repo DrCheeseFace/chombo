@@ -303,6 +303,7 @@ typedef struct ScoreInfo {
 	size_t fu_len;
 	HanValue han_score;
 	FuValue fu_score;
+	uint32_t dora_count;
 	Points dealer_ron;
 	Points dealer_tsumo;
 	Points non_dealer_ron;
@@ -347,6 +348,8 @@ char *C_fu_string(enum Fu fu);
 struct ScoreResult *C_get_hand_score(struct Conditions conditions);
 
 struct HandShapes *C_get_valid_hand_shapes(const char *tiles_string);
+
+bool C_yaku_is_yakuman(enum Yaku yaku);
 
 char *C_yaku_string(enum Yaku yaku, bool is_open);
 

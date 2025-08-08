@@ -140,4 +140,6 @@ bool G_dora_delete_tile(struct G_GameState *gamestate);
 // returns true (1) if successful
 bool G_calculate_score(struct G_GameState *gamestate);
 
+void G_clear_menus_state(struct G_GameState *gamestate);
+
 #endif // !G_GAMESTATE_H

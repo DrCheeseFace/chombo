@@ -24,6 +24,9 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 	case SDLK_ESCAPE:
 		G_backtrack_menu(gamestate);
 		return true;
+	case SDLK_COMMA:
+		G_clear_menus_state(gamestate);
+		return true;
 	default:
 		break;
 	}

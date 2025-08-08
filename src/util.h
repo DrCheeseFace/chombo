@@ -6,6 +6,13 @@
 #define WINDOW_HEIGHT 1000
 #define WINDOW_SCALE (float)0.5
 #define TARGET_FPS 35
+
 #define MAX_ALLOCATED_TEXTURES 20
+
+#define PLACEHOLDER_TEXT "ERR"
+
+#define DEALER_SEAT T_TILE_TON
+
+#define SCORE_SPACER "/"
 
 #endif // !UTIL_H
