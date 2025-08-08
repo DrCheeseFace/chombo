@@ -705,8 +705,15 @@ bool R_score_view_draw_score_info(struct G_GameState gamestate)
 	int x = initial_col_x;
 	int y = WINDOW_HEIGHT / 10;
 
-	if (L_draw_text(L_TEXT_YAKU_HEADER, (SDL_Point){ .x = x, .y = y }))
-		return true;
+	if (C_yaku_is_yakuman(gamestate.score_result.score_info.yaku[0])) {
+		if (L_draw_text(L_TEXT_YAKUMAN_HEADER,
+				(SDL_Point){ .x = x, .y = y }))
+			return true;
+	} else {
+		if (L_draw_text(L_TEXT_YAKU_HEADER,
+				(SDL_Point){ .x = x, .y = y }))
+			return true;
+	}
 
 	y += 150;
 
@@ -723,7 +730,7 @@ bool R_score_view_draw_score_info(struct G_GameState gamestate)
 
 	y += 60;
 
-	// drawing han fu and honba section (if non yakuman)
+	// drawing han fu and honba section
 	if (!C_yaku_is_yakuman(gamestate.score_result.score_info.yaku[0])) {
 		L_draw_text(L_TEXT_SCORE_HAN, (SDL_Point){ .x = x, .y = y });
 		x += L_text_width(L_TEXT_SCORE_HAN);
@@ -761,60 +768,71 @@ bool R_score_view_draw_score_info(struct G_GameState gamestate)
 	x += L_text_width(L_TEXT_SCORE_HONBA);
 	L_draw_text(L_TEXT_SCORE_HONBA_COUNT, (SDL_Point){ .x = x, .y = y });
 
-	// drawing fu list section
-	SDL_Texture *fu_textures[MAX_ALLOCATED_TEXTURES];
-	int fu_textures_len = 0;
-
-	int fu_pointsize = 50;
-	for (int i = 0; i < (int)gamestate.score_result.score_info.fu_len;
-	     i++) {
-		if (i > MAX_ALLOCATED_TEXTURES) {
-			for (int j = 0; j < fu_textures_len; j++) {
-				SDL_DestroyTexture(fu_textures[j]);
-			}
-			return false; // AYO CHECK IT!
-		}
-
-		char *fu_string =
-			C_fu_string(gamestate.score_result.score_info.fu[i]);
-
-		L_Text_Obj fu_text_obj = { .text = fu_string,
-					   .point_size = fu_pointsize,
-					   .color = L_COLOR_WHITE,
-					   .wraplength = 0,
-					   .align = TTF_HORIZONTAL_ALIGN_LEFT };
-
-		fu_textures[i] =
-			L_texture_from_text_obj(sdl_renderer, fu_text_obj);
-
-		C_free_c_string(fu_string);
-
-		if (fu_textures[i] == NULL) {
-			for (int k = 0; k < fu_textures_len; k++) {
-				SDL_DestroyTexture(fu_textures[k]);
-			}
-			return true;
-		}
-
-		fu_textures_len++;
-	}
-
 	x = WINDOW_WIDTH / 36 * 4 + max_yaku_column_width;
 	y = WINDOW_HEIGHT / 10;
 
-	if (L_draw_text(L_TEXT_FU_HEADER, (SDL_Point){ .x = x, .y = y }))
-		return true;
+	// drawing fu list section
+	if (!C_yaku_is_yakuman(gamestate.score_result.score_info.yaku[0])) {
+		SDL_Texture *fu_textures[MAX_ALLOCATED_TEXTURES];
+		int fu_textures_len = 0;
 
-	y += 150;
+		int fu_pointsize = 50;
+		for (int i = 0;
+		     i < (int)gamestate.score_result.score_info.fu_len; i++) {
+			if (i > MAX_ALLOCATED_TEXTURES) {
+				for (int j = 0; j < fu_textures_len; j++) {
+					SDL_DestroyTexture(fu_textures[j]);
+				}
+				return false; // AYO CHECK IT!
+			}
 
-	for (int i = 0; i < fu_textures_len; i++) {
-		if (R_draw(fu_textures[i], (SDL_Point){ .x = x, .y = y }))
+			char *fu_string = C_fu_string(
+				gamestate.score_result.score_info.fu[i]);
+
+			L_Text_Obj fu_text_obj = {
+				.text = fu_string,
+				.point_size = fu_pointsize,
+				.color = L_COLOR_WHITE,
+				.wraplength = 0,
+				.align = TTF_HORIZONTAL_ALIGN_LEFT
+			};
+
+			fu_textures[i] = L_texture_from_text_obj(sdl_renderer,
+								 fu_text_obj);
+
+			C_free_c_string(fu_string);
+
+			if (fu_textures[i] == NULL) {
+				for (int k = 0; k < fu_textures_len; k++) {
+					SDL_DestroyTexture(fu_textures[k]);
+				}
+				return true;
+			}
+
+			fu_textures_len++;
+		}
+
+		if (L_draw_text(L_TEXT_FU_HEADER,
+				(SDL_Point){ .x = x, .y = y }))
 			return true;
 
-		y += fu_textures[i]->h;
+		y += 150;
+
+		for (int i = 0; i < fu_textures_len; i++) {
+			if (R_draw(fu_textures[i],
+				   (SDL_Point){ .x = x, .y = y }))
+				return true;
+
+			y += fu_textures[i]->h;
+		}
+
+		y += 60;
+
+		for (int i = 0; i < fu_textures_len; i++) {
+			SDL_DestroyTexture(fu_textures[i]);
+		}
 	}
 
-	y += 60;
 	// drawing points section
 	L_Text points_header;
 	if (gamestate.seat_wind == DEALER_SEAT) {
@@ -834,10 +852,6 @@ bool R_score_view_draw_score_info(struct G_GameState gamestate)
 	L_draw_text(points_header, (SDL_Point){ .x = x, .y = y });
 	y += L_text_height(points_header);
 	L_draw_text(L_TEXT_SCORE_POINTS, (SDL_Point){ .x = x, .y = y });
-
-	for (int i = 0; i < fu_textures_len; i++) {
-		SDL_DestroyTexture(fu_textures[i]);
-	}
 
 	return false;
 }
