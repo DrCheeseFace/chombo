@@ -2,7 +2,7 @@
 `Chombo 「錯和/チョンボ」is a penalty for severe game rule violations, generally severe enough to restart the current hand. 
 Mistakes that are minor and/or correctable, such as drawing the wrong tile, can be given a dead hand penalty instead.`
 
-Gui riichi mahjong calculator. In progress
+Gui riichi mahjong calculator
 
 <details><summary>example 1</summary> <img src='readmeassets/eg.JPG' width='600px'/> </details>
 <details><summary>example 2</summary> <img src='readmeassets/eg1.JPG' width='600px'/> </details>

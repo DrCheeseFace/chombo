@@ -7,8 +7,6 @@
 #define T_TILE_WIDTH_RATIO 4
 #define T_TILE_HEIGHT_RATIO 5.5
 
-extern const char *T_TILE_PATHS[];
-
 typedef enum {
 	T_TILE_BACK = 0,
 	T_TILE_BLANK,
@@ -59,6 +57,7 @@ typedef enum {
 	T_TILE_COUNT,
 } T_Tile;
 
+extern const char *T_TILE_PATHS[T_TILE_COUNT];
 extern const char *T_TILE_NOTATION[T_TILE_COUNT];
 
 // returns true (1) if failed and requires a redraw
