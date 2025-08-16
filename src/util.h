@@ -11,8 +11,6 @@
 
 #define PLACEHOLDER_TEXT "ERR"
 
-#define DEALER_SEAT T_TILE_TON
-
 #define SCORE_SPACER "/"
 
 #endif // !UTIL_H

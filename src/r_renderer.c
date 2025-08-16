@@ -64,7 +64,7 @@ void R_redraw_score_texts(struct G_GameState gamestate)
 	SDL_itoa(gamestate.score_result.score_info.dora_count, dora_str, 10);
 	L_rewrite_text(sdl_renderer, L_TEXT_SCORE_DORA_COUNT, dora_str);
 
-	if (gamestate.seat_wind == DEALER_SEAT) {
+	if (gamestate.seat_wind == gamestate.prevelant_wind) {
 		char dealer_to_non_dealer[7] = PLACEHOLDER_TEXT;
 		if (gamestate.conditions.tsumo) {
 			SDL_itoa(gamestate.score_result.score_info.dealer_tsumo,
@@ -835,7 +835,7 @@ bool R_score_view_draw_score_info(struct G_GameState gamestate)
 
 	// drawing points section
 	L_Text points_header;
-	if (gamestate.seat_wind == DEALER_SEAT) {
+	if (gamestate.seat_wind == gamestate.prevelant_wind) {
 		if (gamestate.conditions.tsumo) {
 			points_header = L_TEXT_SCORE_DEALER_TSUMO;
 		} else {
