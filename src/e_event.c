@@ -444,6 +444,13 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 		case SDLK_DOWN:
 			G_increment_main_menu_selector(gamestate);
 			return true;
+		case SDLK_TAB:
+			if (key_event.mod == SDL_KMOD_LSHIFT) {
+				G_decrement_main_menu_selector(gamestate);
+			} else {
+				G_increment_main_menu_selector(gamestate);
+			}
+			return true;
 		case SDLK_RIGHT:
 			if (gamestate->selected_main_menu_option ==
 			    G_SELECTED_MAIN_MENU_OPTION_SEAT_WIND) {

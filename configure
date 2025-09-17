@@ -28,7 +28,7 @@ for lib in sdl3 sdl3-ttf; do
 done
 echo ""
 echo "Checking for Rust project (mahc)..."
-if [ ! -f ./mahc/Cargo.toml ]; then
+if [ ! -f ./src/mahc/Cargo.toml ]; then
     echo "  [✗] Error: './mahc/Cargo.toml' not found."
     echo "Please ensure the 'mahc' Rust library is in the correct directory."
     exit 1

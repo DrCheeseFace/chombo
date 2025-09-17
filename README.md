@@ -18,6 +18,46 @@ Gui riichi mahjong calculator
 make debug && make run 
 ```
 
+#### Installation
+cbindgen 
+```
+cargo install --force cbindgen
+```
+
+sdl3 
+```
+git clone git@github.com:libsdl-org/SDL.git
+cd SDL
+mkdir build
+cd build 
+sudo cmake ..
+sudo cmake --build .
+sudo cmake --install . --prefix /usr
+```
+
+sdl3-ttf
+```
+git clone git@github.com:libsdl-org/SDL_ttf.git
+cd SDL_ttf
+mkdir build
+cd build 
+sudo cmake ..
+sudo cmake --build .
+sudo cmake --install . --prefix /usr
+```
+
+build mahc
+```
+cd src/mahc 
+cargo build
+```
+
+
+
+
+
+
+
 
 #### TODO
 - [x] shift -+ window resizing
