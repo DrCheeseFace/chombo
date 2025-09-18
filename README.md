@@ -46,18 +46,10 @@ sudo cmake --build .
 sudo cmake --install . --prefix /usr
 ```
 
-build mahc
+run 
 ```
-cd src/mahc 
-cargo build
+make
 ```
-
-
-
-
-
-
-
 
 #### TODO
 - [x] shift -+ window resizing
