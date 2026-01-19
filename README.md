@@ -11,10 +11,14 @@ Gui riichi mahjong calculator
 <details><summary>example 5</summary> <img src='readmeassets/eg4.JPG' width='600px'/> </details>
 
 #### Requirements for deving
-- sdl3
-- sdl3ttf
+- meson
+- gcc
+- cargo
 - cbindgen (for generating header files for mahc)
 ```
+sudo apt update
+sudo apt install build-essential meson ninja-build cargo clang-format cbindgen
+
 make debug && make run 
 ```
 
@@ -22,33 +26,6 @@ make debug && make run
 cbindgen 
 ```
 cargo install --force cbindgen
-```
-
-sdl3 
-```
-git clone git@github.com:libsdl-org/SDL.git
-cd SDL
-mkdir build
-cd build 
-sudo cmake ..
-sudo cmake --build .
-sudo cmake --install . --prefix /usr
-```
-
-sdl3-ttf
-```
-git clone git@github.com:libsdl-org/SDL_ttf.git
-cd SDL_ttf
-mkdir build
-cd build 
-sudo cmake ..
-sudo cmake --build .
-sudo cmake --install . --prefix /usr
-```
-
-run 
-```
-make
 ```
 
 #### TODO
@@ -61,6 +38,7 @@ make
 - [x] remove the dastardly typedefs on structs (i was told this will make me a good programmer)
 - [x] refactor out that disgustingly repeated adding tile logic in `event.c`
 - [ ] move points of text to `L_letter.c`? since none of em move
+- [ ] load assets from base url.
 - [ ] some way to do normalized pointsize for text 
 - [ ] some kinda way to indicate the steps to make backtracking less confusing (maybe layers stacked?)
 - [x] using mahc for calculate

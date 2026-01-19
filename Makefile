@@ -1,41 +1,47 @@
-CC = gcc
+BUILD_DIR = build
+TARGET = chombo
+MAHC_DIR = src/mahc
+MAHC_CARGO_TOML = $(MAHC_DIR)/Cargo.toml
 
-CFLAGS_DEBUG = -Wall -Wextra -Werror -Wpointer-arith -Wcast-align \
-         -Wstrict-prototypes -Wwrite-strings -Waggregate-return \
-         -Wswitch-default -Wswitch-enum -Wunreachable-code \
-	 -Wunused-parameter -Wuninitialized -Winit-self -Wpedantic \
-         -pedantic-errors -Wbad-function-cast -Wcast-align\
-	 -Wformat=2 -Wlogical-op   -Wmissing-include-dirs \
-         -Wredundant-decls -Wsequence-point -Wshadow \
-	 -Wswitch -Wundef -Wunused-but-set-parameter \
-	 -Wcast-qual  -Wfloat-equal -Wnested-externs \
-	 -O0 -std=c11 -g \
-	 -fsanitize=address \
-	 
-CFLAGS = -Wall -Wextra -Werror \
-	 -O2 -std=c11\
+.PHONY: all setup build run clean format format-check bear debug mahc-header mahc-lib whodoyouthinkyouareiam
 
-MAHC_LIB_PATH = ./src/mahc/target/debug/
+all: build
+	@$(MAKE) run
 
-LINKS = -L$(MAHC_LIB_PATH) -Wl,-rpath,$(MAHC_LIB_PATH) -lmahc -lSDL3 -lSDL3_ttf
+# BUILD COMMANDS 
 
-MAIN_TARGET = main.out
-MAIN_SRC = src/*.c
+setup:
+	    @if [ ! -d "$(BUILD_DIR)/meson-private" ]; then \
+		echo "Clearing build and refreshing subprojects..."; \
+		rm -rf $(BUILD_DIR); \
+		meson setup $(BUILD_DIR) --wrap-mode=forcefallback; \
+	    fi
 
-.PHONY: all build run clean format format-check bear debug build-mahc-header build-mahc
-
-all: whodoyouthinkyouareiam
-
-whodoyouthinkyouareiam:  build-mahc-header build-mahc build run
-
-build:
-	$(CC) $(CFLAGS) -o $(MAIN_TARGET) $(MAIN_SRC) $(LINKS)
+build: mahc-lib setup
+	meson compile -C $(BUILD_DIR)
 
 run:
-	./$(MAIN_TARGET)
+	@if [ -f $(BUILD_DIR)/$(TARGET) ]; then \
+		./$(BUILD_DIR)/$(TARGET); \
+	else \
+		echo "building first..."; \
+		$(MAKE) build && ./$(BUILD_DIR)/$(TARGET); \
+	fi
+
+# rust mahc stuffs
+mahc-header:
+	cbindgen $(MAHC_DIR) --config cbindgen.toml --output src/mahc.h
+
+mahc-lib: mahc-header
+	cargo build --manifest-path $(MAHC_CARGO_TOML)
+
+
+# UTILS COMMADNS
 
 clean:
-	-rm -f $(MAIN_TARGET) && rm -rf $(MAHC_LIB_PATH)
+	rm -rf $(BUILD_DIR)
+	cargo clean --manifest-path $(MAHC_CARGO_TOML)
+	rm -f src/mahc.h
 
 format: 
 	find ./src -name '*.h' -o -iname '*.c' | xargs clang-format -i --verbose
@@ -43,17 +49,12 @@ format:
 format-check:
 	find ./src -name '*.h' -o -iname '*.c' | xargs clang-format --dry-run --Werror
 
-bear: # this is for creating the compile_commands.json file
-	rm -f compile_commands.json && bear -- make build
+bear:
+	@if [ ! -d $(BUILD_DIR)/meson-private ]; then $(MAKE) setup; fi
+	ln -sf $(BUILD_DIR)/compile_commands.json .
 
-debug: build-mahc-header build-mahc
-	$(CC) $(CFLAGS_DEBUG) -o $(MAIN_TARGET) $(MAIN_SRC) $(LINKS)
+debug: setup
+	meson configure $(BUILD_DIR) -Dbuildtype=debug
+	$(MAKE) build
 
-build-mahc:
-	cargo build --manifest-path ./src/mahc/Cargo.toml
-
-build-mahc-header:
-	cbindgen ./src/mahc --config cbindgen.toml --output ./src/mahc.h
-
-check: format-check debug format
-
+whodoyouthinkyouareiam: clean setup build run
