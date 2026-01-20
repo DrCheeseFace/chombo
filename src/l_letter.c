@@ -4,7 +4,7 @@
 #include <SDL3_ttf/SDL_ttf.h>
 #include <stdio.h>
 
-#define FONT_EDOSZ_TTF "src/assets/edosz.ttf"
+const char *FONT_EDOSZ_TTF = "assets/edosz.ttf";
 
 TTF_Font *font;
 TTF_TextEngine *text_engine;
@@ -108,12 +108,22 @@ L_Text_Obj L_TEXTS_OBJS[L_TEXT_COUNT] = {
 	{ "0", 80, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
 };
 
+static const char *base_path = NULL;
+
 SDL_Texture *text_textures[L_TEXT_COUNT];
 
 void L_init(SDL_Renderer *sdl_renderer)
 {
+	base_path = SDL_GetBasePath();
+	if (!base_path) {
+		fprintf(stderr, "Failed to get base path: %s", SDL_GetError());
+	}
+
+	char font_path[256];
+	sprintf(font_path, "%s/%s", base_path, FONT_EDOSZ_TTF);
+
 	TTF_Init();
-	font = TTF_OpenFont(FONT_EDOSZ_TTF, 100);
+	font = TTF_OpenFont(font_path, 100);
 	text_engine = TTF_CreateSurfaceTextEngine();
 
 	for (int i = 0; i < L_TEXT_COUNT; i++) {

@@ -16,34 +16,37 @@ const char *T_TILE_NOTATION[T_TILE_COUNT] = {
 };
 
 const char *T_TILE_PATHS[T_TILE_COUNT] = {
-	"src/assets/Back.bmp",	"src/assets/Blank.bmp",
-	"src/assets/Front.bmp", "src/assets/Chun.bmp",
-	"src/assets/Hatsu.bmp", "src/assets/Haku.bmp",
-	"src/assets/Man1.bmp",	"src/assets/Man2.bmp",
-	"src/assets/Man3.bmp",	"src/assets/Man4.bmp",
-	"src/assets/Man5.bmp",	"src/assets/Man5-Dora.bmp",
-	"src/assets/Man6.bmp",	"src/assets/Man7.bmp",
-	"src/assets/Man8.bmp",	"src/assets/Man9.bmp",
-	"src/assets/Pin1.bmp",	"src/assets/Pin2.bmp",
-	"src/assets/Pin3.bmp",	"src/assets/Pin4.bmp",
-	"src/assets/Pin5.bmp",	"src/assets/Pin5-Dora.bmp",
-	"src/assets/Pin6.bmp",	"src/assets/Pin7.bmp",
-	"src/assets/Pin8.bmp",	"src/assets/Pin9.bmp",
-	"src/assets/Sou1.bmp",	"src/assets/Sou2.bmp",
-	"src/assets/Sou3.bmp",	"src/assets/Sou4.bmp",
-	"src/assets/Sou5.bmp",	"src/assets/Sou5-Dora.bmp",
-	"src/assets/Sou6.bmp",	"src/assets/Sou7.bmp",
-	"src/assets/Sou8.bmp",	"src/assets/Sou9.bmp",
-	"src/assets/Ton.bmp",	"src/assets/Nan.bmp",
-	"src/assets/Shaa.bmp",	"src/assets/Pei.bmp",
+	"assets/Back.bmp",	"assets/Blank.bmp",	"assets/Front.bmp",
+	"assets/Chun.bmp",	"assets/Hatsu.bmp",	"assets/Haku.bmp",
+	"assets/Man1.bmp",	"assets/Man2.bmp",	"assets/Man3.bmp",
+	"assets/Man4.bmp",	"assets/Man5.bmp",	"assets/Man5-Dora.bmp",
+	"assets/Man6.bmp",	"assets/Man7.bmp",	"assets/Man8.bmp",
+	"assets/Man9.bmp",	"assets/Pin1.bmp",	"assets/Pin2.bmp",
+	"assets/Pin3.bmp",	"assets/Pin4.bmp",	"assets/Pin5.bmp",
+	"assets/Pin5-Dora.bmp", "assets/Pin6.bmp",	"assets/Pin7.bmp",
+	"assets/Pin8.bmp",	"assets/Pin9.bmp",	"assets/Sou1.bmp",
+	"assets/Sou2.bmp",	"assets/Sou3.bmp",	"assets/Sou4.bmp",
+	"assets/Sou5.bmp",	"assets/Sou5-Dora.bmp", "assets/Sou6.bmp",
+	"assets/Sou7.bmp",	"assets/Sou8.bmp",	"assets/Sou9.bmp",
+	"assets/Ton.bmp",	"assets/Nan.bmp",	"assets/Shaa.bmp",
+	"assets/Pei.bmp",
 };
 
 SDL_Texture *T_TILE_TEXTURES[T_TILE_COUNT];
 
+static const char *base_path = NULL;
+
 void T_tiles_init(SDL_Renderer *sdl_renderer)
 {
+	base_path = SDL_GetBasePath();
+	if (!base_path) {
+		fprintf(stderr, "Failed to get base path: %s", SDL_GetError());
+	}
+
+	char tile_path[256];
 	for (int i = 0; i < T_TILE_COUNT; i++) {
-		SDL_Surface *bmp = SDL_LoadBMP(T_TILE_PATHS[i]);
+		sprintf(tile_path, "%s/%s", base_path, T_TILE_PATHS[i]);
+		SDL_Surface *bmp = SDL_LoadBMP(tile_path);
 		if (!bmp) {
 			fprintf(stderr, "Failed to load tile BMP: %s\n",
 				SDL_GetError());
