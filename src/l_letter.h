@@ -115,8 +115,8 @@ void L_rewrite_text(SDL_Renderer *sdl_renderer, L_Text text_to_change,
 		    char *string_to_replace);
 
 /**
- * dont forget to destory me using SDL_DestroyTexture! 
- * 
+ * dont forget to destory me using SDL_DestroyTexture!
+ *
  * used for naughty dynamically allocated text
  *
  * \return NULL if failed

@@ -23,7 +23,7 @@ namespaces = []
 using_namespaces = []
 sys_includes = ["stdbool.h","stddef.h","stdint.h" ]
 includes = []
-no_includes = true 
+no_includes = true
 # cpp_compat = true
 after_includes = ""
 
@@ -112,7 +112,7 @@ rename_variants = "None"
 # deprecated = "DEPRECATED_ENUM"
 # deprecated_with_note = "DEPRECATED_ENUM_WITH_NOTE"
 add_sentinel = false
-prefix_with_name = true 
+prefix_with_name = true
 derive_helper_methods = false
 derive_const_casts = false
 derive_mut_casts = false
@@ -144,7 +144,7 @@ bitflags = false
 ############## Options for How Your Rust library Should Be Parsed ##############
 
 [parse]
-parse_deps = false 
+parse_deps = false
 # include = []
 exclude = []
 clean = false

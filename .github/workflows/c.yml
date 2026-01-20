@@ -34,7 +34,7 @@ jobs:
 
       - name: Install Linux-specific headers
         run: sudo apt-get install -y libudev-dev libasound2-dev
-          
+
       - name: Run Check Command
         run: make format-check
 

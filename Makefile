@@ -1,53 +1,60 @@
 BUILD_DIR = build
+INSTALL_DIR = dist
 TARGET = chombo
 MAHC_DIR = src/mahc
 MAHC_CARGO_TOML = $(MAHC_DIR)/Cargo.toml
+BINARY_PATH = $(CURDIR)/$(INSTALL_DIR)/bin/$(TARGET)
+MAHC_LIB_STATIC = $(MAHC_DIR)/target/debug/libmahc.a
+MAHC_HEADER = src/mahc.h
 
-.PHONY: all setup build run clean format format-check bear debug mahc-header mahc-lib whodoyouthinkyouareiam
+.PHONY: all setup build run clean format format-check bear debug whodoyouthinkyouareiam
 
-all: build
-	@$(MAKE) run
-
-# BUILD COMMANDS 
+all: install
 
 setup:
-	    @if [ ! -d "$(BUILD_DIR)/meson-private" ]; then \
-		echo "Clearing build and refreshing subprojects..."; \
+	@if [ ! -d "$(BUILD_DIR)/meson-private" ]; then \
+		echo "CLEARING BUILD AND REFRESHING SUBPROJECTS..."; \
 		rm -rf $(BUILD_DIR); \
-		meson setup $(BUILD_DIR) --wrap-mode=forcefallback; \
-	    fi
+		meson setup $(BUILD_DIR) \
+		--wrap-mode=forcefallback \
+		--prefix=$(CURDIR)/$(INSTALL_DIR) \
+		--reconfigure; \
+	fi
 
-build: mahc-lib setup
+install: build
+	meson install -C $(BUILD_DIR)
+
+build: $(MAHC_LIB_STATIC) $(MAHC_HEADER) setup
 	meson compile -C $(BUILD_DIR)
 
 run:
-	@if [ -f $(BUILD_DIR)/$(TARGET) ]; then \
-		./$(BUILD_DIR)/$(TARGET); \
+	@if [ -f "$(BINARY_PATH)" ]; then \
+		"$(BINARY_PATH)"; \
 	else \
-		echo "building first..."; \
-		$(MAKE) build && ./$(BUILD_DIR)/$(TARGET); \
+		echo "BINARY NOT FOUND, BUILDING FIRST..."; \
+		$(MAKE) --no-print-directory install; \
+		"$(BINARY_PATH)"; \
 	fi
 
-# rust mahc stuffs
-mahc-header:
-	cbindgen $(MAHC_DIR) --config cbindgen.toml --output src/mahc.h
+# Rust mahc stuffs
+$(MAHC_HEADER): $(shell find $(MAHC_DIR) -name "*.rs")
+	cbindgen $(MAHC_DIR) --config cbindgen.toml --output $(MAHC_HEADER)
 
-mahc-lib: mahc-header
+$(MAHC_LIB_STATIC): $(shell find $(MAHC_DIR) -name "*.rs")
 	cargo build --manifest-path $(MAHC_CARGO_TOML)
-
-
-# UTILS COMMADNS
 
 clean:
 	rm -rf $(BUILD_DIR)
+	rm -rf $(INSTALL_DIR)
 	cargo clean --manifest-path $(MAHC_CARGO_TOML)
 	rm -f src/mahc.h
 
-format: 
+format:
 	find ./src -name '*.h' -o -iname '*.c' | xargs clang-format -i --verbose
 
 format-check:
-	find ./src -name '*.h' -o -iname '*.c' | xargs clang-format --dry-run --Werror
+	find ./src -name '*.h' -o -name '*.c' | xargs clang-format --dry-run --Werror --verbose
+
 
 bear:
 	@if [ ! -d $(BUILD_DIR)/meson-private ]; then $(MAKE) setup; fi
