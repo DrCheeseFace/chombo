@@ -5,3 +5,4 @@ mahc.txt
 /subprojects/*
 !/subprojects/*.wrap
 dist
+dist_win

@@ -2,7 +2,7 @@ project('chombo', ['c'],
   default_options: [
     'default_library=static',
     'c_std=c11',
-    'warning_level=3',
+    'warning_level=2', 
     'werror=false',
 
     # i hate
@@ -19,24 +19,49 @@ project('chombo', ['c'],
   ]
 )
 
-# debug build flags
-# enable -Werror and other flags
+host_system = host_machine.system()
+
 cc = meson.get_compiler('c')
+fs = import('fs')
+
+strict_c_flags = [
+  '-Werror',
+  '-Wpointer-arith',
+  '-Wcast-align',
+  '-Wstrict-prototypes',
+  '-Wwrite-strings',
+  '-Waggregate-return',
+  '-Wswitch-default',
+  '-Wswitch-enum',
+  '-Wunreachable-code',
+  '-Winit-self',
+  '-Wbad-function-cast',
+  '-Wformat=2',
+  '-Wlogical-op',
+  '-Wshadow',
+  '-Wundef',
+  '-Wfloat-equal'
+]
+
 if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
-  add_project_arguments('-Werror', language: 'c')
+  add_project_arguments(strict_c_flags, language: 'c')
 endif
-# debug build flags
-add_project_arguments([
-  '-Wpointer-arith', '-Wcast-align', '-Wstrict-prototypes',
-  '-Wwrite-strings', '-Waggregate-return', '-Wswitch-default',
-  '-Wswitch-enum', '-Wunreachable-code', '-Winit-self',
-  '-Wbad-function-cast', '-Wformat=2', '-Wlogical-op',
-  '-Wredundant-decls', '-Wshadow', '-Wundef', '-Wfloat-equal', '-Werror'
-], language: 'c')
+
+
+# rust configing 
+if host_system == 'windows'
+  rust_lib_filename = 'mahc.dll' 
+  rust_target_triple = 'x86_64-pc-windows-gnu'
+  rust_build_dir = 'src/mahc/target' / rust_target_triple / 'debug'
+  cargo_cmd = ['cargo', 'build', '--manifest-path', meson.current_source_dir() / 'src/mahc/Cargo.toml', '--target', rust_target_triple]
+else
+  rust_lib_filename = 'libmahc.so'
+  rust_build_dir = 'src/mahc/target/debug'
+  cargo_cmd = ['cargo', 'build', '--manifest-path', meson.current_source_dir() / 'src/mahc/Cargo.toml']
+endif
 
 
 # rust mahc cbindgen target
-# create rust to c header file
 mahc_header = custom_target(
   'mahc_header',
   output: 'mahc.h',
@@ -48,24 +73,31 @@ mahc_header = custom_target(
   ],
   build_by_default: true
 )
-# link header to .so
+
+# link header to .so/.dll
 mahc_lib = custom_target(
   'mahc_lib',
-  output: 'libmahc.so',
+  output: rust_lib_filename,
   console: true,
-  command: ['cargo', 'build', '--manifest-path', meson.current_source_dir() / 'src/mahc/Cargo.toml'],
+  command: cargo_cmd,
   build_by_default: true
 )
-mahc_dir = meson.project_source_root() / 'src/mahc/target/debug'
+
+mahc_lib_full_path = meson.project_source_root() / rust_build_dir / rust_lib_filename
+
+# copy mahc.dll for win
+copy_mahc = fs.copyfile(mahc_lib_full_path, 'run_' + rust_lib_filename) # some name collision boolshit
+
+final_link_args = [mahc_lib_full_path]
+if host_system == 'linux'
+  mahc_abs_dir = meson.project_source_root() / rust_build_dir
+  final_link_args += '-Wl,-rpath,' + mahc_abs_dir
+  final_link_args += ['-ldl', '-lm']
+endif
+
 mahc_dep = declare_dependency(
   sources: mahc_header,
-  link_args: [
-    '-L' + mahc_dir,
-    '-Wl,-rpath,' + mahc_dir,
-    '-lmahc',
-    '-ldl',
-    '-lm'
-  ]
+  link_args: [mahc_lib_full_path] 
 )
 
 
@@ -84,7 +116,7 @@ deps = [
 ]
 
 
-# c src files
+# src files
 source_files = files(
   'src/e_event.c',
   'src/g_gamestate.c',
@@ -99,10 +131,14 @@ source_files = files(
 # move over assets folder to bin directory
 install_subdir('src/assets', install_dir: get_option('bindir'))
 
+# mahc lib install to bin dir 
+install_data(mahc_lib_full_path, install_dir: get_option('bindir'))
+
 # lift off?
 executable('chombo',
   source_files,
   dependencies: deps,
+  link_depends: [mahc_lib, copy_mahc],
   link_language: 'c',
   install: true
 )
