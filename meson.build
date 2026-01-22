@@ -1,6 +1,6 @@
 project('chombo', ['c'],
   default_options: [
-    'default_library=static',
+    # 'default_library=static',
     'c_std=c11',
     'warning_level=2', 
     'werror=false',
@@ -104,6 +104,7 @@ mahc_dep = declare_dependency(
 # set all deps
 sdl3_dep      = dependency('sdl3', fallback: ['sdl3', 'sdl3_dep'])
 sdl3_ttf_dep  = dependency('sdl3_ttf', fallback: ['sdl3_ttf', 'sdl3_ttf_dep'])
+
 harfbuzz_dep  = dependency('harfbuzz', fallback: ['harfbuzz', 'libharfbuzz_dep'])
 freetype_dep  = dependency('freetype2', fallback: ['freetype2', 'freetype_dep'])
 
@@ -129,10 +130,30 @@ source_files = files(
 
 
 # move over assets folder to bin directory
-install_subdir('src/assets', install_dir: get_option('bindir'))
-
 # mahc lib install to bin dir 
-install_data(mahc_lib_full_path, install_dir: get_option('bindir'))
+# moves icon to build
+# moves desktop file for lin 
+if host_system == 'linux'
+    install_subdir('src/assets', install_dir: 'share/chombo')
+    install_data(mahc_lib_full_path, install_dir: get_option('libdir'))
+
+    # for sdl3 and sdl3_ttf .so . see package.sh 
+    add_project_link_arguments('-Wl,-rpath,$ORIGIN/../lib', language: 'c')
+
+    install_data('akagi.png', rename: 'chombo.png', install_dir: 'share/icons/hicolor/256x256/apps')
+    install_data('akagi.png', rename: 'chombo.png', install_dir: 'share/pixmaps')
+    desktop_conf = configuration_data()
+    desktop_conf.set('EXEC', 'chombo')
+    configure_file(
+        input: 'chombo.desktop.in',
+        output: 'chombo.desktop',
+        configuration: desktop_conf,
+        install_dir: 'share/applications'
+    )
+else
+    install_subdir('src/assets', install_dir: get_option('bindir'))
+    install_data(mahc_lib_full_path, install_dir: get_option('bindir'))
+endif
 
 # lift off?
 executable('chombo',
