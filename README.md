@@ -2,6 +2,11 @@
 `Chombo 「錯和/チョンボ」is a penalty for severe game rule violations, generally severe enough to restart the current hand.
 Mistakes that are minor and/or correctable, such as drawing the wrong tile, can be given a dead hand penalty instead.`
 
+#### Installation
+Windows and Linux installers can be found <a href="https://github.com/DrCheeseFace/chombo/releases/latest">here</a>
+
+---
+
 Gui riichi mahjong calculator
 
 <details><summary>example 1</summary> <img src='readmeassets/eg.JPG' width='600px'/> </details>
@@ -22,12 +27,6 @@ sudo apt install build-essential meson ninja-build cargo clang-format cbindgen
 make debug && make run
 ```
 
-#### Installation
-cbindgen
-```
-cargo install --force cbindgen
-```
-
 #### TODO
 - [x] shift -+ window resizing
 - [x] figure out why memory leak :(
@@ -43,8 +42,8 @@ cargo install --force cbindgen
 - [ ] some kinda way to indicate the steps to make backtracking less confusing (maybe layers stacked?)
 - [x] using mahc for calculate
 - [x] displaying output
-- [ ] figure out how to use cmake to add sdl3 and sdl3ttf as vendored
-- [ ] figure out creating platform specific executable
+- [x] figure out how to use cmake to add sdl3 and sdl3ttf as vendored
+- [x] figure out creating platform specific executable
 
 
 ## Contributing
@@ -60,3 +59,4 @@ This project uses
 [riichi-mahjong-tiles](https://github.com/FluffyStuff/riichi-mahjong-tiles)
 by [FluffyStuff](https://github.com/FluffyStuff) in
 [public domain/CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/).
+
