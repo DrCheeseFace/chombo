@@ -20,6 +20,13 @@ meson compile -C "$BUILD_DIR"
 
 DESTDIR="$WIN_DIST_DIR" meson install -C "$BUILD_DIR"
 
+# fuck you sdl3_ttf!
+cp "$BUILD_DIR/subprojects/SDL3_ttf-3.2.2/libsdl3_ttf-0.dll" "$WIN_DIST_DIR/usr/bin/"
+
+rm -rf "$WIN_DIST_DIR/usr/include"
+rm -rf "$WIN_DIST_DIR/usr/lib"
+rm -rf "$WIN_DIST_DIR/usr/share"
+
 cp chombo.iss "$WIN_DIST_DIR/chombo.iss"
 
 WIN_ISS_PATH=$(winepath -w "$WIN_DIST_DIR/chombo.iss")
