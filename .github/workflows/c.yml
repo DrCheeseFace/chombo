@@ -23,7 +23,7 @@ jobs:
       - name: Install System Dependencies
         run: |
           sudo apt-get update
-          sudo apt install build-essential ninja-build cargo clang-format cbindgen \
+          sudo apt install build-essential ninja-build cargo clang-format \
             gnome-desktop-testing libasound2-dev libpulse-dev \
             libaudio-dev libjack-dev libsndio-dev libx11-dev libxext-dev \
             libxrandr-dev libxcursor-dev libxfixes-dev libxi-dev libxss-dev libxtst-dev \
@@ -31,6 +31,9 @@ jobs:
             libegl1-mesa-dev libdbus-1-dev libibus-1.0-dev libudev-dev libfreetype-dev \
             libpipewire-0.3-dev libwayland-dev
           pipx install meson --force
+
+      - name: Install cbindgen via Cargo
+        run: cargo install cbindgen
 
       - name: Install Linux-specific headers
         run: sudo apt-get install -y libudev-dev libasound2-dev
