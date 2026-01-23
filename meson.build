@@ -54,10 +54,12 @@ if host_system == 'windows'
   rust_target_triple = 'x86_64-pc-windows-gnu'
   rust_build_dir = 'src/mahc/target' / rust_target_triple / 'debug'
   cargo_cmd = ['cargo', 'build', '--manifest-path', meson.current_source_dir() / 'src/mahc/Cargo.toml', '--target', rust_target_triple]
+  rust_install_dir = get_option('bindir')
 else
   rust_lib_filename = 'libmahc.so'
   rust_build_dir = 'src/mahc/target/debug'
   cargo_cmd = ['cargo', 'build', '--manifest-path', meson.current_source_dir() / 'src/mahc/Cargo.toml']
+  rust_install_dir = get_option('libdir')
 endif
 
 
@@ -78,15 +80,24 @@ mahc_header = custom_target(
 mahc_lib = custom_target(
   'mahc_lib',
   output: rust_lib_filename,
+  command: ['sh', '-c', ' '.join(cargo_cmd) + ' && cp ' + meson.project_source_root() / rust_build_dir / rust_lib_filename + ' @OUTPUT@'],
   console: true,
-  command: cargo_cmd,
-  build_by_default: true
+  build_by_default: true,
+  install: true,
+  install_dir: rust_install_dir
 )
 
 mahc_lib_full_path = meson.project_source_root() / rust_build_dir / rust_lib_filename
 
-# copy mahc.dll for win
-copy_mahc = fs.copyfile(mahc_lib_full_path, 'run_' + rust_lib_filename) # some name collision boolshit
+# copy libmahc.dll\.so 
+copy_mahc = custom_target(
+  'copy_mahc',
+  input: mahc_lib,
+  output: 'run_' + rust_lib_filename,
+  command: ['cp', '@INPUT@', '@OUTPUT@'],
+  build_by_default: true
+)
+
 
 final_link_args = [mahc_lib_full_path]
 if host_system == 'linux'
@@ -97,7 +108,7 @@ endif
 
 mahc_dep = declare_dependency(
   sources: mahc_header,
-  link_args: [mahc_lib_full_path] 
+  link_args: [meson.current_build_dir() / rust_lib_filename] 
 )
 
 
@@ -135,8 +146,6 @@ source_files = files(
 # moves desktop file for lin 
 if host_system == 'linux'
     install_subdir('src/assets', install_dir: 'share/chombo')
-    install_data(mahc_lib_full_path, install_dir: get_option('libdir'))
-
     # for sdl3 and sdl3_ttf .so . see package.sh 
     add_project_link_arguments('-Wl,-rpath,$ORIGIN/../lib', language: 'c')
 
@@ -152,7 +161,6 @@ if host_system == 'linux'
     )
 else
     install_subdir('src/assets', install_dir: get_option('bindir'))
-    install_data(mahc_lib_full_path, install_dir: get_option('bindir'))
 endif
 
 # lift off?

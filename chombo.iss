@@ -1,7 +1,7 @@
 [Setup]
 AppName=Chombo
 AppVersion=1.0
-AppPublisher=Gemini
+AppPublisher=Tharun
 DefaultDirName={autopf}\Chombo
 DefaultGroupName=Chombo
 
@@ -14,9 +14,9 @@ ArchitecturesAllowed=x64
 ArchitecturesInstallIn64BitMode=x64
 
 [Files]
-Source: "bin\chombo.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "bin\mahc.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "bin\assets\*"; DestDir: "{app}\assets"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "usr\bin\chombo.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "usr\bin\*.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "usr\bin\assets\*"; DestDir: "{app}\assets"; Flags: ignoreversion recursesubdirs
 
 [Icons]
 Name: "{group}\Chombo"; Filename: "{app}\chombo.exe"
