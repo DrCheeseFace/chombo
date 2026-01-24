@@ -83,8 +83,7 @@ sdl3_ttf_dep = dependency('sdl3_ttf', fallback: ['sdl3_ttf', 'sdl3_ttf_dep'])
 harfbuzz_dep = dependency('harfbuzz', fallback: ['harfbuzz', 'libharfbuzz_dep'])
 freetype_dep = dependency('freetype2', fallback: ['freetype2', 'freetype_dep'])
 mahc_dep = declare_dependency(
-  sources: mahc_header,
-  link_args: [meson.current_build_dir() / rust_lib_filename] 
+  sources: mahc_header
 )
 
 deps = [sdl3_dep, sdl3_ttf_dep, harfbuzz_dep, freetype_dep, mahc_dep]
@@ -126,7 +125,7 @@ endif
 executable('chombo',
   source_files,
   dependencies: deps,
-  link_depends: [mahc_lib],
+  link_with: mahc_lib,
   link_language: 'c',
   install: true,
   install_rpath: '$ORIGIN/../' + get_option('libdir')
