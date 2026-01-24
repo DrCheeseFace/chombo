@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-VERSION="1.0.1"
+VERSION="1.1.0"
 APP_NAME="chombo"
 DIST_DIR="$(pwd)/dist"
 BUILD_DIR="build"
