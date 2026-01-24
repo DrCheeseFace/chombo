@@ -1,7 +1,9 @@
 [Desktop Entry]
 Type=Application
 Name=Chombo
+Version=1.0
 Exec=@EXEC@
 Icon=chombo
 Terminal=false
 Categories=Game;
+Comment=Riichi mahjong scoring calculator (v@VERSION@)

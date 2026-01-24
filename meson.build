@@ -1,11 +1,8 @@
 project('chombo', ['c'],
   default_options: [
-    # 'default_library=static',
     'c_std=c11',
     'warning_level=2', 
     'werror=false',
-
-    # i hate
     'harfbuzz:tests=disabled',
     'harfbuzz:benchmark=disabled',
     'harfbuzz:glib=disabled',
@@ -20,7 +17,6 @@ project('chombo', ['c'],
 )
 
 host_system = host_machine.system()
-
 cc = meson.get_compiler('c')
 fs = import('fs')
 
@@ -47,36 +43,30 @@ if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
   add_project_arguments(strict_c_flags, language: 'c')
 endif
 
+is_release = get_option('buildtype') == 'release'
+cargo_release_flag = is_release ? ['--release'] : []
+rust_mode = is_release ? 'release' : 'debug'
 
-# rust configing 
 if host_system == 'windows'
   rust_lib_filename = 'mahc.dll' 
   rust_target_triple = 'x86_64-pc-windows-gnu'
-  rust_build_dir = 'src/mahc/target' / rust_target_triple / 'debug'
-  cargo_cmd = ['cargo', 'build', '--manifest-path', meson.current_source_dir() / 'src/mahc/Cargo.toml', '--target', rust_target_triple]
+  rust_build_dir = 'src/mahc/target' / rust_target_triple / rust_mode
+  cargo_cmd = ['cargo', 'build', '--manifest-path', meson.current_source_dir() / 'src/mahc/Cargo.toml', '--target', rust_target_triple] + cargo_release_flag
   rust_install_dir = get_option('bindir')
 else
   rust_lib_filename = 'libmahc.so'
-  rust_build_dir = 'src/mahc/target/debug'
-  cargo_cmd = ['cargo', 'build', '--manifest-path', meson.current_source_dir() / 'src/mahc/Cargo.toml']
+  rust_build_dir = 'src/mahc/target' / rust_mode
+  cargo_cmd = ['cargo', 'build', '--manifest-path', meson.current_source_dir() / 'src/mahc/Cargo.toml'] + cargo_release_flag
   rust_install_dir = get_option('libdir')
 endif
 
-
-# rust mahc cbindgen target
 mahc_header = custom_target(
   'mahc_header',
   output: 'mahc.h',
-  command: [
-    'cbindgen',
-    meson.project_source_root() / 'src/mahc',
-    '--config', meson.project_source_root() / 'cbindgen.toml',
-    '--output', '@OUTPUT@'
-  ],
+  command: ['cbindgen', meson.project_source_root() / 'src/mahc', '--config', meson.project_source_root() / 'cbindgen.toml', '--output', '@OUTPUT@'],
   build_by_default: true
 )
 
-# link header to .so/.dll
 mahc_lib = custom_target(
   'mahc_lib',
   output: rust_lib_filename,
@@ -87,87 +77,57 @@ mahc_lib = custom_target(
   install_dir: rust_install_dir
 )
 
-mahc_lib_full_path = meson.project_source_root() / rust_build_dir / rust_lib_filename
-
-# copy libmahc.dll\.so 
-copy_mahc = custom_target(
-  'copy_mahc',
-  input: mahc_lib,
-  output: 'run_' + rust_lib_filename,
-  command: ['cp', '@INPUT@', '@OUTPUT@'],
-  build_by_default: true
-)
-
-
-final_link_args = [mahc_lib_full_path]
-if host_system == 'linux'
-  mahc_abs_dir = meson.project_source_root() / rust_build_dir
-  final_link_args += '-Wl,-rpath,' + mahc_abs_dir
-  final_link_args += ['-ldl', '-lm']
-endif
-
+#deps 
+sdl3_dep = dependency('sdl3', fallback: ['sdl3', 'sdl3_dep'])
+sdl3_ttf_dep = dependency('sdl3_ttf', fallback: ['sdl3_ttf', 'sdl3_ttf_dep'])
+harfbuzz_dep = dependency('harfbuzz', fallback: ['harfbuzz', 'libharfbuzz_dep'])
+freetype_dep = dependency('freetype2', fallback: ['freetype2', 'freetype_dep'])
 mahc_dep = declare_dependency(
   sources: mahc_header,
   link_args: [meson.current_build_dir() / rust_lib_filename] 
 )
 
+deps = [sdl3_dep, sdl3_ttf_dep, harfbuzz_dep, freetype_dep, mahc_dep]
 
-# set all deps
-sdl3_dep      = dependency('sdl3', fallback: ['sdl3', 'sdl3_dep'])
-sdl3_ttf_dep  = dependency('sdl3_ttf', fallback: ['sdl3_ttf', 'sdl3_ttf_dep'])
-
-harfbuzz_dep  = dependency('harfbuzz', fallback: ['harfbuzz', 'libharfbuzz_dep'])
-freetype_dep  = dependency('freetype2', fallback: ['freetype2', 'freetype_dep'])
-
-deps = [
-  sdl3_dep,
-  sdl3_ttf_dep,
-  harfbuzz_dep,
-  freetype_dep,
-  mahc_dep
-]
-
-
-# src files
 source_files = files(
-  'src/e_event.c',
-  'src/g_gamestate.c',
-  'src/l_letter.c',
-  'src/main.c',
-  'src/r_renderer.c',
-  'src/t_tiles.c',
-  'src/w_window.c'
+  'src/e_event.c', 'src/g_gamestate.c', 'src/l_letter.c',
+  'src/main.c', 'src/r_renderer.c', 'src/t_tiles.c', 'src/w_window.c'
 )
 
-
-# move over assets folder to bin directory
-# mahc lib install to bin dir 
-# moves icon to build
-# moves desktop file for lin 
 if host_system == 'linux'
     install_subdir('src/assets', install_dir: 'share/chombo')
-    # for sdl3 and sdl3_ttf .so . see package.sh 
-    add_project_link_arguments('-Wl,-rpath,$ORIGIN/../lib', language: 'c')
-
+    
     install_data('akagi.png', rename: 'chombo.png', install_dir: 'share/icons/hicolor/256x256/apps')
     install_data('akagi.png', rename: 'chombo.png', install_dir: 'share/pixmaps')
+    
     desktop_conf = configuration_data()
     desktop_conf.set('EXEC', 'chombo')
+    desktop_conf.set('VERSION', meson.project_version())
+
     configure_file(
         input: 'chombo.desktop.in',
         output: 'chombo.desktop',
         configuration: desktop_conf,
         install_dir: 'share/applications'
     )
+
+    install_symlink('libsdl3_ttf.so.0',
+      pointing_to: 'libsdl3_ttf.so',
+      install_dir: get_option('libdir')
+    )
+    install_symlink('libSDL3.so.0',
+      pointing_to: 'libSDL3.so',
+      install_dir: get_option('libdir')
+    )
 else
     install_subdir('src/assets', install_dir: get_option('bindir'))
 endif
 
-# lift off?
 executable('chombo',
   source_files,
   dependencies: deps,
-  link_depends: [mahc_lib, copy_mahc],
+  link_depends: [mahc_lib],
   link_language: 'c',
-  install: true
+  install: true,
+  install_rpath: '$ORIGIN/../' + get_option('libdir')
 )
