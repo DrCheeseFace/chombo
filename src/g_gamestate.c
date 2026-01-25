@@ -223,11 +223,19 @@ void G_winning_tile_set(struct G_GameState *gamestate)
 	}
 }
 
-void G_backtrack_menu(struct G_GameState *gamestate)
+void G_step_backward_menu(struct G_GameState *gamestate)
 {
 	gamestate->selector_idx = 0;
 	switch (gamestate->overlayed_menu) {
 	case G_OVERLAYED_MENU_NONE:
+		gamestate->selector_idx = 0;
+		gamestate->overlayed_menu = G_OVERLAYED_MENU_NONE;
+		break;
+	case G_OVERLAYED_MENU_HAND_KEYBOARD:
+		gamestate->selector_idx = 0;
+		gamestate->overlayed_menu = G_OVERLAYED_MENU_NONE;
+		break;
+	case G_OVERLAYED_MENU_DORA_KEYBOARD:
 		break;
 	case G_OVERLAYED_MENU_HANDSHAPES_SELECTOR:
 		gamestate->selector_idx = 0;
@@ -260,6 +268,102 @@ void G_backtrack_menu(struct G_GameState *gamestate)
 	default:
 		break;
 	}
+}
+
+bool G_step_forward_menu(struct G_GameState *gamestate)
+{
+	switch (gamestate->overlayed_menu) {
+	case G_OVERLAYED_MENU_NONE:
+		if (G_calculate_handshapes(gamestate)) {
+			G_selected_handshape_set(gamestate);
+			gamestate->selector_idx = 0;
+			if (gamestate->handshapes.hands_len == 1) {
+				if (gamestate->handshapes.hands[0].group_count >=
+				    7) {
+					gamestate->overlayed_menu =
+						G_OVERLAYED_MENU_WINNING_TILE_SELECTOR;
+				} else {
+					gamestate->overlayed_menu =
+						G_OVERLAYED_MENU_HANDSHAPE_GROUP_OPEN_CLOSE_SELECTOR;
+				}
+			} else {
+				gamestate->overlayed_menu =
+					G_OVERLAYED_MENU_HANDSHAPES_SELECTOR;
+			}
+			return true;
+		}
+		return false;
+	case G_OVERLAYED_MENU_HAND_KEYBOARD:
+		if (G_calculate_handshapes(gamestate)) {
+			G_selected_handshape_set(gamestate);
+			gamestate->selector_idx = 0;
+			if (gamestate->handshapes.hands_len == 1) {
+				if (gamestate->handshapes.hands[0].group_count >=
+				    7) {
+					gamestate->overlayed_menu =
+						G_OVERLAYED_MENU_WINNING_TILE_SELECTOR;
+				} else {
+					gamestate->overlayed_menu =
+						G_OVERLAYED_MENU_HANDSHAPE_GROUP_OPEN_CLOSE_SELECTOR;
+				}
+			} else {
+				gamestate->overlayed_menu =
+					G_OVERLAYED_MENU_HANDSHAPES_SELECTOR;
+			}
+			return true;
+		}
+		return false;
+	case G_OVERLAYED_MENU_DORA_KEYBOARD:
+		if (G_calculate_handshapes(gamestate)) {
+			G_selected_handshape_set(gamestate);
+			gamestate->selector_idx = 0;
+			if (gamestate->handshapes.hands_len == 1) {
+				if (gamestate->handshapes.hands[0].group_count >=
+				    7) {
+					gamestate->overlayed_menu =
+						G_OVERLAYED_MENU_WINNING_TILE_SELECTOR;
+				} else {
+					gamestate->overlayed_menu =
+						G_OVERLAYED_MENU_HANDSHAPE_GROUP_OPEN_CLOSE_SELECTOR;
+				}
+			} else {
+				gamestate->overlayed_menu =
+					G_OVERLAYED_MENU_HANDSHAPES_SELECTOR;
+			}
+			return true;
+		}
+		return false;
+	case G_OVERLAYED_MENU_HANDSHAPES_SELECTOR:
+		G_selected_handshape_set(gamestate);
+		gamestate->selector_idx = 0;
+		if (gamestate->selected_handshape.group_count >= 7) {
+			gamestate->overlayed_menu =
+				G_OVERLAYED_MENU_WINNING_TILE_SELECTOR;
+		} else {
+			gamestate->overlayed_menu =
+				G_OVERLAYED_MENU_HANDSHAPE_GROUP_OPEN_CLOSE_SELECTOR;
+		}
+		return true;
+	case G_OVERLAYED_MENU_HANDSHAPE_GROUP_OPEN_CLOSE_SELECTOR:
+		gamestate->selector_idx = 0;
+		gamestate->overlayed_menu =
+			G_OVERLAYED_MENU_WINNING_TILE_SELECTOR;
+		return true;
+	case G_OVERLAYED_MENU_WINNING_TILE_SELECTOR:
+		G_winning_tile_set(gamestate);
+		gamestate->selector_idx = 0;
+		gamestate->show_score_err = !G_calculate_score(gamestate);
+		gamestate->overlayed_menu = G_OVERLAYED_MENU_SCORE_VIEW;
+		return true;
+	case G_OVERLAYED_MENU_SCORE_VIEW:
+		break;
+	case G_OVERLAYED_MENU_COUNT:
+		break;
+	default:
+		break;
+	}
+
+	return false;
 }
 
 void G_increment_honba_counter(struct G_GameState *gamestate)

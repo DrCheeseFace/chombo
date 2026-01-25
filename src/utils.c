@@ -1,4 +1,5 @@
-#include "src/l_letter.h"
+#include "l_letter.h"
+
 #include <stdio.h>
 
 void DEBUG_DRAW_POINTER_COORDS(SDL_Renderer *sdl_renderer)

@@ -23,8 +23,10 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 		}
 		break;
 	case SDLK_ESCAPE:
-		G_backtrack_menu(gamestate);
+		G_step_backward_menu(gamestate);
 		return true;
+	case SDLK_RETURN:
+		return G_step_forward_menu(gamestate);
 	case SDLK_COMMA:
 		G_clear_menus_state(gamestate);
 		return true;
@@ -515,29 +517,25 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 			gamestate->conditions.tenhou =
 				!gamestate->conditions.tenhou;
 			return true;
-		case SDLK_RETURN:
-			if (G_calculate_handshapes(gamestate)) {
-				G_selected_handshape_set(gamestate);
-				gamestate->selector_idx = 0;
-				if (gamestate->handshapes.hands_len == 1) {
-					if (gamestate->handshapes.hands[0]
-						    .group_count >= 7) {
-						gamestate->overlayed_menu =
-							G_OVERLAYED_MENU_WINNING_TILE_SELECTOR;
-					} else {
-						gamestate->overlayed_menu =
-							G_OVERLAYED_MENU_HANDSHAPE_GROUP_OPEN_CLOSE_SELECTOR;
-					}
-				} else {
-					gamestate->overlayed_menu =
-						G_OVERLAYED_MENU_HANDSHAPES_SELECTOR;
-				}
-				return true;
-			}
-			return false;
 		default:
 			return false;
 		}
+	case G_OVERLAYED_MENU_HAND_KEYBOARD:
+		switch (key_event.key) {
+		case SDLK_BACKSPACE:
+			return G_hand_delete_tile(gamestate);
+		default:
+			break;
+		}
+		break;
+	case G_OVERLAYED_MENU_DORA_KEYBOARD:
+		switch (key_event.key) {
+		case SDLK_BACKSPACE:
+			return G_dora_delete_tile(gamestate);
+		default:
+			break;
+		}
+		break;
 	case G_OVERLAYED_MENU_HANDSHAPES_SELECTOR:
 		switch (key_event.key) {
 		case SDLK_UP:
@@ -545,17 +543,6 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 			return true;
 		case SDLK_DOWN:
 			G_decrement_handshape_selector(gamestate);
-			return true;
-		case SDLK_RETURN:
-			G_selected_handshape_set(gamestate);
-			gamestate->selector_idx = 0;
-			if (gamestate->selected_handshape.group_count >= 7) {
-				gamestate->overlayed_menu =
-					G_OVERLAYED_MENU_WINNING_TILE_SELECTOR;
-			} else {
-				gamestate->overlayed_menu =
-					G_OVERLAYED_MENU_HANDSHAPE_GROUP_OPEN_CLOSE_SELECTOR;
-			}
 			return true;
 		default:
 			return false;
@@ -571,11 +558,6 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 		case SDLK_SPACE:
 			G_group_selector_open_close_toggle(gamestate);
 			return true;
-		case SDLK_RETURN:
-			gamestate->selector_idx = 0;
-			gamestate->overlayed_menu =
-				G_OVERLAYED_MENU_WINNING_TILE_SELECTOR;
-			return true;
 		default:
 			break;
 		}
@@ -588,22 +570,11 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 		case SDLK_RIGHT:
 			G_winning_tile_selector_increment(gamestate);
 			return true;
-		case SDLK_RETURN:
-			G_winning_tile_set(gamestate);
-			gamestate->selector_idx = 0;
-			gamestate->show_score_err =
-				!G_calculate_score(gamestate);
-			gamestate->overlayed_menu = G_OVERLAYED_MENU_SCORE_VIEW;
-			return true;
 		default:
 			break;
 		}
 		break;
 	case G_OVERLAYED_MENU_SCORE_VIEW:
-		switch (key_event.key) {
-		default:
-			break;
-		}
 		break;
 	case G_OVERLAYED_MENU_COUNT:
 		break;

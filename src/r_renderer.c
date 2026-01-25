@@ -141,6 +141,45 @@ bool R_overlay_menu_window_draw(L_Colors outline_colour)
 	return false;
 }
 
+bool R_overlay_keyboard_window_draw(L_Colors outline_colour)
+{
+	if (!SDL_SetRenderDrawBlendMode(sdl_renderer, SDL_BLENDMODE_NONE)) {
+		fprintf(stderr,
+			"Failed to set render blend mode to SDL_BLENDMODE_MUL: %s\n",
+			SDL_GetError());
+		return true;
+	}
+
+	SDL_FRect outline = { .w = WINDOW_WIDTH - 50,
+			      .h = WINDOW_HEIGHT - 395,
+			      .x = 25,
+			      .y = 347.5 };
+	if (!SDL_SetRenderDrawColor(sdl_renderer, L_COLORS[outline_colour].r,
+				    L_COLORS[outline_colour].g,
+				    L_COLORS[outline_colour].b,
+				    L_COLORS[outline_colour].a))
+		return true;
+
+	if (!SDL_RenderFillRect(sdl_renderer, &outline))
+		return true;
+
+	if (!SDL_SetRenderDrawColor(sdl_renderer,
+				    L_COLORS[L_COLOR_MENU_BACKDROP].r,
+				    L_COLORS[L_COLOR_MENU_BACKDROP].g,
+				    L_COLORS[L_COLOR_MENU_BACKDROP].b,
+				    L_COLORS[L_COLOR_MENU_BACKDROP].a))
+		return true;
+
+	SDL_FRect background = { .w = WINDOW_WIDTH - 55,
+				 .h = WINDOW_HEIGHT - 400,
+				 .x = 27.5,
+				 .y = 350 };
+	if (!SDL_RenderFillRect(sdl_renderer, &background))
+		return true;
+
+	return false;
+}
+
 bool R_help_draw(struct G_GameState gamestate)
 {
 	if (!gamestate.show_help) {
@@ -256,6 +295,14 @@ bool R_hand_draw(struct G_GameState gamestate)
 				L_TEXT_HAND_INVALID,
 			(struct SDL_Point){ -1, -1 }))
 		return true;
+
+	B_register_button("toggle_hand_keyboard",
+			  L_TEXTS_OBJS[L_TEXT_HAND_TOGGLE_KEYBOARD].box,
+			  G_on_click_toggle_hand_keyboard,
+			  G_destroy_toggle_hand_dora_keyboard_button);
+	if (L_draw_text(L_TEXT_HAND_TOGGLE_KEYBOARD,
+			(struct SDL_Point){ -1, -1 }))
+		return true;
 	return false;
 }
 
@@ -275,6 +322,14 @@ bool R_dora_draw(struct G_GameState gamestate)
 					G_SELECTED_MAIN_MENU_OPTION_DORA ?
 				L_TEXT_DORA_LABEL_SELECTED :
 				L_TEXT_DORA_LABEL,
+			(struct SDL_Point){ -1, -1 }))
+		return true;
+
+	B_register_button("toggle_dora_keyboard",
+			  L_TEXTS_OBJS[L_TEXT_DORA_TOGGLE_KEYBOARD].box,
+			  G_on_click_toggle_dora_keyboard,
+			  G_destroy_toggle_hand_dora_keyboard_button);
+	if (L_draw_text(L_TEXT_DORA_TOGGLE_KEYBOARD,
 			(struct SDL_Point){ -1, -1 }))
 		return true;
 	return false;
@@ -539,6 +594,216 @@ bool R_main_menu_draw(struct G_GameState gamestate)
 		return true;
 	if (R_honba_draw(gamestate))
 		return true;
+
+	return false;
+}
+
+bool R_hand_keyboard(void)
+{
+	if (R_overlay_keyboard_window_draw(L_COLOR_MAGENTA))
+		return true;
+
+	const int tile_size = 18;
+	const int horizontal_padding = 30;
+	const int vertical_padding = 30;
+
+	int x = 100;
+	int y = 400;
+
+	char button_id[16] = { 0 };
+	// draw dragons
+	for (T_Tile dragon_tile = T_TILE_CHUN; dragon_tile <= T_TILE_HAKU;
+	     dragon_tile++) {
+		SDL_FRect button_rect = { x, y, tile_size * T_TILE_WIDTH_RATIO,
+					  tile_size * T_TILE_HEIGHT_RATIO };
+		sprintf(button_id, "%ddragonhand", dragon_tile);
+		B_register_button(button_id, button_rect,
+				  on_click_add_hand_tile_funcs[dragon_tile],
+				  &G_destroy_hand_keyboard_button);
+
+		if (T_tile_draw(sdl_renderer, dragon_tile,
+				(SDL_Point){ .x = x, .y = y }, tile_size))
+			return true;
+		x += tile_size * T_TILE_WIDTH_RATIO + horizontal_padding;
+	}
+
+	// draw winds
+	for (T_Tile wind_tile = T_TILE_TON; wind_tile <= T_TILE_PEI;
+	     wind_tile++) {
+		SDL_FRect button_rect = { x, y, tile_size * T_TILE_WIDTH_RATIO,
+					  tile_size * T_TILE_HEIGHT_RATIO };
+		sprintf(button_id, "%dwindhand", wind_tile);
+		B_register_button(button_id, button_rect,
+				  on_click_add_hand_tile_funcs[wind_tile],
+				  &G_destroy_hand_keyboard_button);
+
+		if (T_tile_draw(sdl_renderer, wind_tile,
+				(SDL_Point){ .x = x, .y = y }, tile_size))
+			return true;
+		x += tile_size * T_TILE_WIDTH_RATIO + horizontal_padding;
+	}
+
+	x = 100;
+	y += tile_size * T_TILE_HEIGHT_RATIO + vertical_padding;
+
+	// draw man
+	for (T_Tile man_tile = T_TILE_MAN1; man_tile <= T_TILE_MAN9;
+	     man_tile++) {
+		SDL_FRect button_rect = { x, y, tile_size * T_TILE_WIDTH_RATIO,
+					  tile_size * T_TILE_HEIGHT_RATIO };
+		sprintf(button_id, "%dmanhand", man_tile);
+		B_register_button(button_id, button_rect,
+				  on_click_add_hand_tile_funcs[man_tile],
+				  &G_destroy_hand_keyboard_button);
+
+		if (T_tile_draw(sdl_renderer, man_tile,
+				(SDL_Point){ .x = x, .y = y }, tile_size))
+			return true;
+		x += tile_size * T_TILE_WIDTH_RATIO + horizontal_padding;
+	}
+
+	x = 100;
+	y += tile_size * T_TILE_HEIGHT_RATIO + vertical_padding;
+
+	// draw pin
+	for (T_Tile pin_tile = T_TILE_PIN1; pin_tile <= T_TILE_PIN9;
+	     pin_tile++) {
+		SDL_FRect button_rect = { x, y, tile_size * T_TILE_WIDTH_RATIO,
+					  tile_size * T_TILE_HEIGHT_RATIO };
+		sprintf(button_id, "%dpinhand", pin_tile);
+		B_register_button(button_id, button_rect,
+				  on_click_add_hand_tile_funcs[pin_tile],
+				  &G_destroy_hand_keyboard_button);
+
+		if (T_tile_draw(sdl_renderer, pin_tile,
+				(SDL_Point){ .x = x, .y = y }, tile_size))
+			return true;
+		x += tile_size * T_TILE_WIDTH_RATIO + horizontal_padding;
+	}
+
+	x = 100;
+	y += tile_size * T_TILE_HEIGHT_RATIO + vertical_padding;
+
+	// draw sou
+	for (T_Tile sou_tile = T_TILE_SOU1; sou_tile <= T_TILE_SOU9;
+	     sou_tile++) {
+		SDL_FRect button_rect = { x, y, tile_size * T_TILE_WIDTH_RATIO,
+					  tile_size * T_TILE_HEIGHT_RATIO };
+		sprintf(button_id, "%dsouhand", sou_tile);
+		B_register_button(button_id, button_rect,
+				  on_click_add_hand_tile_funcs[sou_tile],
+				  &G_destroy_hand_keyboard_button);
+
+		if (T_tile_draw(sdl_renderer, sou_tile,
+				(SDL_Point){ .x = x, .y = y }, tile_size))
+			return true;
+		x += tile_size * T_TILE_WIDTH_RATIO + horizontal_padding;
+	}
+
+	return false;
+}
+
+bool R_dora_keyboard(void)
+{
+	if (R_overlay_keyboard_window_draw(L_COLOR_BLUE))
+		return true;
+
+	const int tile_size = 18;
+	const int horizontal_padding = 30;
+	const int vertical_padding = 30;
+
+	int x = 100;
+	int y = 400;
+
+	char button_id[16] = { 0 };
+	// draw dragons
+	for (T_Tile dragon_tile = T_TILE_CHUN; dragon_tile <= T_TILE_HAKU;
+	     dragon_tile++) {
+		SDL_FRect button_rect = { x, y, tile_size * T_TILE_WIDTH_RATIO,
+					  tile_size * T_TILE_HEIGHT_RATIO };
+		sprintf(button_id, "%ddragondora", dragon_tile);
+		B_register_button(button_id, button_rect,
+				  on_click_add_dora_tile_funcs[dragon_tile],
+				  &G_destroy_dora_keyboard_button);
+
+		if (T_tile_draw(sdl_renderer, dragon_tile,
+				(SDL_Point){ .x = x, .y = y }, tile_size))
+			return true;
+		x += tile_size * T_TILE_WIDTH_RATIO + horizontal_padding;
+	}
+
+	// draw winds
+	for (T_Tile wind_tile = T_TILE_TON; wind_tile <= T_TILE_PEI;
+	     wind_tile++) {
+		SDL_FRect button_rect = { x, y, tile_size * T_TILE_WIDTH_RATIO,
+					  tile_size * T_TILE_HEIGHT_RATIO };
+		sprintf(button_id, "%dwinddora", wind_tile);
+		B_register_button(button_id, button_rect,
+				  on_click_add_dora_tile_funcs[wind_tile],
+				  &G_destroy_dora_keyboard_button);
+
+		if (T_tile_draw(sdl_renderer, wind_tile,
+				(SDL_Point){ .x = x, .y = y }, tile_size))
+			return true;
+		x += tile_size * T_TILE_WIDTH_RATIO + horizontal_padding;
+	}
+
+	x = 100;
+	y += tile_size * T_TILE_HEIGHT_RATIO + vertical_padding;
+
+	// draw man
+	for (T_Tile man_tile = T_TILE_MAN1; man_tile <= T_TILE_MAN9;
+	     man_tile++) {
+		SDL_FRect button_rect = { x, y, tile_size * T_TILE_WIDTH_RATIO,
+					  tile_size * T_TILE_HEIGHT_RATIO };
+		sprintf(button_id, "%dmandora", man_tile);
+		B_register_button(button_id, button_rect,
+				  on_click_add_dora_tile_funcs[man_tile],
+				  &G_destroy_dora_keyboard_button);
+
+		if (T_tile_draw(sdl_renderer, man_tile,
+				(SDL_Point){ .x = x, .y = y }, tile_size))
+			return true;
+		x += tile_size * T_TILE_WIDTH_RATIO + horizontal_padding;
+	}
+
+	x = 100;
+	y += tile_size * T_TILE_HEIGHT_RATIO + vertical_padding;
+
+	// draw pin
+	for (T_Tile pin_tile = T_TILE_PIN1; pin_tile <= T_TILE_PIN9;
+	     pin_tile++) {
+		SDL_FRect button_rect = { x, y, tile_size * T_TILE_WIDTH_RATIO,
+					  tile_size * T_TILE_HEIGHT_RATIO };
+		sprintf(button_id, "%dpindora", pin_tile);
+		B_register_button(button_id, button_rect,
+				  on_click_add_dora_tile_funcs[pin_tile],
+				  &G_destroy_dora_keyboard_button);
+
+		if (T_tile_draw(sdl_renderer, pin_tile,
+				(SDL_Point){ .x = x, .y = y }, tile_size))
+			return true;
+		x += tile_size * T_TILE_WIDTH_RATIO + horizontal_padding;
+	}
+
+	x = 100;
+	y += tile_size * T_TILE_HEIGHT_RATIO + vertical_padding;
+
+	// draw sou
+	for (T_Tile sou_tile = T_TILE_SOU1; sou_tile <= T_TILE_SOU9;
+	     sou_tile++) {
+		SDL_FRect button_rect = { x, y, tile_size * T_TILE_WIDTH_RATIO,
+					  tile_size * T_TILE_HEIGHT_RATIO };
+		sprintf(button_id, "%dsoudora", sou_tile);
+		B_register_button(button_id, button_rect,
+				  on_click_add_dora_tile_funcs[sou_tile],
+				  &G_destroy_dora_keyboard_button);
+
+		if (T_tile_draw(sdl_renderer, sou_tile,
+				(SDL_Point){ .x = x, .y = y }, tile_size))
+			return true;
+		x += tile_size * T_TILE_WIDTH_RATIO + horizontal_padding;
+	}
 
 	return false;
 }
@@ -973,6 +1238,14 @@ bool R_gamestate_draw(SDL_Window *sdl_window, struct G_GameState gamestate)
 
 	switch (gamestate.overlayed_menu) {
 	case G_OVERLAYED_MENU_NONE:
+		break;
+	case G_OVERLAYED_MENU_HAND_KEYBOARD:
+		if (R_hand_keyboard())
+			return true;
+		break;
+	case G_OVERLAYED_MENU_DORA_KEYBOARD:
+		if (R_dora_keyboard())
+			return true;
 		break;
 	case G_OVERLAYED_MENU_HANDSHAPES_SELECTOR:
 		if (R_handshapes_selector_draw(gamestate))

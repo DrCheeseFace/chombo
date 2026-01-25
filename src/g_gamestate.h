@@ -16,6 +16,8 @@ typedef enum {
 
 typedef enum {
 	G_OVERLAYED_MENU_NONE = 0,
+	G_OVERLAYED_MENU_HAND_KEYBOARD,
+	G_OVERLAYED_MENU_DORA_KEYBOARD,
 	G_OVERLAYED_MENU_HANDSHAPES_SELECTOR,
 	G_OVERLAYED_MENU_HANDSHAPE_GROUP_OPEN_CLOSE_SELECTOR,
 	G_OVERLAYED_MENU_WINNING_TILE_SELECTOR,
@@ -121,7 +123,9 @@ void G_increment_honba_counter(struct G_GameState *gamestate);
 
 void G_decrement_honba_counter(struct G_GameState *gamestate);
 
-void G_backtrack_menu(struct G_GameState *gamestate);
+void G_step_backward_menu(struct G_GameState *gamestate);
+
+bool G_step_forward_menu(struct G_GameState *gamestate);
 
 // returns true (1) if requires rerender
 bool G_hand_add_tile(struct G_GameState *gamestate, T_Tile tile);
