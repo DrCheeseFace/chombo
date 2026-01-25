@@ -465,7 +465,7 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 				return true;
 			} else if (gamestate->selected_main_menu_option ==
 				   G_SELECTED_MAIN_MENU_OPTION_HONBA) {
-				G_increment_honba_counter(gamestate);
+				G_increment_honba_counter(gamestate, NULL);
 				return true;
 			}
 			return false;
@@ -480,7 +480,7 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 				return true;
 			} else if (gamestate->selected_main_menu_option ==
 				   G_SELECTED_MAIN_MENU_OPTION_HONBA) {
-				G_decrement_honba_counter(gamestate);
+				G_decrement_honba_counter(gamestate, NULL);
 				return true;
 			}
 			return false;

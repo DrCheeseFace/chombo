@@ -119,9 +119,11 @@ void G_selected_handshape_set(struct G_GameState *gamestate);
 
 void G_winning_tile_set(struct G_GameState *gamestate);
 
-void G_increment_honba_counter(struct G_GameState *gamestate);
+// has args because its also being used as an onclick func
+void G_increment_honba_counter(struct G_GameState *gamestate, void *args);
 
-void G_decrement_honba_counter(struct G_GameState *gamestate);
+// has args because its also being used as an onclick func
+void G_decrement_honba_counter(struct G_GameState *gamestate, void *args);
 
 void G_step_backward_menu(struct G_GameState *gamestate);
 

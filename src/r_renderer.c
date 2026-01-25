@@ -299,7 +299,7 @@ bool R_hand_draw(struct G_GameState gamestate)
 	B_register_button("toggle_hand_keyboard",
 			  L_TEXTS_OBJS[L_TEXT_HAND_TOGGLE_KEYBOARD].box,
 			  G_on_click_toggle_hand_keyboard,
-			  G_destroy_toggle_hand_dora_keyboard_button);
+			  G_destroy_toggle_hand_dora_keyboard_button, NULL);
 	if (L_draw_text(L_TEXT_HAND_TOGGLE_KEYBOARD,
 			(struct SDL_Point){ -1, -1 }))
 		return true;
@@ -328,7 +328,7 @@ bool R_dora_draw(struct G_GameState gamestate)
 	B_register_button("toggle_dora_keyboard",
 			  L_TEXTS_OBJS[L_TEXT_DORA_TOGGLE_KEYBOARD].box,
 			  G_on_click_toggle_dora_keyboard,
-			  G_destroy_toggle_hand_dora_keyboard_button);
+			  G_destroy_toggle_hand_dora_keyboard_button, NULL);
 	if (L_draw_text(L_TEXT_DORA_TOGGLE_KEYBOARD,
 			(struct SDL_Point){ -1, -1 }))
 		return true;
@@ -343,7 +343,8 @@ bool R_seat_wind_selector_draw(struct G_GameState gamestate)
 						"nan_seat_wind",
 						"shaa_seat_wind",
 						"pei_seat_wind" };
-	void (*wind_tiles_button_on_click[4])(struct G_GameState *) = {
+	void (*wind_tiles_button_on_click[4])(struct G_GameState *,
+					      void *args) = {
 		&G_on_click_select_seat_ton, &G_on_click_select_seat_nan,
 		&G_on_click_select_seat_shaa, &G_on_click_select_seat_pei
 	};
@@ -361,7 +362,7 @@ bool R_seat_wind_selector_draw(struct G_GameState gamestate)
 
 		B_register_button(wind_tiles_button_id[i], tile_rect,
 				  wind_tiles_button_on_click[i],
-				  G_destroy_main_menu_button);
+				  G_destroy_main_menu_button, NULL);
 
 		if (T_tile_draw(sdl_renderer, wind_tiles[i],
 				(struct SDL_Point){
@@ -394,10 +395,11 @@ bool R_prevalent_wind_selector_draw(struct G_GameState gamestate)
 						"shaa_prevalent_wind",
 						"pei_prevalent_wind" };
 	void (*wind_tiles_button_on_click[4])(
-		struct G_GameState *) = { &G_on_click_select_prevalent_ton,
-					  &G_on_click_select_prevalent_nan,
-					  &G_on_click_select_prevalent_shaa,
-					  &G_on_click_select_prevalent_pei };
+		struct G_GameState *,
+		void *args) = { &G_on_click_select_prevalent_ton,
+				&G_on_click_select_prevalent_nan,
+				&G_on_click_select_prevalent_shaa,
+				&G_on_click_select_prevalent_pei };
 
 	const int tile_size = 21;
 	const int unselected_y = 606;
@@ -412,7 +414,7 @@ bool R_prevalent_wind_selector_draw(struct G_GameState gamestate)
 
 		B_register_button(wind_tiles_button_id[i], tile_rect,
 				  wind_tiles_button_on_click[i],
-				  G_destroy_main_menu_button);
+				  G_destroy_main_menu_button, NULL);
 
 		if (T_tile_draw(sdl_renderer, wind_tiles[i],
 				(struct SDL_Point){
@@ -441,7 +443,7 @@ bool R_conditions_draw(struct G_GameState gamestate)
 	if (B_register_button("condition_tsumo_toggle",
 			      L_TEXTS_OBJS[L_TEXT_CONDITION_TSUMO_ON].box,
 			      &G_on_click_toggle_tsumo,
-			      &G_destroy_main_menu_button))
+			      &G_destroy_main_menu_button, NULL))
 		return true;
 	if (L_draw_text(gamestate.conditions.tsumo ? L_TEXT_CONDITION_TSUMO_ON :
 						     L_TEXT_CONDITION_TSUMO_OFF,
@@ -451,7 +453,7 @@ bool R_conditions_draw(struct G_GameState gamestate)
 	if (B_register_button("condition_riichi_toggle",
 			      L_TEXTS_OBJS[L_TEXT_CONDITION_RIICHI_ON].box,
 			      &G_on_click_toggle_riichi,
-			      &G_destroy_main_menu_button))
+			      &G_destroy_main_menu_button, NULL))
 		return true;
 	if (L_draw_text(gamestate.conditions.riichi ?
 				L_TEXT_CONDITION_RIICHI_ON :
@@ -463,7 +465,7 @@ bool R_conditions_draw(struct G_GameState gamestate)
 		    "condition_double_riichi_toggle",
 		    L_TEXTS_OBJS[L_TEXT_CONDITION_DOUBLE_RIICHI_OFF].box,
 		    &G_on_click_toggle_double_riichi,
-		    &G_destroy_main_menu_button))
+		    &G_destroy_main_menu_button, NULL))
 		return true;
 	if (L_draw_text(gamestate.conditions.double_riichi ?
 				L_TEXT_CONDITION_DOUBLE_RIICHI_ON :
@@ -474,7 +476,7 @@ bool R_conditions_draw(struct G_GameState gamestate)
 	if (B_register_button("condition_ippatsu_toggle",
 			      L_TEXTS_OBJS[L_TEXT_CONDITION_IPPATSU_OFF].box,
 			      &G_on_click_toggle_ippatsu,
-			      &G_destroy_main_menu_button))
+			      &G_destroy_main_menu_button, NULL))
 		return true;
 	if (L_draw_text(gamestate.conditions.ippatsu ?
 				L_TEXT_CONDITION_IPPATSU_ON :
@@ -485,7 +487,7 @@ bool R_conditions_draw(struct G_GameState gamestate)
 	if (B_register_button("condition_haitei_toggle",
 			      L_TEXTS_OBJS[L_TEXT_CONDITION_HAITEI_OFF].box,
 			      &G_on_click_toggle_haitei,
-			      &G_destroy_main_menu_button))
+			      &G_destroy_main_menu_button, NULL))
 		return true;
 	if (L_draw_text(gamestate.conditions.haitei ?
 				L_TEXT_CONDITION_HAITEI_ON :
@@ -496,7 +498,7 @@ bool R_conditions_draw(struct G_GameState gamestate)
 	if (B_register_button("condition_chankan_toggle",
 			      L_TEXTS_OBJS[L_TEXT_CONDITION_CHANKAN_OFF].box,
 			      &G_on_click_toggle_chankan,
-			      &G_destroy_main_menu_button))
+			      &G_destroy_main_menu_button, NULL))
 		return true;
 	if (L_draw_text(gamestate.conditions.chankan ?
 				L_TEXT_CONDITION_CHANKAN_ON :
@@ -507,7 +509,7 @@ bool R_conditions_draw(struct G_GameState gamestate)
 	if (B_register_button("condition_rinshan_toggle",
 			      L_TEXTS_OBJS[L_TEXT_CONDITION_RINSHAN_OFF].box,
 			      &G_on_click_toggle_rinshan,
-			      &G_destroy_main_menu_button))
+			      &G_destroy_main_menu_button, NULL))
 		return true;
 	if (L_draw_text(gamestate.conditions.rinshan ?
 				L_TEXT_CONDITION_RINSHAN_ON :
@@ -518,7 +520,7 @@ bool R_conditions_draw(struct G_GameState gamestate)
 	if (B_register_button("condition_tenhou_toggle",
 			      L_TEXTS_OBJS[L_TEXT_CONDITION_TENHOU_OFF].box,
 			      &G_on_click_toggle_tenhou,
-			      &G_destroy_main_menu_button))
+			      &G_destroy_main_menu_button, NULL))
 		return true;
 	if (L_draw_text(gamestate.conditions.tenhou ?
 				L_TEXT_CONDITION_TENHOU_ON :
@@ -543,11 +545,11 @@ bool R_honba_draw(struct G_GameState gamestate)
 	L_rewrite_text(sdl_renderer, L_TEXT_HONBA_COUNT, honba_str);
 
 	B_register_button("honba_up", L_TEXTS_OBJS[L_TEXT_HONBA_UP].box,
-			  G_increment_honba_counter,
-			  G_destroy_main_menu_button);
+			  G_increment_honba_counter, G_destroy_main_menu_button,
+			  NULL);
 	B_register_button("honba_down", L_TEXTS_OBJS[L_TEXT_HONBA_DOWN].box,
-			  G_decrement_honba_counter,
-			  G_destroy_main_menu_button);
+			  G_decrement_honba_counter, G_destroy_main_menu_button,
+			  NULL);
 	if (L_draw_text(L_TEXT_HONBA_UP, (struct SDL_Point){ -1, -1 }))
 		return true;
 	if (L_draw_text(L_TEXT_HONBA_COUNT, (struct SDL_Point){ -1, -1 }))
@@ -618,8 +620,9 @@ bool R_hand_keyboard(void)
 					  tile_size * T_TILE_HEIGHT_RATIO };
 		sprintf(button_id, "%ddragonhand", dragon_tile);
 		B_register_button(button_id, button_rect,
-				  on_click_add_hand_tile_funcs[dragon_tile],
-				  &G_destroy_hand_keyboard_button);
+				  G_on_click_add_hand_tile,
+				  &G_destroy_hand_keyboard_button,
+				  (void *)(intptr_t)dragon_tile);
 
 		if (T_tile_draw(sdl_renderer, dragon_tile,
 				(SDL_Point){ .x = x, .y = y }, tile_size))
@@ -634,8 +637,9 @@ bool R_hand_keyboard(void)
 					  tile_size * T_TILE_HEIGHT_RATIO };
 		sprintf(button_id, "%dwindhand", wind_tile);
 		B_register_button(button_id, button_rect,
-				  on_click_add_hand_tile_funcs[wind_tile],
-				  &G_destroy_hand_keyboard_button);
+				  G_on_click_add_hand_tile,
+				  &G_destroy_hand_keyboard_button,
+				  (void *)(intptr_t)wind_tile);
 
 		if (T_tile_draw(sdl_renderer, wind_tile,
 				(SDL_Point){ .x = x, .y = y }, tile_size))
@@ -653,8 +657,9 @@ bool R_hand_keyboard(void)
 					  tile_size * T_TILE_HEIGHT_RATIO };
 		sprintf(button_id, "%dmanhand", man_tile);
 		B_register_button(button_id, button_rect,
-				  on_click_add_hand_tile_funcs[man_tile],
-				  &G_destroy_hand_keyboard_button);
+				  G_on_click_add_hand_tile,
+				  &G_destroy_hand_keyboard_button,
+				  (void *)(intptr_t)man_tile);
 
 		if (T_tile_draw(sdl_renderer, man_tile,
 				(SDL_Point){ .x = x, .y = y }, tile_size))
@@ -672,8 +677,9 @@ bool R_hand_keyboard(void)
 					  tile_size * T_TILE_HEIGHT_RATIO };
 		sprintf(button_id, "%dpinhand", pin_tile);
 		B_register_button(button_id, button_rect,
-				  on_click_add_hand_tile_funcs[pin_tile],
-				  &G_destroy_hand_keyboard_button);
+				  G_on_click_add_hand_tile,
+				  &G_destroy_hand_keyboard_button,
+				  (void *)(intptr_t)pin_tile);
 
 		if (T_tile_draw(sdl_renderer, pin_tile,
 				(SDL_Point){ .x = x, .y = y }, tile_size))
@@ -691,8 +697,9 @@ bool R_hand_keyboard(void)
 					  tile_size * T_TILE_HEIGHT_RATIO };
 		sprintf(button_id, "%dsouhand", sou_tile);
 		B_register_button(button_id, button_rect,
-				  on_click_add_hand_tile_funcs[sou_tile],
-				  &G_destroy_hand_keyboard_button);
+				  G_on_click_add_hand_tile,
+				  &G_destroy_hand_keyboard_button,
+				  (void *)(intptr_t)sou_tile);
 
 		if (T_tile_draw(sdl_renderer, sou_tile,
 				(SDL_Point){ .x = x, .y = y }, tile_size))
@@ -723,8 +730,9 @@ bool R_dora_keyboard(void)
 					  tile_size * T_TILE_HEIGHT_RATIO };
 		sprintf(button_id, "%ddragondora", dragon_tile);
 		B_register_button(button_id, button_rect,
-				  on_click_add_dora_tile_funcs[dragon_tile],
-				  &G_destroy_dora_keyboard_button);
+				  G_on_click_add_dora_tile,
+				  &G_destroy_dora_keyboard_button,
+				  (void *)(intptr_t)dragon_tile);
 
 		if (T_tile_draw(sdl_renderer, dragon_tile,
 				(SDL_Point){ .x = x, .y = y }, tile_size))
@@ -739,8 +747,9 @@ bool R_dora_keyboard(void)
 					  tile_size * T_TILE_HEIGHT_RATIO };
 		sprintf(button_id, "%dwinddora", wind_tile);
 		B_register_button(button_id, button_rect,
-				  on_click_add_dora_tile_funcs[wind_tile],
-				  &G_destroy_dora_keyboard_button);
+				  G_on_click_add_dora_tile,
+				  &G_destroy_dora_keyboard_button,
+				  (void *)(intptr_t)wind_tile);
 
 		if (T_tile_draw(sdl_renderer, wind_tile,
 				(SDL_Point){ .x = x, .y = y }, tile_size))
@@ -758,8 +767,9 @@ bool R_dora_keyboard(void)
 					  tile_size * T_TILE_HEIGHT_RATIO };
 		sprintf(button_id, "%dmandora", man_tile);
 		B_register_button(button_id, button_rect,
-				  on_click_add_dora_tile_funcs[man_tile],
-				  &G_destroy_dora_keyboard_button);
+				  G_on_click_add_dora_tile,
+				  &G_destroy_dora_keyboard_button,
+				  (void *)(intptr_t)man_tile);
 
 		if (T_tile_draw(sdl_renderer, man_tile,
 				(SDL_Point){ .x = x, .y = y }, tile_size))
@@ -777,8 +787,9 @@ bool R_dora_keyboard(void)
 					  tile_size * T_TILE_HEIGHT_RATIO };
 		sprintf(button_id, "%dpindora", pin_tile);
 		B_register_button(button_id, button_rect,
-				  on_click_add_dora_tile_funcs[pin_tile],
-				  &G_destroy_dora_keyboard_button);
+				  G_on_click_add_dora_tile,
+				  &G_destroy_dora_keyboard_button,
+				  (void *)(intptr_t)pin_tile);
 
 		if (T_tile_draw(sdl_renderer, pin_tile,
 				(SDL_Point){ .x = x, .y = y }, tile_size))
@@ -796,8 +807,9 @@ bool R_dora_keyboard(void)
 					  tile_size * T_TILE_HEIGHT_RATIO };
 		sprintf(button_id, "%dsoudora", sou_tile);
 		B_register_button(button_id, button_rect,
-				  on_click_add_dora_tile_funcs[sou_tile],
-				  &G_destroy_dora_keyboard_button);
+				  G_on_click_add_dora_tile,
+				  &G_destroy_dora_keyboard_button,
+				  (void *)(intptr_t)sou_tile);
 
 		if (T_tile_draw(sdl_renderer, sou_tile,
 				(SDL_Point){ .x = x, .y = y }, tile_size))
@@ -808,15 +820,24 @@ bool R_dora_keyboard(void)
 	return false;
 }
 
+// holy fuckjing balls. shield your eyes or skip to line 1003
 bool R_handshapes_selector_draw(struct G_GameState gamestate)
 {
 	if (R_overlay_menu_window_draw(L_COLOR_RED))
 		return true;
+
 	const int tile_size = 19;
+	const int vertical_padding = 80;
+	const int horizontal_padding = 4;
+	const int group_padding = 10;
+	const int handshape_to_selector_gap = 10;
+	const int x_initial = 80;
+	char button_id[32] = { 0 };
 
 	int y = 100;
 	for (int i = 0; i < (int)gamestate.handshapes.hands_len; i++) {
-		int x = 80;
+		int x = x_initial;
+		int y_initial = y;
 		for (size_t j = 0;
 		     j < gamestate.handshapes.hands[i].group_count; j++) {
 			for (size_t k = 0;
@@ -834,12 +855,25 @@ bool R_handshapes_selector_draw(struct G_GameState gamestate)
 					return true;
 				}
 
-				x += ((tile_size * T_TILE_WIDTH_RATIO) + 4);
+				x += ((tile_size * T_TILE_WIDTH_RATIO) +
+				      horizontal_padding);
 			}
-			x += 10;
+			x += group_padding;
 		}
 
-		y += ((tile_size * T_TILE_HEIGHT_RATIO) + 10);
+		y += ((tile_size * T_TILE_HEIGHT_RATIO) +
+		      handshape_to_selector_gap);
+
+		sprintf(button_id, "%dhandshape_selector", i);
+		B_register_button(
+			button_id,
+			(SDL_FRect){ .x = 0,
+				     .y = y_initial,
+				     .w = x,
+				     .h = (float)(y - y_initial + 5) },
+			&G_on_click_select_handshape,
+			&G_destroy_select_handshape_button,
+			(void *)(intptr_t)i);
 
 		if (gamestate.selector_idx == i) {
 			if (!SDL_SetRenderDrawBlendMode(sdl_renderer,
@@ -854,11 +888,13 @@ bool R_handshapes_selector_draw(struct G_GameState gamestate)
 					       L_COLORS[L_COLOR_WHITE].g,
 					       L_COLORS[L_COLOR_WHITE].b,
 					       L_COLORS[L_COLOR_WHITE].a);
-			SDL_RenderFillRects(
-				sdl_renderer,
-				&(struct SDL_FRect){ 80, y, x - 80, 5 }, 1);
+			SDL_RenderFillRects(sdl_renderer,
+					    &(struct SDL_FRect){ x_initial, y,
+								 x - x_initial,
+								 5 },
+					    1);
 		}
-		y += 80;
+		y += vertical_padding;
 	}
 
 	return false;

@@ -11,10 +11,13 @@ typedef struct {
 	SDL_FRect box;
 
 	// registerd func to run if button is clicked
-	void (*on_click)(struct G_GameState *gamestate);
+	void (*on_click)(struct G_GameState *gamestate, void *args);
 
 	// registered func to check if button should be destroyed
 	bool (*destroy_when)(struct G_GameState *gamestate);
+
+	// passed args to on_click func
+	void *args;
 } B_Button;
 
 void B_init(void);
@@ -22,8 +25,10 @@ void B_destroy(void);
 
 // adds button to active buttons to check for every frame
 int B_register_button(const char *id_str, SDL_FRect box,
-		      void (*on_click)(struct G_GameState *gamestate),
-		      bool (*destroy_when)(struct G_GameState *gamestate));
+		      void (*on_click)(struct G_GameState *gamestate,
+				       void *args),
+		      bool (*destroy_when)(struct G_GameState *gamestate),
+		      void *args);
 
 // checks for buttons to destroy
 void B_active_buttons_purge(struct G_GameState *gamestate);

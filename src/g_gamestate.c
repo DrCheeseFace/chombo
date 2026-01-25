@@ -1,5 +1,7 @@
 #include "g_gamestate.h"
 #include "r_renderer.h"
+
+#include <mr_utils.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -236,6 +238,8 @@ void G_step_backward_menu(struct G_GameState *gamestate)
 		gamestate->overlayed_menu = G_OVERLAYED_MENU_NONE;
 		break;
 	case G_OVERLAYED_MENU_DORA_KEYBOARD:
+		gamestate->selector_idx = 0;
+		gamestate->overlayed_menu = G_OVERLAYED_MENU_NONE;
 		break;
 	case G_OVERLAYED_MENU_HANDSHAPES_SELECTOR:
 		gamestate->selector_idx = 0;
@@ -366,14 +370,14 @@ bool G_step_forward_menu(struct G_GameState *gamestate)
 	return false;
 }
 
-void G_increment_honba_counter(struct G_GameState *gamestate)
+void G_increment_honba_counter(struct G_GameState *gamestate, unused void *args)
 {
 	if (gamestate->honba == UINT8_MAX)
 		return;
 	gamestate->honba++;
 }
 
-void G_decrement_honba_counter(struct G_GameState *gamestate)
+void G_decrement_honba_counter(struct G_GameState *gamestate, unused void *args)
 {
 	if (gamestate->honba == 0)
 		return;

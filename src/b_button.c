@@ -29,8 +29,10 @@ void B_destroy(void)
 }
 
 int B_register_button(const char *id_str, SDL_FRect box,
-		      void (*on_click)(struct G_GameState *gamestate),
-		      bool (*destroy_when)(struct G_GameState *gamestate))
+		      void (*on_click)(struct G_GameState *gamestate,
+				       void *args),
+		      bool (*destroy_when)(struct G_GameState *gamestate),
+		      void *args)
 {
 	B_Button *button = B_button_exists(id_str);
 	if (!button) {
@@ -50,6 +52,7 @@ int B_register_button(const char *id_str, SDL_FRect box,
 	button->box = box;
 	button->on_click = on_click;
 	button->destroy_when = destroy_when;
+	button->args = args;
 
 	return 0;
 }
@@ -81,7 +84,7 @@ bool B_handle_click(struct G_GameState *gamestate, SDL_Renderer *sdl_renderer,
 		button = mrv_get_idx(&active_buttons, idx);
 		if (is_pointer_within_bounds(sdl_renderer, button_event,
 					     button->box)) {
-			button->on_click(gamestate);
+			button->on_click(gamestate, button->args);
 			return true;
 		}
 	}
