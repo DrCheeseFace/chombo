@@ -906,11 +906,19 @@ bool R_handshape_group_open_close_selector_draw(struct G_GameState gamestate)
 		return true;
 
 	const int tile_size = 24;
+	const int group_to_open_closed_text_gap = 100;
+	const int group_to_selector_gap = 10;
+	const int previous_group_to_lower_group_gap = 40;
+	int x_initial = 80;
+
+	char button_id[32] = { 0 };
 
 	int y = 80;
 	for (int i = 0; i < (int)gamestate.selected_handshape.group_count;
 	     i++) {
-		int x = 80;
+		int x = x_initial;
+		int y_initial = y;
+
 		for (size_t j = 0;
 		     j < gamestate.selected_handshape.groups[i].tiles_len;
 		     j++) {
@@ -925,16 +933,26 @@ bool R_handshape_group_open_close_selector_draw(struct G_GameState gamestate)
 			}
 			x += ((tile_size * T_TILE_WIDTH_RATIO) + 12);
 		}
-		x += 100;
+		x += group_to_open_closed_text_gap;
 
 		if (L_draw_text(gamestate.selected_handshape.groups[i].isopen ?
 					L_TEXT_GROUP_OPEN :
 					L_TEXT_GROUP_CLOSED,
-				(struct SDL_Point){ gamestate.window_w / 2,
-						    y }))
+				(struct SDL_Point){ WINDOW_WIDTH / 2, y }))
 			return true;
 
-		y += 140;
+		y += ((tile_size * T_TILE_HEIGHT_RATIO) +
+		      group_to_selector_gap);
+
+		sprintf(button_id, "%dgroup_open_closed_toggler", i);
+		B_register_button(button_id,
+				  (SDL_FRect){ .x = 0,
+					       .y = y_initial,
+					       .w = WINDOW_WIDTH,
+					       .h = (float)(y - y_initial) },
+				  &G_on_click_toggle_group_open_closed,
+				  &G_destroy_toggle_group_open_closed,
+				  (void *)(intptr_t)i);
 
 		if (gamestate.selector_idx == i) {
 			if (!SDL_SetRenderDrawBlendMode(sdl_renderer,
@@ -952,12 +970,11 @@ bool R_handshape_group_open_close_selector_draw(struct G_GameState gamestate)
 			SDL_RenderFillRects(
 				sdl_renderer,
 				&(struct SDL_FRect){
-					80, y,
-					(float)gamestate.window_w / 4 * 3, 5 },
+					80, y, (float)WINDOW_WIDTH / 4 * 3, 5 },
 				1);
 		}
 
-		y += 40;
+		y += previous_group_to_lower_group_gap;
 	}
 	return false;
 }

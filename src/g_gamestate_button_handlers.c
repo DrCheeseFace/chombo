@@ -166,3 +166,16 @@ bool G_destroy_select_handshape_button(struct G_GameState *gamestate)
 	return gamestate->overlayed_menu !=
 	       G_OVERLAYED_MENU_HANDSHAPES_SELECTOR;
 }
+
+void G_on_click_toggle_group_open_closed(struct G_GameState *gamestate,
+					 void *group_idx)
+{
+	gamestate->selector_idx = (int)(intptr_t)group_idx;
+	G_group_selector_open_close_toggle(gamestate);
+}
+
+bool G_destroy_toggle_group_open_closed(struct G_GameState *gamestate)
+{
+	return gamestate->overlayed_menu !=
+	       G_OVERLAYED_MENU_HANDSHAPE_GROUP_OPEN_CLOSE_SELECTOR;
+}
