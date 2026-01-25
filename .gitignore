@@ -6,8 +6,7 @@ mahc.txt
 !/subprojects/*.wrap
 dist
 dist_win
-linuxdeploy-x86_64.AppImage
-innosetup-6.7.0.exe         
-chombo_1.0.0_amd64.deb
-chombo-1.0.0-x86_64.AppImage
+*.exe              
+*.AppImage 
+*.deb
 

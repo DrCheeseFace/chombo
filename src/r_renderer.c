@@ -1,4 +1,6 @@
+#include "b_button.h"
 #include "g_gamestate.h"
+#include "g_gamestate_button_handlers.h"
 #include "l_letter.h"
 #include "mahc.h"
 #include "t_tiles.h"
@@ -10,15 +12,12 @@
 #include <stdlib.h>
 
 SDL_Renderer *sdl_renderer;
-int screen_width, screen_height;
 float scale;
 
-SDL_Renderer *R_create(SDL_Window *window, int width, int height)
+SDL_Renderer *R_create(SDL_Window *window)
 {
 	sdl_renderer = SDL_CreateRenderer(window, NULL);
 
-	screen_width = width;
-	screen_height = height;
 	scale = 0.5;
 
 	T_tiles_init(sdl_renderer);
@@ -111,8 +110,8 @@ bool R_overlay_menu_window_draw(L_Colors outline_colour)
 		return true;
 	}
 
-	SDL_FRect outline = { .w = screen_width - 50,
-			      .h = screen_height - 50,
+	SDL_FRect outline = { .w = WINDOW_WIDTH - 50,
+			      .h = WINDOW_HEIGHT - 50,
 			      .x = 25,
 			      .y = 25 };
 	if (!SDL_SetRenderDrawColor(sdl_renderer, L_COLORS[outline_colour].r,
@@ -131,8 +130,8 @@ bool R_overlay_menu_window_draw(L_Colors outline_colour)
 				    L_COLORS[L_COLOR_MENU_BACKDROP].a))
 		return true;
 
-	SDL_FRect background = { .w = screen_width - 55,
-				 .h = screen_height - 55,
+	SDL_FRect background = { .w = WINDOW_WIDTH - 55,
+				 .h = WINDOW_HEIGHT - 55,
 				 .x = 27.5,
 				 .y = 27.5 };
 	if (!SDL_RenderFillRect(sdl_renderer, &background))
@@ -145,7 +144,7 @@ bool R_help_draw(struct G_GameState gamestate)
 {
 	if (!gamestate.show_help) {
 		if (L_draw_text(L_TEXT_BOTTOM_HELP,
-				(struct SDL_Point){ 4, screen_height - 50 }))
+				(struct SDL_Point){ -1, -1 }))
 			return true;
 		return false;
 	}
@@ -153,88 +152,82 @@ bool R_help_draw(struct G_GameState gamestate)
 	if (R_overlay_menu_window_draw(L_COLOR_WHITE))
 		return true;
 
-	if (L_draw_text(L_TEXT_HELP_0_9, (struct SDL_Point){ 80, 140 }))
+	if (L_draw_text(L_TEXT_HELP_0_9, (struct SDL_Point){ -1, -1 }))
 		return true;
 	if (T_tile_draw(sdl_renderer, T_TILE_MAN1,
 			(struct SDL_Point){ 280, 150 }, 16) != 0)
 		return true;
 
-	if (L_draw_text(L_TEXT_HELP_SHIFT, (struct SDL_Point){ 80, 240 }))
+	if (L_draw_text(L_TEXT_HELP_SHIFT, (struct SDL_Point){ -1, -1 }))
 		return true;
 	if (T_tile_draw(sdl_renderer, T_TILE_PIN1,
 			(struct SDL_Point){ 280, 250 }, 16) != 0)
 		return true;
 
-	if (L_draw_text(L_TEXT_HELP_CTRL, (struct SDL_Point){ 80, 340 }))
+	if (L_draw_text(L_TEXT_HELP_CTRL, (struct SDL_Point){ -1, -1 }))
 		return true;
 	if (T_tile_draw(sdl_renderer, T_TILE_SOU1,
 			(struct SDL_Point){ 280, 350 }, 16) != 0)
 		return true;
 
-	if (L_draw_text(L_TEXT_HELP_E, (struct SDL_Point){ 80, 440 }))
+	if (L_draw_text(L_TEXT_HELP_E, (struct SDL_Point){ -1, -1 }))
 		return true;
 	if (T_tile_draw(sdl_renderer, T_TILE_TON,
 			(struct SDL_Point){ 280, 450 }, 16) != 0)
 		return true;
 
-	if (L_draw_text(L_TEXT_HELP_S, (struct SDL_Point){ 80, 540 }))
+	if (L_draw_text(L_TEXT_HELP_S, (struct SDL_Point){ -1, -1 }))
 		return true;
 	if (T_tile_draw(sdl_renderer, T_TILE_NAN,
 			(struct SDL_Point){ 280, 550 }, 16) != 0)
 		return true;
 
-	if (L_draw_text(L_TEXT_HELP_W, (struct SDL_Point){ 80, 640 }))
+	if (L_draw_text(L_TEXT_HELP_W, (struct SDL_Point){ -1, -1 }))
 		return true;
 	if (T_tile_draw(sdl_renderer, T_TILE_SHAA,
 			(struct SDL_Point){ 280, 650 }, 16) != 0)
 		return true;
 
-	if (L_draw_text(L_TEXT_HELP_S, (struct SDL_Point){ 80, 740 }))
+	if (L_draw_text(L_TEXT_HELP_S, (struct SDL_Point){ -1, -1 }))
 		return true;
 	if (T_tile_draw(sdl_renderer, T_TILE_PEI,
 			(struct SDL_Point){ 280, 750 }, 16) != 0)
 		return true;
 
-	if (L_draw_text(L_TEXT_HELP_C, (struct SDL_Point){ 420, 140 }))
+	if (L_draw_text(L_TEXT_HELP_C, (struct SDL_Point){ -1, -1 }))
 		return true;
 	if (T_tile_draw(sdl_renderer, T_TILE_CHUN,
 			(struct SDL_Point){ 500, 150 }, 16) != 0)
 		return true;
 
-	if (L_draw_text(L_TEXT_HELP_H, (struct SDL_Point){ 420, 240 }))
+	if (L_draw_text(L_TEXT_HELP_H, (struct SDL_Point){ -1, -1 }))
 		return true;
 	if (T_tile_draw(sdl_renderer, T_TILE_HAKU,
 			(struct SDL_Point){ 500, 250 }, 16) != 0)
 		return true;
 
-	if (L_draw_text(L_TEXT_HELP_G, (struct SDL_Point){ 420, 340 }))
+	if (L_draw_text(L_TEXT_HELP_G, (struct SDL_Point){ -1, -1 }))
 		return true;
 	if (T_tile_draw(sdl_renderer, T_TILE_HATSU,
 			(struct SDL_Point){ 500, 350 }, 16) != 0)
 		return true;
 
-	int y = WINDOW_HEIGHT / 8;
-
-	if (L_draw_text(L_TEXT_HELP_SPACE_TOGGLE, (struct SDL_Point){ 760, y }))
+	if (L_draw_text(L_TEXT_HELP_SPACE_TOGGLE, (struct SDL_Point){ -1, -1 }))
 		return true;
-	y += L_text_height(L_TEXT_HELP_SPACE_TOGGLE) + 20;
 
 	if (L_draw_text(L_TEXT_HELP_ESCAPE_BACKTRACK,
-			(struct SDL_Point){ 760, y }))
+			(struct SDL_Point){ -1, -1 }))
 		return true;
-	y += L_text_height(L_TEXT_HELP_ESCAPE_BACKTRACK) + 20;
 
 	if (L_draw_text(L_TEXT_HELP_RETURN_CONTINUE,
-			(struct SDL_Point){ 760, y }))
+			(struct SDL_Point){ -1, -1 }))
 		return true;
-	y += L_text_height(L_TEXT_HELP_RETURN_CONTINUE) + 20;
 
 	if (L_draw_text(L_TEXT_HELP_ARROW_NAVIGATE,
-			(struct SDL_Point){ 760, y }))
+			(struct SDL_Point){ -1, -1 }))
 		return true;
-	y += L_text_height(L_TEXT_HELP_ARROW_NAVIGATE) + 20;
 
-	if (L_draw_text(L_TEXT_HELP_CLEAR_STATE, (struct SDL_Point){ 760, y }))
+	if (L_draw_text(L_TEXT_HELP_CLEAR_STATE, (struct SDL_Point){ -1, -1 }))
 		return true;
 
 	return false;
@@ -255,12 +248,12 @@ bool R_hand_draw(struct G_GameState gamestate)
 					G_SELECTED_MAIN_MENU_OPTION_HAND ?
 				L_TEXT_HAND_LABEL_SELECTED :
 				L_TEXT_HAND_LABEL,
-			(struct SDL_Point){ 10, 130 }))
+			(struct SDL_Point){ -1, -1 }))
 		return true;
 	if (L_draw_text(gamestate.handshapes.hands_len != 0 ?
 				L_TEXT_HAND_VALID :
 				L_TEXT_HAND_INVALID,
-			(struct SDL_Point){ 200, 130 }))
+			(struct SDL_Point){ -1, -1 }))
 		return true;
 	return false;
 }
@@ -281,7 +274,7 @@ bool R_dora_draw(struct G_GameState gamestate)
 					G_SELECTED_MAIN_MENU_OPTION_DORA ?
 				L_TEXT_DORA_LABEL_SELECTED :
 				L_TEXT_DORA_LABEL,
-			(struct SDL_Point){ 10, 303 }))
+			(struct SDL_Point){ -1, -1 }))
 		return true;
 	return false;
 }
@@ -308,9 +301,9 @@ bool R_seat_wind_selector_draw(struct G_GameState gamestate)
 
 	if (L_draw_text(gamestate.selected_main_menu_option ==
 					G_SELECTED_MAIN_MENU_OPTION_SEAT_WIND ?
-				L_TEXT_DORA_SEAT_WIND_SELECTED :
-				L_TEXT_DORA_SEAT_WIND,
-			(struct SDL_Point){ 10, 516 }))
+				L_TEXT_SEAT_WIND_SELECTED :
+				L_TEXT_SEAT_WIND,
+			(struct SDL_Point){ -1, -1 }))
 		return true;
 
 	return false;
@@ -339,62 +332,101 @@ bool R_prevelant_wind_selector_draw(struct G_GameState gamestate)
 	if (L_draw_text(
 		    gamestate.selected_main_menu_option ==
 				    G_SELECTED_MAIN_MENU_OPTION_PREVALENT_WIND ?
-			    L_TEXT_DORA_PREVELANT_WIND_SELECTED :
-			    L_TEXT_DORA_PREVELANT_WIND,
-		    (struct SDL_Point){ 10, 729 }))
+			    L_TEXT_PREVELANT_WIND_SELECTED :
+			    L_TEXT_PREVELANT_WIND,
+		    (struct SDL_Point){ -1, -1 }))
 		return true;
 	return false;
 }
 
 bool R_conditions_draw(struct G_GameState gamestate)
 {
-	int y = 330;
+	if (B_register_button("condition_tsumo_toggle",
+			      L_TEXTS_OBJS[L_TEXT_CONDITION_TSUMO_ON].box,
+			      &G_on_click_toggle_tsumo,
+			      &G_destroy_main_menu_button))
+		return true;
 	if (L_draw_text(gamestate.conditions.tsumo ? L_TEXT_CONDITION_TSUMO_ON :
 						     L_TEXT_CONDITION_TSUMO_OFF,
-			(struct SDL_Point){ 500, y }))
+			(struct SDL_Point){ -1, -1 }))
 		return true;
-	y += 80;
+
+	if (B_register_button("condition_riichi_toggle",
+			      L_TEXTS_OBJS[L_TEXT_CONDITION_RIICHI_ON].box,
+			      &G_on_click_toggle_riichi,
+			      &G_destroy_main_menu_button))
+		return true;
 	if (L_draw_text(gamestate.conditions.riichi ?
 				L_TEXT_CONDITION_RIICHI_ON :
 				L_TEXT_CONDITION_RIICHI_OFF,
-			(struct SDL_Point){ 500, y }))
+			(struct SDL_Point){ -1, -1 }))
 		return true;
-	y += 80;
+
+	if (B_register_button(
+		    "condition_double_riichi_toggle",
+		    L_TEXTS_OBJS[L_TEXT_CONDITION_DOUBLE_RIICHI_OFF].box,
+		    &G_on_click_toggle_double_riichi,
+		    &G_destroy_main_menu_button))
+		return true;
 	if (L_draw_text(gamestate.conditions.double_riichi ?
 				L_TEXT_CONDITION_DOUBLE_RIICHI_ON :
 				L_TEXT_CONDITION_DOUBLE_RIICHI_OFF,
-			(struct SDL_Point){ 500, y }))
+			(struct SDL_Point){ -1, -1 }))
 		return true;
-	y += 80;
+
+	if (B_register_button("condition_ippatsu_toggle",
+			      L_TEXTS_OBJS[L_TEXT_CONDITION_IPPATSU_OFF].box,
+			      &G_on_click_toggle_ippatsu,
+			      &G_destroy_main_menu_button))
+		return true;
 	if (L_draw_text(gamestate.conditions.ippatsu ?
 				L_TEXT_CONDITION_IPPATSU_ON :
 				L_TEXT_CONDITION_IPPATSU_OFF,
-			(struct SDL_Point){ 500, y }))
+			(struct SDL_Point){ -1, -1 }))
 		return true;
-	y += 80;
+
+	if (B_register_button("condition_haitei_toggle",
+			      L_TEXTS_OBJS[L_TEXT_CONDITION_HAITEI_OFF].box,
+			      &G_on_click_toggle_haitei,
+			      &G_destroy_main_menu_button))
+		return true;
 	if (L_draw_text(gamestate.conditions.haitei ?
 				L_TEXT_CONDITION_HAITEI_ON :
 				L_TEXT_CONDITION_HAITEI_OFF,
-			(struct SDL_Point){ 500, y }))
+			(struct SDL_Point){ -1, -1 }))
 		return true;
-	y += 80;
+
+	if (B_register_button("condition_chankan_toggle",
+			      L_TEXTS_OBJS[L_TEXT_CONDITION_CHANKAN_OFF].box,
+			      &G_on_click_toggle_chankan,
+			      &G_destroy_main_menu_button))
+		return true;
 	if (L_draw_text(gamestate.conditions.chankan ?
 				L_TEXT_CONDITION_CHANKAN_ON :
 				L_TEXT_CONDITION_CHANKAN_OFF,
-			(struct SDL_Point){ 500, y }))
+			(struct SDL_Point){ -1, -1 }))
 		return true;
-	y += 80;
+
+	if (B_register_button("condition_rinshan_toggle",
+			      L_TEXTS_OBJS[L_TEXT_CONDITION_RINSHAN_OFF].box,
+			      &G_on_click_toggle_rinshan,
+			      &G_destroy_main_menu_button))
+		return true;
 	if (L_draw_text(gamestate.conditions.rinshan ?
 				L_TEXT_CONDITION_RINSHAN_ON :
 				L_TEXT_CONDITION_RINSHAN_OFF,
-			(struct SDL_Point){ 500, y }))
+			(struct SDL_Point){ -1, -1 }))
 		return true;
-	y += 80;
 
+	if (B_register_button("condition_tenhou_toggle",
+			      L_TEXTS_OBJS[L_TEXT_CONDITION_TENHOU_OFF].box,
+			      &G_on_click_toggle_tenhou,
+			      &G_destroy_main_menu_button))
+		return true;
 	if (L_draw_text(gamestate.conditions.tenhou ?
 				L_TEXT_CONDITION_TENHOU_ON :
 				L_TEXT_CONDITION_TENHOU_OFF,
-			(struct SDL_Point){ 500, y }))
+			(struct SDL_Point){ -1, -1 }))
 		return true;
 
 	return false;
@@ -406,14 +438,14 @@ bool R_honba_draw(struct G_GameState gamestate)
 					G_SELECTED_MAIN_MENU_OPTION_HONBA ?
 				L_TEXT_HONBA_ON :
 				L_TEXT_HONBA_OFF,
-			(struct SDL_Point){ 10, 800 }))
+			(struct SDL_Point){ -1, -1 }))
 		return true;
 
 	char honba_str[4] = PLACEHOLDER_TEXT;
 	SDL_itoa(gamestate.honba, honba_str, 10);
 	L_rewrite_text(sdl_renderer, L_TEXT_HONBA_COUNT, honba_str);
 
-	if (L_draw_text(L_TEXT_HONBA_COUNT, (struct SDL_Point){ 270, 790 }))
+	if (L_draw_text(L_TEXT_HONBA_COUNT, (struct SDL_Point){ -1, -1 }))
 		return true;
 
 	return false;
@@ -915,6 +947,15 @@ bool R_gamestate_draw(SDL_Window *sdl_window, struct G_GameState gamestate)
 	if (R_help_draw(gamestate))
 		return true;
 
+#ifndef NDEBUG
+	DEBUG_DRAW_POINTER_COORDS(sdl_renderer);
+#endif
+
 	SDL_RenderPresent(sdl_renderer);
+
+#ifndef NDEBUG
+	return true;
+#else
 	return false;
+#endif
 }

@@ -64,4 +64,8 @@ debug: setup
 	meson configure $(BUILD_DIR) -Dbuildtype=debug
 	$(MAKE) build
 
+valgrind:
+	valgrind --leak-check=full --suppressions=valgrind.supp ./dist/bin/chombo
+	
+
 whodoyouthinkyouareiam: clean setup build run

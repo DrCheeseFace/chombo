@@ -36,7 +36,7 @@ strict_c_flags = [
   '-Wlogical-op',
   '-Wshadow',
   '-Wundef',
-  '-Wfloat-equal'
+  # '-Wfloat-equal'
 ]
 
 if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
@@ -88,9 +88,26 @@ mahc_dep = declare_dependency(
 
 deps = [sdl3_dep, sdl3_ttf_dep, harfbuzz_dep, freetype_dep, mahc_dep]
 
+# mrutils :)
+inc = include_directories('src/mr_utils/include')
+
 source_files = files(
-  'src/e_event.c', 'src/g_gamestate.c', 'src/l_letter.c',
-  'src/main.c', 'src/r_renderer.c', 'src/t_tiles.c', 'src/w_window.c'
+  'src/e_event.c',
+  'src/g_gamestate.c',
+  'src/g_gamestate_button_handlers.c',
+  'src/l_letter.c',
+  'src/l_letter_objs.c',
+  'src/main.c',
+  'src/r_renderer.c',
+  'src/t_tiles.c',
+  'src/w_window.c',
+  'src/b_button.c',
+  'src/utils.c',
+  'src/mr_utils/src/mrd_debug.c',
+  'src/mr_utils/src/mrl_logger.c',
+  'src/mr_utils/src/mrs_strings.c',
+  'src/mr_utils/src/mrt_test.c',
+  'src/mr_utils/src/mrv_vectors.c'
 )
 
 if host_system == 'linux'
@@ -118,6 +135,10 @@ if host_system == 'linux'
       pointing_to: 'libSDL3.so',
       install_dir: get_option('libdir')
     )
+    install_symlink('assets',
+      pointing_to: '../share/chombo/assets',
+      install_dir: get_option('bindir')
+    )
 else
     install_subdir('src/assets', install_dir: get_option('bindir'))
 endif
@@ -126,6 +147,7 @@ executable('chombo',
   source_files,
   dependencies: deps,
   link_with: mahc_lib,
+  include_directories: inc,
   link_language: 'c',
   install: true,
   install_rpath: '$ORIGIN/../' + get_option('libdir')

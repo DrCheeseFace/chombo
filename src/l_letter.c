@@ -1,6 +1,5 @@
 #include "l_letter.h"
 #include "r_renderer.h"
-#include "util.h"
 #include <SDL3_ttf/SDL_ttf.h>
 #include <stdio.h>
 
@@ -18,94 +17,6 @@ SDL_Color L_COLORS[L_COLOR_COUNT] = {
 	{ 255, 0, 255, 255 }, // magenta
 	{ 10, 10, 0, 200 }, //transparentish tinge
 	{ 10, 20, 10, 250 }, //more greenish black
-};
-
-L_Text_Obj L_TEXTS_OBJS[L_TEXT_COUNT] = {
-	{ "hold / for help", 40, L_COLOR_WHITE, 0,
-	  TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "0-9 ", 80, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "shift", 80, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "ctrl", 80, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "E", 80, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "S", 80, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "W", 80, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "N", 80, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "C", 80, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "H", 80, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "G", 80, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "- arrow keys\n  navigate menu", 80, L_COLOR_WHITE, 0,
-	  TTF_HORIZONTAL_ALIGN_LEFT },
-	{ "- space toggle pane", 80, L_COLOR_WHITE, 0,
-	  TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "- escape backtrack", 80, L_COLOR_WHITE, 0,
-	  TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "- enter continue", 80, L_COLOR_WHITE, 0,
-	  TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "- , clear state", 80, L_COLOR_WHITE, 0,
-	  TTF_HORIZONTAL_ALIGN_CENTER },
-
-	{ "Hand", 50, L_COLOR_GREEN, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "Hand", 50, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "Valid", 50, L_COLOR_GREEN, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "Invalid", 50, L_COLOR_YELLOW, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "Dora", 50, L_COLOR_GREEN, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "Dora", 50, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-
-	{ "Seat wind", 50, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "Seat wind", 50, L_COLOR_GREEN, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "Prevelant wind", 50, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "Prevelant wind", 50, L_COLOR_GREEN, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-
-	{ "t tsumo", 70, L_COLOR_RED, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "t tsumo", 70, L_COLOR_GREEN, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "r riichi", 70, L_COLOR_RED, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "r riichi", 70, L_COLOR_GREEN, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "d double riichi", 70, L_COLOR_RED, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "d double riichi", 70, L_COLOR_GREEN, 0,
-	  TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "i ippatsu", 70, L_COLOR_RED, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "i ippatsu", 70, L_COLOR_GREEN, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "z haitei", 70, L_COLOR_RED, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "z haitei", 70, L_COLOR_GREEN, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "m chankan", 70, L_COLOR_RED, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "m chankan", 70, L_COLOR_GREEN, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "k rinshan kaihou", 70, L_COLOR_RED, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "k rinshan kaihou", 70, L_COLOR_GREEN, 0,
-	  TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "u tenhou", 70, L_COLOR_RED, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "u tenhou", 70, L_COLOR_GREEN, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-
-	{ "open", 100, L_COLOR_GREEN, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "closed", 100, L_COLOR_YELLOW, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-
-	{ "honba", 80, L_COLOR_RED, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "honba", 80, L_COLOR_GREEN, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "0", 100, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-
-	{ "ERROR!", 100, L_COLOR_RED, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "OK", 100, L_COLOR_WHITE, WINDOW_WIDTH / 5 * 4,
-	  TTF_HORIZONTAL_ALIGN_CENTER },
-
-	{ "Yaku", 100, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "Yakuman", 100, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "Fu", 100, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-
-	{ "Han - ", 50, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "0", 50, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "/Fu - ", 50, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "0", 50, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "Honba - ", 50, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "0", 50, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "Dora - ", 50, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "0", 50, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-
-	{ "Dealer ron", 80, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "Dealer tsumo", 80, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "Non Dealer ron", 80, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
-	{ "Non Dealer tsumo", 80, L_COLOR_WHITE, 0,
-	  TTF_HORIZONTAL_ALIGN_CENTER },
-
-	{ "0", 80, L_COLOR_WHITE, 0, TTF_HORIZONTAL_ALIGN_CENTER },
 };
 
 static const char *base_path = NULL;
@@ -159,16 +70,23 @@ void L_init(SDL_Renderer *sdl_renderer)
 		TTF_DestroyText(ttf_text);
 
 		text_textures[i] = tex;
+
+		SDL_GetTextureSize(text_textures[i], &L_TEXTS_OBJS[i].box.w,
+				   &L_TEXTS_OBJS[i].box.h);
 	}
 }
 
 bool L_draw_text(L_Text text, SDL_Point point)
 {
 	SDL_Texture *tex = text_textures[text];
-	if (R_draw(tex, point)) {
-		return true;
+
+	// TODO CHANGE THESE TO ALL USE DEFINED POINTS POINTS
+	if (L_TEXTS_OBJS[text].box.x != -1.0f) {
+		point.x = (int)L_TEXTS_OBJS[text].box.x;
+		point.y = (int)L_TEXTS_OBJS[text].box.y;
 	}
-	return false;
+
+	return R_draw(tex, point);
 }
 
 void L_rewrite_text(SDL_Renderer *sdl_renderer, L_Text text_to_change,
@@ -210,6 +128,10 @@ void L_rewrite_text(SDL_Renderer *sdl_renderer, L_Text text_to_change,
 	}
 
 	text_textures[text_to_change] = tex;
+
+	SDL_GetTextureSize(text_textures[text_to_change],
+			   &L_TEXTS_OBJS[text_to_change].box.w,
+			   &L_TEXTS_OBJS[text_to_change].box.h);
 
 	SDL_DestroySurface(text_surface);
 	TTF_DestroyText(ttf_text);

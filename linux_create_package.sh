@@ -24,8 +24,6 @@ DESTDIR=$DIST_DIR meson install -C $BUILD_DIR
 
 rm -rf $DIST_DIR/usr/include
 
-ln -s ../share/chombo/assets $DIST_DIR/usr/bin/assets
-
 # searches through symlinks to get actual .so (fuck you sdl3_ttf)
 echo "harvesting real library files from build subprojects..."
 harvest_lib() {

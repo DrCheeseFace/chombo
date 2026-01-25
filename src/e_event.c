@@ -1,3 +1,4 @@
+#include "b_button.h"
 #include "g_gamestate.h"
 #include "t_tiles.h"
 
@@ -615,6 +616,17 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 	return false;
 }
 
+// TODO IMPLEMENTATION
+bool E_handle_mouse_move(struct G_GameState *gamestate,
+			 SDL_Renderer *sdl_renderer,
+			 SDL_MouseButtonEvent button_event)
+{
+	(void)gamestate;
+	(void)sdl_renderer;
+	(void)button_event;
+	return false;
+}
+
 bool E_handle_event(struct G_GameState *gamestate, SDL_Renderer *sdl_renderer,
 		    SDL_Event event)
 {
@@ -626,6 +638,7 @@ bool E_handle_event(struct G_GameState *gamestate, SDL_Renderer *sdl_renderer,
 			return true;
 		}
 		return false;
+
 	case SDL_EVENT_KEY_DOWN:
 		redraw = E_handle_key_down(gamestate, sdl_renderer, event.key);
 		if (redraw) {
@@ -633,6 +646,24 @@ bool E_handle_event(struct G_GameState *gamestate, SDL_Renderer *sdl_renderer,
 			return true;
 		}
 		return redraw;
+
+	case SDL_EVENT_MOUSE_BUTTON_DOWN:
+		redraw = B_handle_click(gamestate, sdl_renderer, event.button);
+		if (redraw) {
+			G_calculate_handshapes(gamestate);
+			return true;
+		}
+		return redraw;
+
+	case SDL_EVENT_MOUSE_MOTION:
+		redraw = E_handle_mouse_move(gamestate, sdl_renderer,
+					     event.button);
+		if (redraw) {
+			G_calculate_handshapes(gamestate);
+			return true;
+		}
+		return redraw;
+
 	default:
 		return false;
 	}
