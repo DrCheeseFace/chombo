@@ -459,7 +459,7 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 				return true;
 			} else if (gamestate->selected_main_menu_option ==
 				   G_SELECTED_MAIN_MENU_OPTION_PREVALENT_WIND) {
-				G_decrement_prevelant_wind(gamestate);
+				G_decrement_prevalent_wind(gamestate);
 				return true;
 			} else if (gamestate->selected_main_menu_option ==
 				   G_SELECTED_MAIN_MENU_OPTION_HONBA) {
@@ -475,7 +475,7 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 				return true;
 			} else if (gamestate->selected_main_menu_option ==
 				   G_SELECTED_MAIN_MENU_OPTION_PREVALENT_WIND) {
-				G_increment_prevelant_wind(gamestate);
+				G_increment_prevalent_wind(gamestate);
 				return true;
 			} else if (gamestate->selected_main_menu_option ==
 				   G_SELECTED_MAIN_MENU_OPTION_HONBA) {

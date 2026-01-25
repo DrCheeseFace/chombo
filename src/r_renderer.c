@@ -330,7 +330,7 @@ bool R_seat_wind_selector_draw(struct G_GameState gamestate)
 	return false;
 }
 
-bool R_prevelant_wind_selector_draw(struct G_GameState gamestate)
+bool R_prevalent_wind_selector_draw(struct G_GameState gamestate)
 {
 	const T_Tile wind_tiles[4] = { T_TILE_TON, T_TILE_NAN, T_TILE_SHAA,
 				       T_TILE_PEI };
@@ -374,8 +374,8 @@ bool R_prevelant_wind_selector_draw(struct G_GameState gamestate)
 	if (L_draw_text(
 		    gamestate.selected_main_menu_option ==
 				    G_SELECTED_MAIN_MENU_OPTION_PREVALENT_WIND ?
-			    L_TEXT_PREVELANT_WIND_SELECTED :
-			    L_TEXT_PREVELANT_WIND,
+			    L_TEXT_PREVALENT_WIND_SELECTED :
+			    L_TEXT_PREVALENT_WIND,
 		    (struct SDL_Point){ -1, -1 }))
 		return true;
 	return false;
@@ -523,7 +523,7 @@ bool R_main_menu_draw(struct G_GameState gamestate)
 		return true;
 	if (R_seat_wind_selector_draw(gamestate))
 		return true;
-	if (R_prevelant_wind_selector_draw(gamestate))
+	if (R_prevalent_wind_selector_draw(gamestate))
 		return true;
 	if (R_conditions_draw(gamestate))
 		return true;

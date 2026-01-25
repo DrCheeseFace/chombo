@@ -88,9 +88,9 @@ void G_decrement_seat_wind(struct G_GameState *gamestate);
 
 void G_increment_seat_wind(struct G_GameState *gamestate);
 
-void G_increment_prevelant_wind(struct G_GameState *gamestate);
+void G_increment_prevalent_wind(struct G_GameState *gamestate);
 
-void G_decrement_prevelant_wind(struct G_GameState *gamestate);
+void G_decrement_prevalent_wind(struct G_GameState *gamestate);
 
 void G_decrement_handshape_selector(struct G_GameState *gamestate);
 
