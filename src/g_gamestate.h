@@ -44,7 +44,7 @@ struct G_GameState {
 
 	T_Tile seat_wind;
 
-	T_Tile prevelant_wind;
+	T_Tile prevalent_wind;
 
 	uint8_t honba;
 

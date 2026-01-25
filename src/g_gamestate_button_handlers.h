@@ -11,6 +11,14 @@ void G_on_click_toggle_haitei(struct G_GameState *gamestate);
 void G_on_click_toggle_chankan(struct G_GameState *gamestate);
 void G_on_click_toggle_rinshan(struct G_GameState *gamestate);
 void G_on_click_toggle_tenhou(struct G_GameState *gamestate);
+void G_on_click_select_prevalent_ton(struct G_GameState *gamestate);
+void G_on_click_select_prevalent_nan(struct G_GameState *gamestate);
+void G_on_click_select_prevalent_shaa(struct G_GameState *gamestate);
+void G_on_click_select_prevalent_pei(struct G_GameState *gamestate);
+void G_on_click_select_seat_ton(struct G_GameState *gamestate);
+void G_on_click_select_seat_nan(struct G_GameState *gamestate);
+void G_on_click_select_seat_shaa(struct G_GameState *gamestate);
+void G_on_click_select_seat_pei(struct G_GameState *gamestate);
 bool G_destroy_main_menu_button(struct G_GameState *gamestate);
 
 #endif // !G_GAMESTATE_BUTTON_HANDLERS_H

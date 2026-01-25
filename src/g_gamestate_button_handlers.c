@@ -41,6 +41,46 @@ void G_on_click_toggle_tenhou(struct G_GameState *gamestate)
 	gamestate->conditions.tenhou = !gamestate->conditions.tenhou;
 }
 
+void G_on_click_select_prevalent_ton(struct G_GameState *gamestate)
+{
+	gamestate->prevalent_wind = T_TILE_TON;
+}
+
+void G_on_click_select_prevalent_nan(struct G_GameState *gamestate)
+{
+	gamestate->prevalent_wind = T_TILE_NAN;
+}
+
+void G_on_click_select_prevalent_shaa(struct G_GameState *gamestate)
+{
+	gamestate->prevalent_wind = T_TILE_SHAA;
+}
+
+void G_on_click_select_prevalent_pei(struct G_GameState *gamestate)
+{
+	gamestate->prevalent_wind = T_TILE_PEI;
+}
+
+void G_on_click_select_seat_ton(struct G_GameState *gamestate)
+{
+	gamestate->seat_wind = T_TILE_TON;
+}
+
+void G_on_click_select_seat_nan(struct G_GameState *gamestate)
+{
+	gamestate->seat_wind = T_TILE_NAN;
+}
+
+void G_on_click_select_seat_shaa(struct G_GameState *gamestate)
+{
+	gamestate->seat_wind = T_TILE_SHAA;
+}
+
+void G_on_click_select_seat_pei(struct G_GameState *gamestate)
+{
+	gamestate->seat_wind = T_TILE_PEI;
+}
+
 bool G_destroy_main_menu_button(struct G_GameState *gamestate)
 {
 	if (gamestate->overlayed_menu != G_OVERLAYED_MENU_NONE) {

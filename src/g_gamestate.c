@@ -90,19 +90,19 @@ void G_increment_seat_wind(struct G_GameState *gamestate)
 
 void G_increment_prevelant_wind(struct G_GameState *gamestate)
 {
-	if (gamestate->prevelant_wind == T_TILE_TON) {
-		gamestate->prevelant_wind = T_TILE_PEI;
+	if (gamestate->prevalent_wind == T_TILE_TON) {
+		gamestate->prevalent_wind = T_TILE_PEI;
 	} else {
-		gamestate->prevelant_wind--;
+		gamestate->prevalent_wind--;
 	}
 }
 
 void G_decrement_prevelant_wind(struct G_GameState *gamestate)
 {
-	if (gamestate->prevelant_wind == T_TILE_PEI) {
-		gamestate->prevelant_wind = T_TILE_TON;
+	if (gamestate->prevalent_wind == T_TILE_PEI) {
+		gamestate->prevalent_wind = T_TILE_TON;
 	} else {
-		gamestate->prevelant_wind++;
+		gamestate->prevalent_wind++;
 	}
 }
 
@@ -337,7 +337,7 @@ bool G_calculate_score(struct G_GameState *gamestate)
 	T_ttile_to_mtile(gamestate->seat_wind, &seat_wind);
 
 	Tile prevelant_wind;
-	T_ttile_to_mtile(gamestate->prevelant_wind, &prevelant_wind);
+	T_ttile_to_mtile(gamestate->prevalent_wind, &prevelant_wind);
 
 	Tile dora_tiles[MAX_DORA_TILE_COUNT];
 	for (int i = 0; i < gamestate->dora_tiles_len; i++) {
@@ -394,7 +394,7 @@ void G_clear_menus_state(struct G_GameState *gamestate)
 	       sizeof(gamestate->dora_tiles));
 
 	gamestate->seat_wind = T_TILE_TON;
-	gamestate->prevelant_wind = T_TILE_TON;
+	gamestate->prevalent_wind = T_TILE_TON;
 
 	gamestate->honba = 0;
 

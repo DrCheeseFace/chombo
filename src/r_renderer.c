@@ -5,6 +5,7 @@
 #include "mahc.h"
 #include "t_tiles.h"
 #include "util.h"
+
 #include <float.h>
 #include <math.h>
 #include <stdint.h>
@@ -63,7 +64,7 @@ void R_redraw_score_texts(struct G_GameState gamestate)
 	SDL_itoa(gamestate.score_result.score_info.dora_count, dora_str, 10);
 	L_rewrite_text(sdl_renderer, L_TEXT_SCORE_DORA_COUNT, dora_str);
 
-	if (gamestate.seat_wind == gamestate.prevelant_wind) {
+	if (gamestate.seat_wind == gamestate.prevalent_wind) {
 		char dealer_to_non_dealer[7] = PLACEHOLDER_TEXT;
 		if (gamestate.conditions.tsumo) {
 			SDL_itoa(gamestate.score_result.score_info.dealer_tsumo,
@@ -283,20 +284,40 @@ bool R_seat_wind_selector_draw(struct G_GameState gamestate)
 {
 	const T_Tile wind_tiles[4] = { T_TILE_TON, T_TILE_NAN, T_TILE_SHAA,
 				       T_TILE_PEI };
+	const char *wind_tiles_button_id[4] = { "ton_seat_wind",
+						"nan_seat_wind",
+						"shaa_seat_wind",
+						"pei_seat_wind" };
+	void (*wind_tiles_button_on_click[4])(struct G_GameState *) = {
+		&G_on_click_select_seat_ton, &G_on_click_select_seat_nan,
+		&G_on_click_select_seat_shaa, &G_on_click_select_seat_pei
+	};
+
 	const int tile_size = 21;
+	const int unselected_y = 393;
+	const int selected_y = 373;
+	const int horizontal_padding = 16;
 
 	int x = 10;
 	for (int i = 0; i < 4; i++) {
+		SDL_FRect tile_rect = { x, unselected_y,
+					tile_size * T_TILE_WIDTH_RATIO,
+					tile_size * T_TILE_HEIGHT_RATIO };
+
+		B_register_button(wind_tiles_button_id[i], tile_rect,
+				  wind_tiles_button_on_click[i],
+				  G_destroy_main_menu_button);
+
 		if (T_tile_draw(sdl_renderer, wind_tiles[i],
 				(struct SDL_Point){
 					x,
 					gamestate.seat_wind == wind_tiles[i] ?
-						373 :
-						393 },
+						selected_y :
+						unselected_y },
 				tile_size)) {
 			return true;
 		}
-		x += ((tile_size * T_TILE_WIDTH_RATIO) + 16);
+		x += ((tile_size * T_TILE_WIDTH_RATIO) + horizontal_padding);
 	}
 
 	if (L_draw_text(gamestate.selected_main_menu_option ==
@@ -313,20 +334,41 @@ bool R_prevelant_wind_selector_draw(struct G_GameState gamestate)
 {
 	const T_Tile wind_tiles[4] = { T_TILE_TON, T_TILE_NAN, T_TILE_SHAA,
 				       T_TILE_PEI };
+	const char *wind_tiles_button_id[4] = { "ton_prevalent_wind",
+						"nan_prevalent_wind",
+						"shaa_prevalent_wind",
+						"pei_prevalent_wind" };
+	void (*wind_tiles_button_on_click[4])(
+		struct G_GameState *) = { &G_on_click_select_prevalent_ton,
+					  &G_on_click_select_prevalent_nan,
+					  &G_on_click_select_prevalent_shaa,
+					  &G_on_click_select_prevalent_pei };
+
 	const int tile_size = 21;
+	const int unselected_y = 606;
+	const int selected_y = 586;
+	const int horizontal_padding = 16;
 
 	int x = 10;
 	for (int i = 0; i < 4; i++) {
+		SDL_FRect tile_rect = { x, unselected_y,
+					tile_size * T_TILE_WIDTH_RATIO,
+					tile_size * T_TILE_HEIGHT_RATIO };
+
+		B_register_button(wind_tiles_button_id[i], tile_rect,
+				  wind_tiles_button_on_click[i],
+				  G_destroy_main_menu_button);
+
 		if (T_tile_draw(sdl_renderer, wind_tiles[i],
 				(struct SDL_Point){
-					x, gamestate.prevelant_wind ==
+					x, gamestate.prevalent_wind ==
 							   wind_tiles[i] ?
-						   586 :
-						   606 },
+						   selected_y :
+						   unselected_y },
 				tile_size)) {
 			return true;
 		}
-		x += ((tile_size * T_TILE_WIDTH_RATIO) + 16);
+		x += ((tile_size * T_TILE_WIDTH_RATIO) + horizontal_padding);
 	}
 
 	if (L_draw_text(
@@ -867,7 +909,7 @@ bool R_score_view_draw_score_info(struct G_GameState gamestate)
 
 	// drawing points section
 	L_Text points_header;
-	if (gamestate.seat_wind == gamestate.prevelant_wind) {
+	if (gamestate.seat_wind == gamestate.prevalent_wind) {
 		if (gamestate.conditions.tsumo) {
 			points_header = L_TEXT_SCORE_DEALER_TSUMO;
 		} else {
