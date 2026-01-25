@@ -117,11 +117,9 @@ void G_selected_handshape_set(struct G_GameState *gamestate);
 
 void G_winning_tile_set(struct G_GameState *gamestate);
 
-void G_increment_honba_counter(struct G_GameState *gamestate,
-			       SDL_Renderer *sdl_renderer);
+void G_increment_honba_counter(struct G_GameState *gamestate);
 
-void G_decrement_honba_counter(struct G_GameState *gamestate,
-			       SDL_Renderer *sdl_renderer);
+void G_decrement_honba_counter(struct G_GameState *gamestate);
 
 void G_backtrack_menu(struct G_GameState *gamestate);
 

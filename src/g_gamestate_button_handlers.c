@@ -1,4 +1,6 @@
 #include "g_gamestate_button_handlers.h"
+#include "src/g_gamestate.h"
+#include <stdint.h>
 
 void G_on_click_toggle_tsumo(struct G_GameState *gamestate)
 {

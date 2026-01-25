@@ -487,7 +487,17 @@ bool R_honba_draw(struct G_GameState gamestate)
 	SDL_itoa(gamestate.honba, honba_str, 10);
 	L_rewrite_text(sdl_renderer, L_TEXT_HONBA_COUNT, honba_str);
 
+	B_register_button("honba_up", L_TEXTS_OBJS[L_TEXT_HONBA_UP].box,
+			  G_increment_honba_counter,
+			  G_destroy_main_menu_button);
+	B_register_button("honba_down", L_TEXTS_OBJS[L_TEXT_HONBA_DOWN].box,
+			  G_decrement_honba_counter,
+			  G_destroy_main_menu_button);
+	if (L_draw_text(L_TEXT_HONBA_UP, (struct SDL_Point){ -1, -1 }))
+		return true;
 	if (L_draw_text(L_TEXT_HONBA_COUNT, (struct SDL_Point){ -1, -1 }))
+		return true;
+	if (L_draw_text(L_TEXT_HONBA_DOWN, (struct SDL_Point){ -1, -1 }))
 		return true;
 
 	return false;

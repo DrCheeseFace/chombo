@@ -3,7 +3,7 @@
 #include "t_tiles.h"
 
 bool E_handle_key_down(struct G_GameState *gamestate,
-		       SDL_Renderer *sdl_renderer, SDL_KeyboardEvent key_event)
+		       SDL_KeyboardEvent key_event)
 {
 	//global event type shit
 	switch (key_event.key) {
@@ -463,8 +463,7 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 				return true;
 			} else if (gamestate->selected_main_menu_option ==
 				   G_SELECTED_MAIN_MENU_OPTION_HONBA) {
-				G_increment_honba_counter(gamestate,
-							  sdl_renderer);
+				G_increment_honba_counter(gamestate);
 				return true;
 			}
 			return false;
@@ -479,8 +478,7 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 				return true;
 			} else if (gamestate->selected_main_menu_option ==
 				   G_SELECTED_MAIN_MENU_OPTION_HONBA) {
-				G_decrement_honba_counter(gamestate,
-							  sdl_renderer);
+				G_decrement_honba_counter(gamestate);
 				return true;
 			}
 			return false;
@@ -640,7 +638,7 @@ bool E_handle_event(struct G_GameState *gamestate, SDL_Renderer *sdl_renderer,
 		return false;
 
 	case SDL_EVENT_KEY_DOWN:
-		redraw = E_handle_key_down(gamestate, sdl_renderer, event.key);
+		redraw = E_handle_key_down(gamestate, event.key);
 		if (redraw) {
 			G_calculate_handshapes(gamestate);
 			return true;

@@ -1,5 +1,4 @@
 #include "g_gamestate.h"
-#include "l_letter.h"
 #include "r_renderer.h"
 #include <stdlib.h>
 #include <string.h>
@@ -263,26 +262,18 @@ void G_backtrack_menu(struct G_GameState *gamestate)
 	}
 }
 
-void G_increment_honba_counter(struct G_GameState *gamestate,
-			       SDL_Renderer *sdl_renderer)
+void G_increment_honba_counter(struct G_GameState *gamestate)
 {
-	if (gamestate->honba != UINT8_MAX) {
-		gamestate->honba++;
-		char honba_str[4] = "";
-		SDL_itoa(gamestate->honba, honba_str, 10);
-		L_rewrite_text(sdl_renderer, L_TEXT_HONBA_COUNT, honba_str);
-	}
+	if (gamestate->honba == UINT8_MAX)
+		return;
+	gamestate->honba++;
 }
 
-void G_decrement_honba_counter(struct G_GameState *gamestate,
-			       SDL_Renderer *sdl_renderer)
+void G_decrement_honba_counter(struct G_GameState *gamestate)
 {
-	if (gamestate->honba != 0) {
-		gamestate->honba--;
-		char honba_str[4] = "";
-		SDL_itoa(gamestate->honba, honba_str, 10);
-		L_rewrite_text(sdl_renderer, L_TEXT_HONBA_COUNT, honba_str);
-	}
+	if (gamestate->honba == 0)
+		return;
+	gamestate->honba--;
 }
 
 bool G_hand_add_tile(struct G_GameState *gamestate, T_Tile tile)
