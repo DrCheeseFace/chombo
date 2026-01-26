@@ -8,9 +8,6 @@
 
 MrvVector registered_buttons;
 
-mr_internal B_Button *B_get_registered_button(const char *id);
-mr_internal void B_registered_button_destroy(size_t idx);
-
 void B_init(void)
 {
 	mrv_init(&registered_buttons, 0, sizeof(B_Button));
@@ -21,7 +18,8 @@ void B_init(void)
 void B_destroy(void)
 {
 	for (size_t i = registered_buttons.len; i > 0; i--) {
-		B_registered_button_destroy(i - 1);
+		B_Button *button = mrv_get_idx(&registered_buttons, i - 1);
+		B_registered_button_destroy(button);
 	}
 
 	mrv_free(&registered_buttons);
@@ -33,7 +31,7 @@ int B_register_button(const char *id_str, SDL_FRect box,
 		      bool (*destroy_when)(struct G_GameState *gamestate),
 		      void *args)
 {
-	B_Button *button = B_get_registered_button(id_str);
+	B_Button *button = B_get_registered_button(id_str, NULL);
 	if (!button) {
 		B_Button new_button = { 0 };
 		mrs_init(strlen(id_str), id_str, strlen(id_str),
@@ -65,7 +63,7 @@ void B_registered_buttons_purge_dead(struct G_GameState *gamestate)
 		button = mrv_get_idx(&registered_buttons, idx);
 
 		if (button->destroy_when && button->destroy_when(gamestate)) {
-			B_registered_button_destroy(idx);
+			B_registered_button_destroy(button);
 		}
 	}
 }
@@ -91,19 +89,23 @@ bool B_handle_click(struct G_GameState *gamestate, SDL_Renderer *sdl_renderer,
 	return false;
 }
 
-mr_internal void B_registered_button_destroy(size_t idx)
+void B_registered_button_destroy(B_Button *button_to_destroy)
 {
-	B_Button *button_to_destroy = mrv_get_idx(&registered_buttons, idx);
+	int idx;
+	B_get_registered_button(button_to_destroy->id_str.value, &idx);
 	mrs_free(&button_to_destroy->id_str);
 	mrv_remove(&registered_buttons, idx);
 }
 
-mr_internal B_Button *B_get_registered_button(const char *id)
+B_Button *B_get_registered_button(const char *id_str, int *idx)
 {
 	B_Button *button;
 	for (size_t i = 0; i < registered_buttons.len; i++) {
 		button = mrv_get_idx(&registered_buttons, i);
-		if (strcmp(button->id_str.value, id) == 0) {
+		if (strcmp(button->id_str.value, id_str) == 0) {
+			if (idx != NULL) {
+				*idx = i;
+			}
 			return button;
 		}
 	}
