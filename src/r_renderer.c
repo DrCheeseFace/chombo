@@ -228,7 +228,7 @@ bool R_help_draw(struct G_GameState gamestate)
 			(struct SDL_Point){ 280, 650 }, 16) != 0)
 		return true;
 
-	if (L_draw_text(L_TEXT_HELP_S, (struct SDL_Point){ -1, -1 }))
+	if (L_draw_text(L_TEXT_HELP_N, (struct SDL_Point){ -1, -1 }))
 		return true;
 	if (T_tile_draw(sdl_renderer, T_TILE_PEI,
 			(struct SDL_Point){ 280, 750 }, 16) != 0)
