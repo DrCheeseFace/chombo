@@ -87,9 +87,9 @@ sdl3_ttf_dep = dependency('sdl3_ttf', fallback: ['sdl3_ttf', 'sdl3_ttf_dep'])
 harfbuzz_dep = dependency('harfbuzz', fallback: ['harfbuzz', 'libharfbuzz_dep'])
 freetype_dep = dependency('freetype2', fallback: ['freetype2', 'freetype_dep'])
 mahc_dep = declare_dependency(
-  sources: mahc_header
+  sources: mahc_header,
+  link_with: mahc_lib
 )
-
 deps = [sdl3_dep, sdl3_ttf_dep, harfbuzz_dep, freetype_dep, mahc_dep]
 
 # mrutils :)
@@ -112,6 +112,15 @@ source_files = files(
   'src/mr_utils/src/mrs_strings.c',
   'src/mr_utils/src/mrt_test.c',
   'src/mr_utils/src/mrv_vectors.c'
+)
+
+chombo_executable = executable('chombo',
+  source_files,
+  dependencies: deps,
+  include_directories: inc,
+  link_language: 'c',
+  install: true,
+  install_rpath: '$ORIGIN/../' + get_option('libdir')
 )
 
 if host_system == 'linux'
@@ -146,13 +155,3 @@ if host_system == 'linux'
 else
     install_subdir('src/assets', install_dir: get_option('bindir'))
 endif
-
-executable('chombo',
-  source_files,
-  dependencies: deps,
-  link_with: mahc_lib,
-  include_directories: inc,
-  link_language: 'c',
-  install: true,
-  install_rpath: '$ORIGIN/../' + get_option('libdir')
-)
