@@ -1,6 +1,6 @@
 [Setup]
 AppName=Chombo
-AppVersion=1.1.0
+AppVersion=1.2.0
 AppPublisher=Tharun
 DefaultDirName={autopf}\Chombo
 DefaultGroupName=Chombo

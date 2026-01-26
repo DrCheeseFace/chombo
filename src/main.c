@@ -1,3 +1,4 @@
+#include "b_button.h"
 #include "e_event.h"
 #include "l_letter.h"
 #include "r_renderer.h"
@@ -41,8 +42,7 @@ int main(void)
 		TARGET_FPS, WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_SCALE);
 	SDL_Window *sdl_window =
 		W_create(gamestate->window_w, gamestate->window_h);
-	SDL_Renderer *sdl_renderer =
-		R_create(sdl_window, gamestate->window_w, gamestate->window_h);
+	SDL_Renderer *sdl_renderer = R_create(sdl_window);
 
 	if (fabsf(WINDOW_SCALE - 1) >= FLT_EPSILON) {
 		G_window_renderer_resize(sdl_window, sdl_renderer,
@@ -51,9 +51,11 @@ int main(void)
 	}
 
 	L_init(sdl_renderer);
+	B_init();
 
 	main_loop(gamestate, sdl_window, sdl_renderer);
 
+	B_destroy();
 	L_destroy();
 	R_destroy();
 	W_destroy(sdl_window);

@@ -1,0 +1,39 @@
+{
+   ignore_nvidia_realloc_zero
+   Memcheck:ReallocZero
+   fun:realloc
+   obj:*/libnvidia-eglcore.so*
+   obj:*/libnvidia-eglcore.so*
+   obj:*/libnvidia-eglcore.so*
+   obj:*/libnvidia-eglcore.so*
+   fun:NvGlEglApiInit
+}
+
+{
+   ignore_nvidia_bad_size
+   Memcheck:BadSize
+   fun:posix_memalign
+   obj:*/libnvidia-eglcore.so*
+   obj:*/libnvidia-eglcore.so*
+   obj:*/libnvidia-eglcore.so*
+   obj:*/libnvidia-eglcore.so*
+   fun:NvGlEglApiInit
+}
+
+{
+   ignore_sdl3_egl_load_leak
+   Memcheck:Leak
+   match-leak-kinds: definite,indirect
+   fun:calloc
+   obj:*
+   obj:*
+   obj:*
+   fun:SDL_EGL_LoadLibrary
+   fun:Wayland_GLES_LoadLibrary
+   fun:SDL_GL_LoadLibrary_REAL
+   fun:SDL_ReconfigureWindowInternal
+   fun:SDL_ReconfigureWindow
+   fun:GL_CreateRenderer
+   fun:SDL_CreateRendererWithProperties_REAL
+   fun:SDL_CreateRenderer_REAL
+}

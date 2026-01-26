@@ -1,6 +1,7 @@
 #include "g_gamestate.h"
-#include "l_letter.h"
 #include "r_renderer.h"
+
+#include <mr_utils.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -88,21 +89,21 @@ void G_increment_seat_wind(struct G_GameState *gamestate)
 	}
 }
 
-void G_increment_prevelant_wind(struct G_GameState *gamestate)
+void G_increment_prevalent_wind(struct G_GameState *gamestate)
 {
-	if (gamestate->prevelant_wind == T_TILE_TON) {
-		gamestate->prevelant_wind = T_TILE_PEI;
+	if (gamestate->prevalent_wind == T_TILE_TON) {
+		gamestate->prevalent_wind = T_TILE_PEI;
 	} else {
-		gamestate->prevelant_wind--;
+		gamestate->prevalent_wind--;
 	}
 }
 
-void G_decrement_prevelant_wind(struct G_GameState *gamestate)
+void G_decrement_prevalent_wind(struct G_GameState *gamestate)
 {
-	if (gamestate->prevelant_wind == T_TILE_PEI) {
-		gamestate->prevelant_wind = T_TILE_TON;
+	if (gamestate->prevalent_wind == T_TILE_PEI) {
+		gamestate->prevalent_wind = T_TILE_TON;
 	} else {
-		gamestate->prevelant_wind++;
+		gamestate->prevalent_wind++;
 	}
 }
 
@@ -224,11 +225,21 @@ void G_winning_tile_set(struct G_GameState *gamestate)
 	}
 }
 
-void G_backtrack_menu(struct G_GameState *gamestate)
+void G_step_backward_menu(struct G_GameState *gamestate)
 {
 	gamestate->selector_idx = 0;
 	switch (gamestate->overlayed_menu) {
 	case G_OVERLAYED_MENU_NONE:
+		gamestate->selector_idx = 0;
+		gamestate->overlayed_menu = G_OVERLAYED_MENU_NONE;
+		break;
+	case G_OVERLAYED_MENU_HAND_KEYBOARD:
+		gamestate->selector_idx = 0;
+		gamestate->overlayed_menu = G_OVERLAYED_MENU_NONE;
+		break;
+	case G_OVERLAYED_MENU_DORA_KEYBOARD:
+		gamestate->selector_idx = 0;
+		gamestate->overlayed_menu = G_OVERLAYED_MENU_NONE;
 		break;
 	case G_OVERLAYED_MENU_HANDSHAPES_SELECTOR:
 		gamestate->selector_idx = 0;
@@ -263,26 +274,114 @@ void G_backtrack_menu(struct G_GameState *gamestate)
 	}
 }
 
-void G_increment_honba_counter(struct G_GameState *gamestate,
-			       SDL_Renderer *sdl_renderer)
+bool G_step_forward_menu(struct G_GameState *gamestate)
 {
-	if (gamestate->honba != UINT8_MAX) {
-		gamestate->honba++;
-		char honba_str[4] = "";
-		SDL_itoa(gamestate->honba, honba_str, 10);
-		L_rewrite_text(sdl_renderer, L_TEXT_HONBA_COUNT, honba_str);
+	switch (gamestate->overlayed_menu) {
+	case G_OVERLAYED_MENU_NONE:
+		if (G_calculate_handshapes(gamestate)) {
+			G_selected_handshape_set(gamestate);
+			gamestate->selector_idx = 0;
+			if (gamestate->handshapes.hands_len == 1) {
+				if (gamestate->handshapes.hands[0].group_count >=
+				    7) {
+					gamestate->overlayed_menu =
+						G_OVERLAYED_MENU_WINNING_TILE_SELECTOR;
+				} else {
+					gamestate->overlayed_menu =
+						G_OVERLAYED_MENU_HANDSHAPE_GROUP_OPEN_CLOSE_SELECTOR;
+				}
+			} else {
+				gamestate->overlayed_menu =
+					G_OVERLAYED_MENU_HANDSHAPES_SELECTOR;
+			}
+			return true;
+		}
+		return false;
+	case G_OVERLAYED_MENU_HAND_KEYBOARD:
+		if (G_calculate_handshapes(gamestate)) {
+			G_selected_handshape_set(gamestate);
+			gamestate->selector_idx = 0;
+			if (gamestate->handshapes.hands_len == 1) {
+				if (gamestate->handshapes.hands[0].group_count >=
+				    7) {
+					gamestate->overlayed_menu =
+						G_OVERLAYED_MENU_WINNING_TILE_SELECTOR;
+				} else {
+					gamestate->overlayed_menu =
+						G_OVERLAYED_MENU_HANDSHAPE_GROUP_OPEN_CLOSE_SELECTOR;
+				}
+			} else {
+				gamestate->overlayed_menu =
+					G_OVERLAYED_MENU_HANDSHAPES_SELECTOR;
+			}
+			return true;
+		}
+		return false;
+	case G_OVERLAYED_MENU_DORA_KEYBOARD:
+		if (G_calculate_handshapes(gamestate)) {
+			G_selected_handshape_set(gamestate);
+			gamestate->selector_idx = 0;
+			if (gamestate->handshapes.hands_len == 1) {
+				if (gamestate->handshapes.hands[0].group_count >=
+				    7) {
+					gamestate->overlayed_menu =
+						G_OVERLAYED_MENU_WINNING_TILE_SELECTOR;
+				} else {
+					gamestate->overlayed_menu =
+						G_OVERLAYED_MENU_HANDSHAPE_GROUP_OPEN_CLOSE_SELECTOR;
+				}
+			} else {
+				gamestate->overlayed_menu =
+					G_OVERLAYED_MENU_HANDSHAPES_SELECTOR;
+			}
+			return true;
+		}
+		return false;
+	case G_OVERLAYED_MENU_HANDSHAPES_SELECTOR:
+		G_selected_handshape_set(gamestate);
+		gamestate->selector_idx = 0;
+		if (gamestate->selected_handshape.group_count >= 7) {
+			gamestate->overlayed_menu =
+				G_OVERLAYED_MENU_WINNING_TILE_SELECTOR;
+		} else {
+			gamestate->overlayed_menu =
+				G_OVERLAYED_MENU_HANDSHAPE_GROUP_OPEN_CLOSE_SELECTOR;
+		}
+		return true;
+	case G_OVERLAYED_MENU_HANDSHAPE_GROUP_OPEN_CLOSE_SELECTOR:
+		gamestate->selector_idx = 0;
+		gamestate->overlayed_menu =
+			G_OVERLAYED_MENU_WINNING_TILE_SELECTOR;
+		return true;
+	case G_OVERLAYED_MENU_WINNING_TILE_SELECTOR:
+		G_winning_tile_set(gamestate);
+		gamestate->selector_idx = 0;
+		gamestate->show_score_err = !G_calculate_score(gamestate);
+		gamestate->overlayed_menu = G_OVERLAYED_MENU_SCORE_VIEW;
+		return true;
+	case G_OVERLAYED_MENU_SCORE_VIEW:
+		break;
+	case G_OVERLAYED_MENU_COUNT:
+		break;
+	default:
+		break;
 	}
+
+	return false;
 }
 
-void G_decrement_honba_counter(struct G_GameState *gamestate,
-			       SDL_Renderer *sdl_renderer)
+void G_increment_honba_counter(struct G_GameState *gamestate, unused void *args)
 {
-	if (gamestate->honba != 0) {
-		gamestate->honba--;
-		char honba_str[4] = "";
-		SDL_itoa(gamestate->honba, honba_str, 10);
-		L_rewrite_text(sdl_renderer, L_TEXT_HONBA_COUNT, honba_str);
-	}
+	if (gamestate->honba == UINT8_MAX)
+		return;
+	gamestate->honba++;
+}
+
+void G_decrement_honba_counter(struct G_GameState *gamestate, unused void *args)
+{
+	if (gamestate->honba == 0)
+		return;
+	gamestate->honba--;
 }
 
 bool G_hand_add_tile(struct G_GameState *gamestate, T_Tile tile)
@@ -336,8 +435,8 @@ bool G_calculate_score(struct G_GameState *gamestate)
 	Tile seat_wind;
 	T_ttile_to_mtile(gamestate->seat_wind, &seat_wind);
 
-	Tile prevelant_wind;
-	T_ttile_to_mtile(gamestate->prevelant_wind, &prevelant_wind);
+	Tile prevalent_wind;
+	T_ttile_to_mtile(gamestate->prevalent_wind, &prevalent_wind);
 
 	Tile dora_tiles[MAX_DORA_TILE_COUNT];
 	for (int i = 0; i < gamestate->dora_tiles_len; i++) {
@@ -358,7 +457,7 @@ bool G_calculate_score(struct G_GameState *gamestate)
 		.tenhou = gamestate->conditions.tenhou,
 		.honba = gamestate->honba,
 		.seat_wind = seat_wind,
-		.prev_wind = prevelant_wind,
+		.prev_wind = prevalent_wind,
 		.dora_tiles = dora_tiles,
 		.dora_tiles_len = gamestate->dora_tiles_len,
 	};
@@ -394,7 +493,7 @@ void G_clear_menus_state(struct G_GameState *gamestate)
 	       sizeof(gamestate->dora_tiles));
 
 	gamestate->seat_wind = T_TILE_TON;
-	gamestate->prevelant_wind = T_TILE_TON;
+	gamestate->prevalent_wind = T_TILE_TON;
 
 	gamestate->honba = 0;
 

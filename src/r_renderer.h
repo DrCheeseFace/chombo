@@ -3,7 +3,7 @@
 
 #include "g_gamestate.h"
 
-SDL_Renderer *R_create(SDL_Window *window, int width, int height);
+SDL_Renderer *R_create(SDL_Window *window);
 
 void R_destroy(void);
 

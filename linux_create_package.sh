@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-VERSION="1.1.0"
+VERSION="1.2.0"
 APP_NAME="chombo"
 DIST_DIR="$(pwd)/dist"
 BUILD_DIR="build"
@@ -23,8 +23,6 @@ meson compile -C $BUILD_DIR
 DESTDIR=$DIST_DIR meson install -C $BUILD_DIR
 
 rm -rf $DIST_DIR/usr/include
-
-ln -s ../share/chombo/assets $DIST_DIR/usr/bin/assets
 
 # searches through symlinks to get actual .so (fuck you sdl3_ttf)
 echo "harvesting real library files from build subprojects..."
