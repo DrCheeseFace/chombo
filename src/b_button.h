@@ -30,8 +30,8 @@ int B_register_button(const char *id_str, SDL_FRect box,
 		      bool (*destroy_when)(struct G_GameState *gamestate),
 		      void *args);
 
-// checks for buttons to destroy
-void B_active_buttons_purge(struct G_GameState *gamestate);
+// checks and remove registered buttons if needs to be destroy
+void B_registered_buttons_purge_dead(struct G_GameState *gamestate);
 
 // checks all active buttons, and runs the most recently created button
 bool B_handle_click(struct G_GameState *gamestate, SDL_Renderer *sdl_renderer,
