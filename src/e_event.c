@@ -1,8 +1,9 @@
+#include "b_button.h"
 #include "g_gamestate.h"
 #include "t_tiles.h"
 
 bool E_handle_key_down(struct G_GameState *gamestate,
-		       SDL_Renderer *sdl_renderer, SDL_KeyboardEvent key_event)
+		       SDL_KeyboardEvent key_event)
 {
 	//global event type shit
 	switch (key_event.key) {
@@ -22,8 +23,10 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 		}
 		break;
 	case SDLK_ESCAPE:
-		G_backtrack_menu(gamestate);
+		G_step_backward_menu(gamestate);
 		return true;
+	case SDLK_RETURN:
+		return G_step_forward_menu(gamestate);
 	case SDLK_COMMA:
 		G_clear_menus_state(gamestate);
 		return true;
@@ -458,12 +461,11 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 				return true;
 			} else if (gamestate->selected_main_menu_option ==
 				   G_SELECTED_MAIN_MENU_OPTION_PREVALENT_WIND) {
-				G_decrement_prevelant_wind(gamestate);
+				G_decrement_prevalent_wind(gamestate);
 				return true;
 			} else if (gamestate->selected_main_menu_option ==
 				   G_SELECTED_MAIN_MENU_OPTION_HONBA) {
-				G_increment_honba_counter(gamestate,
-							  sdl_renderer);
+				G_increment_honba_counter(gamestate, NULL);
 				return true;
 			}
 			return false;
@@ -474,12 +476,11 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 				return true;
 			} else if (gamestate->selected_main_menu_option ==
 				   G_SELECTED_MAIN_MENU_OPTION_PREVALENT_WIND) {
-				G_increment_prevelant_wind(gamestate);
+				G_increment_prevalent_wind(gamestate);
 				return true;
 			} else if (gamestate->selected_main_menu_option ==
 				   G_SELECTED_MAIN_MENU_OPTION_HONBA) {
-				G_decrement_honba_counter(gamestate,
-							  sdl_renderer);
+				G_decrement_honba_counter(gamestate, NULL);
 				return true;
 			}
 			return false;
@@ -516,29 +517,25 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 			gamestate->conditions.tenhou =
 				!gamestate->conditions.tenhou;
 			return true;
-		case SDLK_RETURN:
-			if (G_calculate_handshapes(gamestate)) {
-				G_selected_handshape_set(gamestate);
-				gamestate->selector_idx = 0;
-				if (gamestate->handshapes.hands_len == 1) {
-					if (gamestate->handshapes.hands[0]
-						    .group_count >= 7) {
-						gamestate->overlayed_menu =
-							G_OVERLAYED_MENU_WINNING_TILE_SELECTOR;
-					} else {
-						gamestate->overlayed_menu =
-							G_OVERLAYED_MENU_HANDSHAPE_GROUP_OPEN_CLOSE_SELECTOR;
-					}
-				} else {
-					gamestate->overlayed_menu =
-						G_OVERLAYED_MENU_HANDSHAPES_SELECTOR;
-				}
-				return true;
-			}
-			return false;
 		default:
 			return false;
 		}
+	case G_OVERLAYED_MENU_HAND_KEYBOARD:
+		switch (key_event.key) {
+		case SDLK_BACKSPACE:
+			return G_hand_delete_tile(gamestate);
+		default:
+			break;
+		}
+		break;
+	case G_OVERLAYED_MENU_DORA_KEYBOARD:
+		switch (key_event.key) {
+		case SDLK_BACKSPACE:
+			return G_dora_delete_tile(gamestate);
+		default:
+			break;
+		}
+		break;
 	case G_OVERLAYED_MENU_HANDSHAPES_SELECTOR:
 		switch (key_event.key) {
 		case SDLK_UP:
@@ -546,17 +543,6 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 			return true;
 		case SDLK_DOWN:
 			G_decrement_handshape_selector(gamestate);
-			return true;
-		case SDLK_RETURN:
-			G_selected_handshape_set(gamestate);
-			gamestate->selector_idx = 0;
-			if (gamestate->selected_handshape.group_count >= 7) {
-				gamestate->overlayed_menu =
-					G_OVERLAYED_MENU_WINNING_TILE_SELECTOR;
-			} else {
-				gamestate->overlayed_menu =
-					G_OVERLAYED_MENU_HANDSHAPE_GROUP_OPEN_CLOSE_SELECTOR;
-			}
 			return true;
 		default:
 			return false;
@@ -572,11 +558,6 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 		case SDLK_SPACE:
 			G_group_selector_open_close_toggle(gamestate);
 			return true;
-		case SDLK_RETURN:
-			gamestate->selector_idx = 0;
-			gamestate->overlayed_menu =
-				G_OVERLAYED_MENU_WINNING_TILE_SELECTOR;
-			return true;
 		default:
 			break;
 		}
@@ -589,22 +570,11 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 		case SDLK_RIGHT:
 			G_winning_tile_selector_increment(gamestate);
 			return true;
-		case SDLK_RETURN:
-			G_winning_tile_set(gamestate);
-			gamestate->selector_idx = 0;
-			gamestate->show_score_err =
-				!G_calculate_score(gamestate);
-			gamestate->overlayed_menu = G_OVERLAYED_MENU_SCORE_VIEW;
-			return true;
 		default:
 			break;
 		}
 		break;
 	case G_OVERLAYED_MENU_SCORE_VIEW:
-		switch (key_event.key) {
-		default:
-			break;
-		}
 		break;
 	case G_OVERLAYED_MENU_COUNT:
 		break;
@@ -612,6 +582,17 @@ bool E_handle_key_down(struct G_GameState *gamestate,
 		break;
 	}
 
+	return false;
+}
+
+// TODO IMPLEMENTATION
+bool E_handle_mouse_move(struct G_GameState *gamestate,
+			 SDL_Renderer *sdl_renderer,
+			 SDL_MouseButtonEvent button_event)
+{
+	(void)gamestate;
+	(void)sdl_renderer;
+	(void)button_event;
 	return false;
 }
 
@@ -626,13 +607,32 @@ bool E_handle_event(struct G_GameState *gamestate, SDL_Renderer *sdl_renderer,
 			return true;
 		}
 		return false;
+
 	case SDL_EVENT_KEY_DOWN:
-		redraw = E_handle_key_down(gamestate, sdl_renderer, event.key);
+		redraw = E_handle_key_down(gamestate, event.key);
 		if (redraw) {
 			G_calculate_handshapes(gamestate);
 			return true;
 		}
 		return redraw;
+
+	case SDL_EVENT_MOUSE_BUTTON_DOWN:
+		redraw = B_handle_click(gamestate, sdl_renderer, event.button);
+		if (redraw) {
+			G_calculate_handshapes(gamestate);
+			return true;
+		}
+		return redraw;
+
+	case SDL_EVENT_MOUSE_MOTION:
+		redraw = E_handle_mouse_move(gamestate, sdl_renderer,
+					     event.button);
+		if (redraw) {
+			G_calculate_handshapes(gamestate);
+			return true;
+		}
+		return redraw;
+
 	default:
 		return false;
 	}

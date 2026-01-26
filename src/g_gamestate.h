@@ -16,6 +16,8 @@ typedef enum {
 
 typedef enum {
 	G_OVERLAYED_MENU_NONE = 0,
+	G_OVERLAYED_MENU_HAND_KEYBOARD,
+	G_OVERLAYED_MENU_DORA_KEYBOARD,
 	G_OVERLAYED_MENU_HANDSHAPES_SELECTOR,
 	G_OVERLAYED_MENU_HANDSHAPE_GROUP_OPEN_CLOSE_SELECTOR,
 	G_OVERLAYED_MENU_WINNING_TILE_SELECTOR,
@@ -44,7 +46,7 @@ struct G_GameState {
 
 	T_Tile seat_wind;
 
-	T_Tile prevelant_wind;
+	T_Tile prevalent_wind;
 
 	uint8_t honba;
 
@@ -88,9 +90,9 @@ void G_decrement_seat_wind(struct G_GameState *gamestate);
 
 void G_increment_seat_wind(struct G_GameState *gamestate);
 
-void G_increment_prevelant_wind(struct G_GameState *gamestate);
+void G_increment_prevalent_wind(struct G_GameState *gamestate);
 
-void G_decrement_prevelant_wind(struct G_GameState *gamestate);
+void G_decrement_prevalent_wind(struct G_GameState *gamestate);
 
 void G_decrement_handshape_selector(struct G_GameState *gamestate);
 
@@ -117,13 +119,15 @@ void G_selected_handshape_set(struct G_GameState *gamestate);
 
 void G_winning_tile_set(struct G_GameState *gamestate);
 
-void G_increment_honba_counter(struct G_GameState *gamestate,
-			       SDL_Renderer *sdl_renderer);
+// has args because its also being used as an onclick func
+void G_increment_honba_counter(struct G_GameState *gamestate, void *args);
 
-void G_decrement_honba_counter(struct G_GameState *gamestate,
-			       SDL_Renderer *sdl_renderer);
+// has args because its also being used as an onclick func
+void G_decrement_honba_counter(struct G_GameState *gamestate, void *args);
 
-void G_backtrack_menu(struct G_GameState *gamestate);
+void G_step_backward_menu(struct G_GameState *gamestate);
+
+bool G_step_forward_menu(struct G_GameState *gamestate);
 
 // returns true (1) if requires rerender
 bool G_hand_add_tile(struct G_GameState *gamestate, T_Tile tile);

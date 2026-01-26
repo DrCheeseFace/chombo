@@ -18,14 +18,6 @@ typedef enum {
 } L_Colors;
 extern SDL_Color L_COLORS[L_COLOR_COUNT];
 
-typedef struct {
-	const char *text;
-	int point_size;
-	L_Colors color;
-	int wraplength;
-	enum TTF_HorizontalAlignment align;
-} L_Text_Obj;
-
 typedef enum {
 	L_TEXT_BOTTOM_HELP = 0,
 	L_TEXT_HELP_0_9,
@@ -48,13 +40,15 @@ typedef enum {
 	L_TEXT_HAND_LABEL,
 	L_TEXT_HAND_VALID,
 	L_TEXT_HAND_INVALID,
+	L_TEXT_HAND_TOGGLE_KEYBOARD,
 	L_TEXT_DORA_LABEL_SELECTED,
 	L_TEXT_DORA_LABEL,
+	L_TEXT_DORA_TOGGLE_KEYBOARD,
 
-	L_TEXT_DORA_SEAT_WIND,
-	L_TEXT_DORA_SEAT_WIND_SELECTED,
-	L_TEXT_DORA_PREVELANT_WIND,
-	L_TEXT_DORA_PREVELANT_WIND_SELECTED,
+	L_TEXT_SEAT_WIND,
+	L_TEXT_SEAT_WIND_SELECTED,
+	L_TEXT_PREVALENT_WIND,
+	L_TEXT_PREVALENT_WIND_SELECTED,
 
 	L_TEXT_CONDITION_TSUMO_OFF,
 	L_TEXT_CONDITION_TSUMO_ON,
@@ -79,6 +73,8 @@ typedef enum {
 	L_TEXT_HONBA_OFF,
 	L_TEXT_HONBA_ON,
 	L_TEXT_HONBA_COUNT,
+	L_TEXT_HONBA_UP,
+	L_TEXT_HONBA_DOWN,
 
 	L_TEXT_ERR_HEADER,
 	L_TEXT_ERR_MESSAGE,
@@ -103,8 +99,20 @@ typedef enum {
 
 	L_TEXT_SCORE_POINTS,
 
+	L_TEXT_DEBUG_COORDS, // for debugging mouse
+
 	L_TEXT_COUNT,
 } L_Text;
+
+typedef struct {
+	const char *text;
+	int point_size;
+	L_Colors color;
+	int wraplength;
+	enum TTF_HorizontalAlignment align;
+	SDL_FRect box;
+} L_Text_Obj;
+extern L_Text_Obj L_TEXTS_OBJS[L_TEXT_COUNT];
 
 void L_init(SDL_Renderer *sdl_renderer);
 
