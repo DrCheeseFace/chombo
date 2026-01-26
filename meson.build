@@ -39,6 +39,10 @@ strict_c_flags = [
   # '-Wfloat-equal'
 ]
 
+if get_option('buildtype') != 'release'
+  add_project_arguments('-DCHOMBO_DEBUG', language: 'c')
+endif
+
 if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
   add_project_arguments(strict_c_flags, language: 'c')
 endif

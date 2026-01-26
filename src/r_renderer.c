@@ -1344,13 +1344,13 @@ bool R_gamestate_draw(SDL_Window *sdl_window, struct G_GameState gamestate)
 	if (R_help_draw(gamestate))
 		return true;
 
-#ifndef NDEBUG
+#ifdef CHOMBO_DEBUG
 	DEBUG_DRAW_POINTER_COORDS(sdl_renderer);
 #endif
 
 	SDL_RenderPresent(sdl_renderer);
 
-#ifndef NDEBUG
+#ifdef CHOMBO_DEBUG
 	return true;
 #else
 	return false;
