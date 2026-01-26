@@ -179,3 +179,17 @@ bool G_destroy_toggle_group_open_closed(struct G_GameState *gamestate)
 	return gamestate->overlayed_menu !=
 	       G_OVERLAYED_MENU_HANDSHAPE_GROUP_OPEN_CLOSE_SELECTOR;
 }
+
+void G_on_click_select_winning_tile(struct G_GameState *gamestate,
+				    void *winning_tile_idx)
+{
+	gamestate->selector_idx = (int)(intptr_t)winning_tile_idx;
+	G_winning_tile_set(gamestate);
+	G_step_forward_menu(gamestate);
+}
+
+bool G_destroy_select_winning_tile_button(struct G_GameState *gamestate)
+{
+	return gamestate->overlayed_menu !=
+	       G_OVERLAYED_MENU_WINNING_TILE_SELECTOR;
+}

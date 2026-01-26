@@ -41,4 +41,8 @@ void G_on_click_toggle_group_open_closed(struct G_GameState *gamestate,
 					 void *group_idx);
 bool G_destroy_toggle_group_open_closed(struct G_GameState *gamestate);
 
+void G_on_click_select_winning_tile(struct G_GameState *gamestate,
+				    void *winning_tile_idx);
+bool G_destroy_select_winning_tile_button(struct G_GameState *gamestate);
+
 #endif // !G_GAMESTATE_BUTTON_HANDLERS_H

@@ -985,6 +985,10 @@ bool R_winning_tile_selector_draw(struct G_GameState gamestate)
 		return true;
 
 	const int tile_size = 30;
+	const int tile_horizontal_padding = 10;
+	const int tile_vertical_padding = 40;
+
+	char button_id[32] = { 0 };
 
 	int tile_idx = 0;
 	int x = 80;
@@ -994,6 +998,18 @@ bool R_winning_tile_selector_draw(struct G_GameState gamestate)
 		for (size_t j = 0;
 		     j < gamestate.selected_handshape.groups[i].tiles_len;
 		     j++) {
+			sprintf(button_id, "%dwinning_tile", tile_idx);
+			B_register_button(
+				button_id,
+				(SDL_FRect){
+					.x = x,
+					.y = y,
+					.w = tile_size * T_TILE_WIDTH_RATIO,
+					.h = tile_size * T_TILE_HEIGHT_RATIO },
+				&G_on_click_select_winning_tile,
+				&G_destroy_select_winning_tile_button,
+				(void *)(intptr_t)tile_idx);
+
 			if (T_tile_draw(sdl_renderer,
 					T_mtile_to_ttile(
 						gamestate.selected_handshape
@@ -1008,10 +1024,11 @@ bool R_winning_tile_selector_draw(struct G_GameState gamestate)
 				return true;
 			}
 			tile_idx++;
-			x += tile_size * T_TILE_WIDTH_RATIO + 10;
+			x += tile_size * T_TILE_WIDTH_RATIO +
+			     tile_horizontal_padding;
 		}
 
-		x += tile_size * T_TILE_WIDTH_RATIO + 10;
+		x += tile_size * T_TILE_WIDTH_RATIO + tile_horizontal_padding;
 
 		if (x +
 			    ((tile_size * T_TILE_WIDTH_RATIO) *
@@ -1019,7 +1036,9 @@ bool R_winning_tile_selector_draw(struct G_GameState gamestate)
 				     .tiles_len) +
 			    40 >
 		    gamestate.window_w) {
-			y += ((tile_size * T_TILE_HEIGHT_RATIO) + 40);
+			y += ((tile_size * T_TILE_HEIGHT_RATIO) +
+			      tile_vertical_padding);
+
 			x = 80;
 		}
 	}
