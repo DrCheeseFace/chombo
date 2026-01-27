@@ -6,7 +6,8 @@
 #include <mr_utils.h>
 
 typedef struct {
-	MrsString id_str;
+#define MAX_BUTTON_ID_STR_LEN 32
+	char id_str[MAX_BUTTON_ID_STR_LEN];
 
 	SDL_FRect box;
 
@@ -24,19 +25,14 @@ void B_init(void);
 void B_destroy(void);
 
 // adds button to active buttons to check for every frame
-int B_register_button(const char *id_str, SDL_FRect box,
+// WARNING expects strlen(id_str) < MAX_BUTTON_ID_STR_LEN
+Err B_register_button(const char *id_str, SDL_FRect box,
 		      void (*on_click)(struct G_GameState *gamestate,
 				       void *args),
 		      bool (*destroy_when)(struct G_GameState *gamestate),
 		      void *args);
 
-// button is destroyed and removed from registered_buttons (will no longer respond)
-void B_registered_button_destroy(B_Button *button_to_destroy);
-
-// populates idx with found index in registered_buttons
-B_Button *B_get_registered_button(const char *id_str, int *idx);
-
-// checks and remove registered buttons if needs to be destroy
+// checks and removes registered buttons if needs to be destroy
 void B_registered_buttons_purge_dead(struct G_GameState *gamestate);
 
 // checks all active buttons, and runs the most recently created button
