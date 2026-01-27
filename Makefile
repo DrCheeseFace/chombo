@@ -65,7 +65,13 @@ debug: setup
 	$(MAKE) build
 
 valgrind:
-	valgrind --leak-check=full --suppressions=valgrind.supp ./dist/bin/chombo
+	valgrind --leak-check=full --suppressions=valgrind.supp $(BINARY_PATH)
+
+record:
+	perf record -g --call-graph dwarf $(BINARY_PATH)
+	perf script > chombo.perf
+
+
 	
 
 whodoyouthinkyouareiam: clean setup build run

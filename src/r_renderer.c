@@ -1344,6 +1344,7 @@ bool R_gamestate_draw(SDL_Window *sdl_window, struct G_GameState gamestate)
 	if (R_help_draw(gamestate))
 		return true;
 
+// beware having this fucks up perf
 #ifdef CHOMBO_DEBUG
 	DEBUG_DRAW_POINTER_COORDS(sdl_renderer);
 #endif
