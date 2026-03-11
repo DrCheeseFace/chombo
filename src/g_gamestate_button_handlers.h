@@ -45,4 +45,8 @@ void G_on_click_select_winning_tile(struct G_GameState *gamestate,
 				    void *winning_tile_idx);
 bool G_destroy_select_winning_tile_button(struct G_GameState *gamestate);
 
+void G_on_click_step_backward_menu(struct G_GameState *gamestate, void *_);
+void G_on_click_step_forward_menu(struct G_GameState *gamestate, void *_);
+bool G_destroy_next_back_menu_button(struct G_GameState *gamestate);
+
 #endif // !G_GAMESTATE_BUTTON_HANDLERS_H

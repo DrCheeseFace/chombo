@@ -193,3 +193,19 @@ bool G_destroy_select_winning_tile_button(struct G_GameState *gamestate)
 	return gamestate->overlayed_menu !=
 	       G_OVERLAYED_MENU_WINNING_TILE_SELECTOR;
 }
+
+void G_on_click_step_backward_menu(struct G_GameState *gamestate,
+				   unused void *_)
+{
+	G_step_backward_menu(gamestate);
+}
+
+void G_on_click_step_forward_menu(struct G_GameState *gamestate, unused void *_)
+{
+	G_step_forward_menu(gamestate);
+}
+
+bool G_destroy_next_back_menu_button(unused struct G_GameState *gamestate)
+{
+	return false;
+}

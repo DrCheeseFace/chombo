@@ -99,6 +99,9 @@ typedef enum {
 
 	L_TEXT_SCORE_POINTS,
 
+	L_TEXT_NEXT,
+	L_TEXT_BACK,
+
 	L_TEXT_DEBUG_COORDS, // for debugging mouse
 
 	L_TEXT_COUNT,

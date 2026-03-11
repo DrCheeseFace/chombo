@@ -560,6 +560,23 @@ bool R_honba_draw(struct G_GameState gamestate)
 	return false;
 }
 
+bool R_draw_next_back_buttons(void)
+{
+	if (L_draw_text(L_TEXT_NEXT, (struct SDL_Point){ -1, -1 }))
+		return true;
+	B_register_button("next_menu", L_TEXTS_OBJS[L_TEXT_NEXT].box,
+			  G_on_click_step_forward_menu,
+			  G_destroy_next_back_menu_button, NULL);
+
+	if (L_draw_text(L_TEXT_BACK, (struct SDL_Point){ -1, -1 }))
+		return true;
+	B_register_button("back_menu", L_TEXTS_OBJS[L_TEXT_BACK].box,
+			  G_on_click_step_backward_menu,
+			  G_destroy_next_back_menu_button, NULL);
+
+	return false;
+}
+
 bool R_main_menu_draw(struct G_GameState gamestate)
 {
 	if (!SDL_SetRenderDrawBlendMode(sdl_renderer, SDL_BLENDMODE_NONE)) {
@@ -1341,19 +1358,22 @@ bool R_gamestate_draw(SDL_Window *sdl_window, struct G_GameState gamestate)
 		break;
 	}
 
+	if (R_draw_next_back_buttons())
+		return true;
+
 	if (R_help_draw(gamestate))
 		return true;
 
-// beware having this fucks up perf
-#ifdef CHOMBO_DEBUG
-	DEBUG_DRAW_POINTER_COORDS(sdl_renderer);
-#endif
+	// beware having this fucks up perf
+	// #ifdef CHOMBO_DEBUG
+	// 	DEBUG_DRAW_POINTER_COORDS(sdl_renderer);
+	// #endif
 
 	SDL_RenderPresent(sdl_renderer);
 
-#ifdef CHOMBO_DEBUG
-	return true;
-#else
+	// #ifdef CHOMBO_DEBUG
+	// 	return true;
+	// #else
 	return false;
-#endif
+	// #endif
 }
